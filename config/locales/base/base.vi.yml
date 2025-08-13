@@ -1,0 +1,67 @@
+vi:
+  site:
+    title: "Ứng dụng Mẫu Ruby on Rails Tutorial"
+    name: "ứng dụng mẫu"
+  navigation:
+    home: "Trang chủ"
+    microposts: "Microposts"
+    help: "Trợ giúp"
+    about: "Giới thiệu"
+    contact: "Liên hệ"
+    news: "Tin tức"
+    login: "Đăng nhập"
+    signup: "Đăng ký ngay!"
+    account: "Tài khoản"
+    profile: "Hồ sơ"
+    settings: "Cài đặt"
+    logout: "Đăng xuất"
+  pages:
+    home:
+      welcome: "Chào mừng đến với Ứng dụng Mẫu"
+      description: "Đây là trang chủ cho ứng dụng mẫu %{tutorial}."
+      tutorial_link: "Ruby on Rails Tutorial"
+    help:
+      title: "Trợ giúp"
+      description: "Nhận trợ giúp về Ruby on Rails Tutorial tại %{help_link}."
+      help_link_text: "trang trợ giúp Rails Tutorial"
+      sample_help: "Để nhận trợ giúp về ứng dụng mẫu này, xem %{book_link}."
+      book_link_text: "sách Ruby on Rails Tutorial"
+    about:
+      title: "Giới thiệu"
+      description: "Đây là trang giới thiệu cho ứng dụng mẫu %{tutorial}."
+    contact:
+      title: "Liên hệ"
+      description: "Liên hệ với Ruby on Rails Tutorial về ứng dụng mẫu tại %{contact_link}."
+      link_text: "trang liên hệ"
+    microposts:
+      title: "Tất cả Microposts"
+      no_posts: "Chưa có micropost nào!"
+      posted_ago: "Đã đăng %{time} trước."
+  static_pages:
+    home:
+      welcome: "Chào mừng đến với Ứng dụng Mẫu"
+      description: "Đây là trang chủ cho ứng dụng mẫu %{tutorial}."
+      tutorial_link: "Ruby on Rails Tutorial"
+    help:
+      title: "Trợ giúp"
+      description: "Nhận trợ giúp về Ruby on Rails Tutorial tại %{help_link}."
+      help_link_text: "trang trợ giúp Rails Tutorial"
+      sample_help: "Để nhận trợ giúp về ứng dụng mẫu này, xem %{book_link}."
+      book_link_text: "sách Ruby on Rails Tutorial"
+    about:
+      title: "Giới thiệu"
+      description: "Đây là trang giới thiệu cho ứng dụng mẫu %{tutorial}."
+      tutorial_link: "Ruby on Rails Tutorial"
+    contact:
+      title: "Liên hệ"
+      description: "Liên hệ với Ruby on Rails Tutorial về ứng dụng mẫu tại %{contact_link}."
+      link_text: "trang liên hệ"
+  microposts:
+    index:
+      title: "Tất cả Microposts"
+      no_posts: "Chưa có micropost nào!"
+      posted_ago: "Đã đăng %{time} trước."
+  footer:
+    tutorial_text: "%{tutorial_link} bởi %{author_link}"
+    tutorial_link_text: "Ruby on Rails Tutorial"
+    author_link_text: "Michael Hartl"

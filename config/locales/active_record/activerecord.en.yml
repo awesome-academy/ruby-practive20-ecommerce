@@ -1,0 +1,29 @@
+en:
+  activerecord:
+    attributes:
+      user:
+        name: "Name"
+        email: "Email"
+        birthday: "Birthday"
+        gender: "Gender"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+    errors:
+      models:
+        user:
+          attributes:
+            name:
+              blank: "can't be blank"
+              too_long: "is too long (maximum is %{count} characters)"
+            email:
+              blank: "can't be blank"
+              too_long: "is too long (maximum is %{count} characters)"
+              invalid: "is invalid"
+              taken: "has already been taken"
+            birthday:
+              blank: "can't be blank"
+              inclusion: "must be within the last 100 years"
+            gender:
+              blank: "can't be blank"
+            password:
+              too_short: "is too short (minimum is %{count} characters)"
