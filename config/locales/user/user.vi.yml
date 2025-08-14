@@ -1,0 +1,27 @@
+vi:
+  users:
+    new:
+      title: "Đăng ký"
+      name: "Tên"
+      email: "Email"
+      birthday: "Ngày sinh"
+      gender: "Giới tính"
+      password: "Mật khẩu"
+      password_confirmation: "Xác nhận"
+      create_account: "Tạo tài khoản"
+    create:
+      user_created_successfully: "Chào mừng! Tài khoản của bạn đã được tạo thành công."
+      user_creation_failed: "Có lỗi xảy ra khi tạo tài khoản. Vui lòng kiểm tra các lỗi bên dưới."
+    show:
+      profile: "Hồ sơ"
+      user_not_found: "Không tìm thấy người dùng."
+      created_at: "Thành viên từ"
+      updated_at: "Cập nhật lần cuối"
+    gender:
+      female: "Nữ"
+      male: "Nam"
+      other: "Khác"
+  shared:
+    error_messages:
+      form_contains: "Biểu mẫu chứa"
+      error: "lỗi"

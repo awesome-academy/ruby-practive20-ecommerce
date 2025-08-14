@@ -1,0 +1,15 @@
+vi:
+  sessions:
+    new:
+      title: "Đăng nhập"
+      email: "Email"
+      password: "Mật khẩu"
+      remember_me: "Ghi nhớ tôi trên máy tính này"
+      login_button: "Đăng nhập"
+      new_user: "Người dùng mới?"
+      signup_now: "Đăng ký ngay!"
+    create:
+      login_success: "Chào mừng trở lại!"
+      login_failed: "Email/mật khẩu không hợp lệ"
+    destroy:
+      logout_success: "Bạn đã đăng xuất"

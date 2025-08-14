@@ -508,17 +508,17 @@ Layout/TrailingEmptyLines:
   Enabled: true
 
 Style/TrailingCommaInArguments:
-  Description: 'Checks for trailing comma in argument lists.'
-  StyleGuide: '#no-trailing-params-comma'
+  Description: "Checks for trailing comma in argument lists."
+  StyleGuide: "#no-trailing-params-comma"
   Enabled: true
 
 Style/TrailingCommaInArrayLiteral:
-  Description: 'Checks for trailing comma in array literals.'
-  StyleGuide: '#no-trailing-array-commas'
+  Description: "Checks for trailing comma in array literals."
+  StyleGuide: "#no-trailing-array-commas"
   Enabled: true
 
 Style/TrailingCommaInHashLiteral:
-  Description: 'Checks for trailing comma in hash literals.'
+  Description: "Checks for trailing comma in hash literals."
   Enabled: true
 
 Layout/TrailingWhitespace:

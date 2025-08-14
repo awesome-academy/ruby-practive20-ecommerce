@@ -1,0 +1,19 @@
+<% provide(:title, @user.name) %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user_info">
+      <h1>
+        <%= gravatar_for @user %>
+        <%= @user.name %>
+      </h1>
+      <p><strong><%= t(".created_at") %>:</strong> <%= l(@user.created_at.to_date, format: :long) %></p>
+      <p><strong><%= t(".updated_at") %>:</strong> <%= l(@user.updated_at.to_date, format: :long) %></p>
+      <% if @user.gender.present? %>
+        <p><strong><%= t("users.new.gender") %>:</strong> <%= t("users.gender.#{@user.gender}") %></p>
+      <% end %>
+      <% if @user.birthday.present? %>
+        <p><strong><%= t("users.new.birthday") %>:</strong> <%= l(@user.birthday, format: :long) %></p>
+      <% end %>
+    </section>
+  </aside>
+</div>

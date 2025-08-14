@@ -1,0 +1,27 @@
+en:
+  users:
+    new:
+      title: "Sign up"
+      name: "Name"
+      email: "Email"
+      birthday: "Birthday"
+      gender: "Gender"
+      password: "Password"
+      password_confirmation: "Confirmation"
+      create_account: "Create my account"
+    create:
+      user_created_successfully: "Welcome! Your account has been created successfully."
+      user_creation_failed: "There was a problem creating your account. Please check the errors below."
+    show:
+      profile: "Profile"
+      user_not_found: "User not found."
+      created_at: "Member since"
+      updated_at: "Last updated"
+    gender:
+      female: "Female"
+      male: "Male"
+      other: "Other"
+  shared:
+    error_messages:
+      form_contains: "The form contains"
+      error: "error"

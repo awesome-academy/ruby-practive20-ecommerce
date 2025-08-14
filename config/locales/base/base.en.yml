@@ -1,0 +1,67 @@
+en:
+  site:
+    title: "Ruby on Rails Tutorial Sample App"
+    name: "sample app"
+  navigation:
+    home: "Home"
+    microposts: "Microposts"
+    help: "Help"
+    about: "About"
+    contact: "Contact"
+    news: "News"
+    login: "Log in"
+    signup: "Sign up now!"
+    account: "Account"
+    profile: "Profile"
+    settings: "Settings"
+    logout: "Log out"
+  pages:
+    home:
+      welcome: "Welcome to the Sample App"
+      description: "This is the home page for the %{tutorial} sample application."
+      tutorial_link: "Ruby on Rails Tutorial"
+    help:
+      title: "Help"
+      description: "Get help on the Ruby on Rails Tutorial at the %{help_link}."
+      help_link_text: "Rails Tutorial help page"
+      sample_help: "To get help on this sample app, see the %{book_link}."
+      book_link_text: "Ruby on Rails Tutorial"
+    about:
+      title: "About"
+      description: "This is the about page for the %{tutorial} sample application."
+    contact:
+      title: "Contact"
+      description: "Contact the Ruby on Rails Tutorial about the sample app at the %{contact_link}."
+      link_text: "contact page"
+    microposts:
+      title: "All Microposts"
+      no_posts: "No microposts yet!"
+      posted_ago: "Posted %{time} ago."
+  static_pages:
+    home:
+      welcome: "Welcome to the Sample App"
+      description: "This is the home page for the %{tutorial} sample application."
+      tutorial_link: "Ruby on Rails Tutorial"
+    help:
+      title: "Help"
+      description: "Get help on the Ruby on Rails Tutorial at the %{help_link}."
+      help_link_text: "Rails Tutorial help page"
+      sample_help: "To get help on this sample app, see the %{book_link}."
+      book_link_text: "Ruby on Rails Tutorial"
+    about:
+      title: "About"
+      description: "This is the about page for the %{tutorial} sample application."
+      tutorial_link: "Ruby on Rails Tutorial"
+    contact:
+      title: "Contact"
+      description: "Contact the Ruby on Rails Tutorial about the sample app at the %{contact_link}."
+      link_text: "contact page"
+  microposts:
+    index:
+      title: "All Microposts"
+      no_posts: "No microposts yet!"
+      posted_ago: "Posted %{time} ago."
+  footer:
+    tutorial_text: "The %{tutorial_link} by %{author_link}"
+    tutorial_link_text: "Ruby on Rails Tutorial"
+    author_link_text: "Michael Hartl"

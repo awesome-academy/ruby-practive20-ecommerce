@@ -1,0 +1,15 @@
+en:
+  sessions:
+    new:
+      title: "Log in"
+      email: "Email"
+      password: "Password"
+      remember_me: "Remember me on this computer"
+      login_button: "Log in"
+      new_user: "New user?"
+      signup_now: "Sign up now!"
+    create:
+      login_success: "Welcome back!"
+      login_failed: "Invalid email/password combination"
+    destroy:
+      logout_success: "You have been logged out"

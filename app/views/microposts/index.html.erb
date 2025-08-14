@@ -1,0 +1,15 @@
+<% provide(:title, t(".title")) %>
+<h1><%= t(".title") %></h1>
+
+<% if @microposts.any? %>
+  <% @microposts.each do |micropost| %>
+    <div class="micropost">
+      <p><%= micropost.content %></p>
+      <span class="timestamp">
+        <%= t(".posted_ago", time: time_ago_in_words(micropost.created_at, locale: I18n.locale)) %>
+      </span>
+    </div>
+  <% end %>
+<% else %>
+  <p><%= t(".no_posts") %></p>
+<% end %>

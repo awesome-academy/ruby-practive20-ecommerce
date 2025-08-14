@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-git_source(:github){|repo| "https://github.com/#{repo}.git"}
+git_source(:github) {|repo| "https://github.com/#{repo}.git"}
 
 ruby "3.2.2"
 
@@ -27,6 +27,12 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+# Internationalization support
+gem "rails-i18n", "~> 7.0.0"
+
+# Configuration management
+gem "config"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
@@ -47,6 +53,12 @@ gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html]
 # gem "image_processing", "~> 1.2"
+
+gem "bootstrap-sass", "3.4.1"
+
+gem "sassc-rails", "2.1.2"
+
+gem "bcrypt", "3.1.18"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html
