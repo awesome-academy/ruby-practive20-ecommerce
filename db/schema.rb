@@ -10,11 +10,88 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_07_27_222912) do
+ActiveRecord::Schema[7.0].define(version: 2025_08_18_073708) do
+  create_table "brands", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.text "description"
+    t.string "logo_url", limit: 500
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_brands_on_name", unique: true
+    t.index ["slug"], name: "index_brands_on_slug", unique: true
+  end
+
+  create_table "categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.bigint "parent_id"
+    t.integer "position", default: 0, null: false
+    t.boolean "is_active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_id", "position"], name: "index_categories_on_parent_id_and_position"
+    t.index ["parent_id"], name: "index_categories_on_parent_id"
+    t.index ["slug"], name: "index_categories_on_slug", unique: true
+  end
+
   create_table "microposts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "product_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_product_categories_on_category_id"
+    t.index ["product_id", "category_id"], name: "index_product_categories_on_product_id_and_category_id", unique: true
+  end
+
+  create_table "product_variants", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.string "name"
+    t.string "sku", limit: 100, null: false
+    t.decimal "price", precision: 12, scale: 2
+    t.integer "stock_quantity", default: 0, null: false
+    t.text "options_json"
+    t.boolean "is_active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["is_active"], name: "index_product_variants_on_is_active"
+    t.index ["product_id"], name: "index_product_variants_on_product_id"
+    t.index ["sku"], name: "index_product_variants_on_sku", unique: true
+  end
+
+  create_table "products", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.string "sku", limit: 100
+    t.bigint "brand_id"
+    t.text "short_description"
+    t.text "description"
+    t.string "image_url", limit: 500
+    t.decimal "base_price", precision: 12, scale: 2, default: "0.0", null: false
+    t.decimal "sale_price", precision: 12, scale: 2
+    t.integer "stock_quantity", default: 0, null: false
+    t.boolean "has_variants", default: false, null: false
+    t.boolean "is_active", default: true, null: false
+    t.boolean "is_featured", default: false, null: false
+    t.decimal "rating_avg", precision: 3, scale: 2, default: "0.0"
+    t.integer "rating_count", default: 0
+    t.integer "view_count", default: 0
+    t.integer "sold_count", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["brand_id"], name: "index_products_on_brand_id"
+    t.index ["is_featured", "is_active"], name: "index_products_on_is_featured_and_is_active"
+    t.index ["name"], name: "index_products_on_name"
+    t.index ["sale_price"], name: "index_products_on_sale_price"
+    t.index ["sku"], name: "index_products_on_sku", unique: true
+    t.index ["slug"], name: "index_products_on_slug", unique: true
+    t.check_constraint "(`sale_price` is null) or (`sale_price` < `base_price`)", name: "check_sale_price"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -26,7 +103,22 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_27_222912) do
     t.date "birthday"
     t.integer "gender"
     t.string "remember_digest"
+    t.string "phone_number", limit: 30
+    t.text "default_address"
+    t.string "default_recipient_name"
+    t.string "default_recipient_phone", limit: 30
+    t.integer "role", default: 0, null: false
+    t.string "activation_digest"
+    t.boolean "activated", default: false, null: false
+    t.datetime "activated_at"
+    t.string "reset_digest"
+    t.datetime "reset_sent_at"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "categories", "categories", column: "parent_id"
+  add_foreign_key "product_categories", "categories"
+  add_foreign_key "product_categories", "products"
+  add_foreign_key "product_variants", "products"
+  add_foreign_key "products", "brands"
 end

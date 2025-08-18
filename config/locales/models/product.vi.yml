@@ -1,0 +1,8 @@
+vi:
+  activerecord:
+    errors:
+      models:
+        product:
+          attributes:
+            sale_price:
+              less_than_base_price: "phải nhỏ hơn giá gốc"

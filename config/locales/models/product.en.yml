@@ -1,0 +1,8 @@
+en:
+  activerecord:
+    errors:
+      models:
+        product:
+          attributes:
+            sale_price:
+              less_than_base_price: "must be less than base price"

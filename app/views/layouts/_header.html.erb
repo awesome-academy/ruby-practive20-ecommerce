@@ -4,6 +4,7 @@
     <nav>
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to t("navigation.home"), root_path %></li>
+        <li><%= link_to t("navigation.products"), products_path %></li>
         <li><%= link_to t("navigation.microposts"), microposts_path %></li>
         <li><%= link_to t("navigation.help"), help_path %></li>
         <% if logged_in? %>

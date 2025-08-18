@@ -1,5 +1,10 @@
 class StaticPagesController < ApplicationController
-  def home; end
+  FEATURED_PRODUCTS_PRELOAD = %i(brand categories).freeze
+
+  def home
+    @featured_products = Product.active.featured
+                                .includes(FEATURED_PRODUCTS_PRELOAD).limit(8)
+  end
 
   def help; end
 

@@ -1,0 +1,122 @@
+<% content_for :title, t(".title") %>
+
+<div class="container">
+  <div class="row">
+    <!-- Sidebar Filters -->
+    <div class="col-md-3">
+      <div class="filter-sidebar">
+        <h4><%= t(".filter") %></h4>
+        
+        <%= form_with url: products_path, method: :get, local: true, class: "filter-form" do |form| %>
+          <!-- Search -->
+          <div class="form-group">
+            <%= form.text_field :q, value: params[:q], 
+                               placeholder: t(".search_placeholder"), 
+                               class: "form-control" %>
+          </div>
+          
+          <!-- Category Filter -->
+          <div class="form-group">
+            <%= form.label :category_id, t(".filter_by_category") %>
+            <%= form.select :category_id, 
+                           options_for_select(category_options_for_select(@root_categories), params[:category_id]), 
+                           { include_blank: t(".all_categories") }, 
+                           { class: "form-control" } %>
+          </div>
+          
+          <!-- Brand Filter -->
+          <div class="form-group">
+            <%= form.label :brand_id, t(".filter_by_brand") %>
+            <%= form.select :brand_id, 
+                           options_from_collection_for_select(@brands, :id, :name, params[:brand_id]), 
+                           { include_blank: t(".all_brands") }, 
+                           { class: "form-control" } %>
+          </div>
+          
+          <!-- Price Range -->
+          <div class="form-group">
+            <label><%= t(".price_range") %></label>
+            <div class="row">
+              <div class="col-6">
+                <%= form.number_field :min_price, value: params[:min_price], 
+                                     placeholder: t(".min_price"), 
+                                     class: "form-control", step: 0.01 %>
+              </div>
+              <div class="col-6">
+                <%= form.number_field :max_price, value: params[:max_price], 
+                                     placeholder: t(".max_price"), 
+                                     class: "form-control", step: 0.01 %>
+              </div>
+            </div>
+          </div>
+          
+          <!-- In Stock Filter -->
+          <div class="form-group">
+            <div class="checkbox">
+              <label>
+                <%= form.check_box :in_stock, { checked: params[:in_stock] == "1" }, "1", "" %>
+                <span><%= t(".in_stock_only") %></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <%= form.submit t(".filter"), class: "btn btn-primary btn-block" %>
+            <%= link_to t(".clear_filter"), products_path, class: "btn btn-outline-secondary btn-block" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="col-md-9">
+      <!-- Sort and Results Count -->
+      <div class="results-header">
+        <div class="row">
+          <div class="col-md-6">
+            <p class="results-count">
+              <%= t(".results_count", count: @total_count) %>
+            </p>
+          </div>
+          <div class="col-md-6 text-right">
+            <%= form_with url: products_path, method: :get, local: true, class: "form-inline sort-form" do |form| %>
+              <%= form.hidden_field :q, value: params[:q] %>
+              <%= form.hidden_field :category_id, value: params[:category_id] %>
+              <%= form.hidden_field :brand_id, value: params[:brand_id] %>
+              <%= form.hidden_field :min_price, value: params[:min_price] %>
+              <%= form.hidden_field :max_price, value: params[:max_price] %>
+              <%= form.hidden_field :in_stock, value: params[:in_stock] %>
+              
+              <%= form.label :sort, t(".sort_by"), class: "sr-only" %>
+              <%= form.select :sort, sort_options_for_select, 
+                  { selected: params[:sort] }, 
+                  { class: "form-control", onchange: "this.form.submit();" } %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Products Grid -->
+      <% if @products.any? %>
+        <div class="row">
+          <% @products.each do |product| %>
+            <div class="col-md-4 col-sm-6 mb-4">
+              <%= render "shared/product_card", product: product %>
+            </div>
+          <% end %>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="pagination-wrapper">
+          <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
+        </div>
+      <% else %>
+        <div class="alert alert-info text-center">
+          <h4><%= t(".no_products") %></h4>
+          <p><%= t(".try_different_search") %></p>
+          <%= link_to t(".clear_filter"), products_path, class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

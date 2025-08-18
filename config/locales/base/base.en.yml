@@ -4,6 +4,7 @@ en:
     name: "sample app"
   navigation:
     home: "Home"
+    products: "Products"
     microposts: "Microposts"
     help: "Help"
     about: "About"
@@ -15,6 +16,11 @@ en:
     profile: "Profile"
     settings: "Settings"
     logout: "Log out"
+  common:
+    in_stock: "In Stock"
+    out_of_stock: "Out of Stock"
+    add_to_wishlist: "Add to Wishlist"
+    favorite: "Favorite"
   pages:
     home:
       welcome: "Welcome to the Sample App"
@@ -39,9 +45,16 @@ en:
       posted_ago: "Posted %{time} ago."
   static_pages:
     home:
+      title: "Home"
       welcome: "Welcome to the Sample App"
-      description: "This is the home page for the %{tutorial} sample application."
+      welcome_message: "Welcome to Our Store"
+      description: "Discover high-quality products at reasonable prices"
       tutorial_link: "Ruby on Rails Tutorial"
+      featured_products: "Featured Products"
+      quality_description: "Discover high-quality products at reasonable prices"
+      shop_now: "Shop Now"
+      view_all_products: "View All Products"
+      no_featured_products: "No featured products available"
     help:
       title: "Help"
       description: "Get help on the Ruby on Rails Tutorial at the %{help_link}."

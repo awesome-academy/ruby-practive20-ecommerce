@@ -42,6 +42,21 @@ alert:
   warning: "alert-warning"
   info: "alert-info"
 
+# Cấu hình colors cho UI
+colors:
+  primary: "#007bff"
+  secondary: "#6c757d"
+  success: "#28a745"
+  danger: "#dc3545"
+  warning: "#ffc107"
+  info: "#17a2b8"
+  light: "#f8f9fa"
+  dark: "#343a40"
+  white: "#ffffff"
+  border: "#e0e0e0"
+  text: "#333333"
+  text_muted: "#666666"
+
 # Cấu hình social links
 social:
   twitter: "https://twitter.com/railstutorial"
