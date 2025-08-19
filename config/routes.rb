@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     root "static_pages#home"
     
     resources :microposts, only: %i[index]
-    resources :users, only: %i[show]
+    resources :users, only: %i[show edit update]
     resources :products, only: %i[index show]
     
     get "/help", to: "static_pages#help"

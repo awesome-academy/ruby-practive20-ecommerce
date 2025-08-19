@@ -1,0 +1,23 @@
+<%= form_with(model: @user, url: form_url) do |f| %>
+  <%= render "shared/error_messages" %>
+
+  <%= f.label :name, t("users.new.name") %>
+  <%= f.text_field :name, class: "form-control" %>
+
+  <%= f.label :email, t("users.new.email") %>
+  <%= f.email_field :email, class: "form-control" %>
+
+  <%= f.label :birthday, t("users.new.birthday") %>
+  <%= f.date_field :birthday, class: "form-control" %>
+
+  <%= f.label :gender, t("users.new.gender") %>
+  <%= f.select :gender, options_for_select(gender_options, @user.gender), { prompt: t("users.new.gender") }, { class: "form-control" } %>
+
+  <%= f.label :password, t("users.new.password") %>
+  <%= f.password_field :password, class: "form-control" %>
+
+  <%= f.label :password_confirmation, t("users.new.password_confirmation") %>
+  <%= f.password_field :password_confirmation, class: "form-control" %>
+
+  <%= f.submit submit_label, class: "btn btn-primary" %>
+<% end %>

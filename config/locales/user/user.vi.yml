@@ -17,6 +17,14 @@ vi:
       user_not_found: "Không tìm thấy người dùng."
       created_at: "Thành viên từ"
       updated_at: "Cập nhật lần cuối"
+    edit:
+      title: "Chỉnh sửa hồ sơ"
+      save_changes: "Lưu thay đổi"
+      login_required: "Vui lòng đăng nhập để tiếp tục."
+      not_authorized: "Bạn không có quyền chỉnh sửa hồ sơ này."
+    update:
+      update_success: "Cập nhật hồ sơ thành công."
+      update_failed: "Có vấn đề khi cập nhật hồ sơ."
     gender:
       female: "Nữ"
       male: "Nam"

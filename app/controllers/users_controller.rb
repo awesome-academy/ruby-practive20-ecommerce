@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
-  before_action :load_user, only: [:show]
+  before_action :load_user, only: %i(show edit update)
+  before_action :require_login, only: %i(edit update)
+  before_action :correct_user, only: %i(edit update)
 
   def show; end
 
@@ -17,6 +19,20 @@ class UsersController < ApplicationController
     else
       flash.now[:error] = t(".user_creation_failed")
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  # GET /users/:id/edit
+  def edit; end
+
+  # PATCH /users/:id
+  def update
+    if @user.update(user_params)
+      flash[:success] = t(".update_success")
+      redirect_to @user
+    else
+      flash.now[:error] = t(".update_failed")
+      render :edit, status: :unprocessable_entity
     end
   end
 
