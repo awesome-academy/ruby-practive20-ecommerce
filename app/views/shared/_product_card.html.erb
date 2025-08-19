@@ -1,0 +1,55 @@
+<div class="product-card card">
+  <% if product.image_url.present? %>
+    <%= link_to product_path(product) do %>
+      <%= image_tag product.image_url, class: "card-img-top", alt: product.name %>
+    <% end %>
+  <% else %>
+    <%= link_to product_path(product) do %>
+      <div class="card-img-top no-image">
+        <i class="fa fa-image"></i>
+        <p><%= t("products.show.no_image") %></p>
+      </div>
+    <% end %>
+  <% end %>
+  
+  <div class="card-body">
+    <h5 class="card-title">
+      <%= link_to product.name, product_path(product), class: "product-title" %>
+    </h5>
+    
+    <% if product.brand.present? %>
+      <p class="card-text brand-name">
+        <small class="text-muted"><%= product.brand.name %></small>
+      </p>
+    <% end %>
+    
+    <p class="card-text product-description">
+      <%= product.short_description if product.short_description.present? %>
+    </p>
+    
+    <div class="price-section">
+      <% if product.on_sale? %>
+        <span class="sale-price"><%= number_to_currency(product.sale_price) %></span>
+        <span class="original-price"><%= number_to_currency(product.base_price) %></span>
+        <span class="discount-badge">-<%= product.discount_percentage %>%</span>
+      <% else %>
+        <span class="current-price"><%= number_to_currency(product.base_price) %></span>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="card-footer">
+    <% if product.in_stock? %>
+      <span class="stock-status in-stock">
+        <i class="fa fa-check-circle"></i> <%= t("common.in_stock") %>
+      </span>
+    <% else %>
+      <span class="stock-status out-of-stock">
+        <i class="fa fa-times-circle"></i> <%= t("common.out_of_stock") %>
+      </span>
+    <% end %>
+    
+    <%= link_to t("products.cards.view_details"), product_path(product), 
+                class: "btn btn-primary btn-sm view-details-btn" %>
+  </div>
+</div>

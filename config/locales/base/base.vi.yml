@@ -4,6 +4,7 @@ vi:
     name: "ứng dụng mẫu"
   navigation:
     home: "Trang chủ"
+    products: "Sản phẩm"
     microposts: "Microposts"
     help: "Trợ giúp"
     about: "Giới thiệu"
@@ -15,6 +16,11 @@ vi:
     profile: "Hồ sơ"
     settings: "Cài đặt"
     logout: "Đăng xuất"
+  common:
+    in_stock: "Còn hàng"
+    out_of_stock: "Hết hàng"
+    add_to_wishlist: "Thêm vào yêu thích"
+    favorite: "Yêu thích"
   pages:
     home:
       welcome: "Chào mừng đến với Ứng dụng Mẫu"
@@ -39,9 +45,16 @@ vi:
       posted_ago: "Đã đăng %{time} trước."
   static_pages:
     home:
+      title: "Trang chủ"
       welcome: "Chào mừng đến với Ứng dụng Mẫu"
-      description: "Đây là trang chủ cho ứng dụng mẫu %{tutorial}."
+      welcome_message: "Chào mừng đến với cửa hàng của chúng tôi"
+      description: "Khám phá những sản phẩm chất lượng cao với giá cả hợp lý"
       tutorial_link: "Ruby on Rails Tutorial"
+      featured_products: "Sản phẩm nổi bật"
+      quality_description: "Khám phá những sản phẩm chất lượng cao với giá cả hợp lý"
+      shop_now: "Mua sắm ngay"
+      view_all_products: "Xem tất cả sản phẩm"
+      no_featured_products: "Chưa có sản phẩm nổi bật nào"
     help:
       title: "Trợ giúp"
       description: "Nhận trợ giúp về Ruby on Rails Tutorial tại %{help_link}."

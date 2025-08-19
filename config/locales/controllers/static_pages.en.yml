@@ -1,0 +1,8 @@
+en:
+  static_pages:
+    home:
+      title: "Home"
+      featured_products: "Featured Products"
+      welcome_message: "Welcome to our store"
+      shop_now: "Shop Now"
+      view_all_products: "View All Products"

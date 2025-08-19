@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Pagy::Frontend
+
   def full_title page_title = ""
     base_title = Settings.app.name
     page_title.empty? ? base_title : "#{page_title} | #{base_title}"
@@ -27,5 +29,34 @@ module ApplicationHelper
     else
       "alert-#{message_type}"
     end
+  end
+
+  def category_options_for_select root_categories
+    options = []
+
+    root_categories.each do |root_category|
+      # Add parent category
+      options << [root_category.name, root_category.id]
+
+      # Add child categories with  indent
+      root_category.children.ordered.each do |child_category|
+        options << ["  ├─ #{child_category.name}", child_category.id]
+      end
+    end
+
+    options
+  end
+
+  def sort_options_for_select
+    [
+      [t("products.index.sort_options.newest"), :newest],
+      [t("products.index.sort_options.oldest"), :oldest],
+      [t("products.index.sort_options.name_asc"), :name_asc],
+      [t("products.index.sort_options.name_desc"), :name_desc],
+      [t("products.index.sort_options.price_asc"), :price_asc],
+      [t("products.index.sort_options.price_desc"), :price_desc],
+      [t("products.index.sort_options.popular"), :popular],
+      [t("products.index.sort_options.best_selling"), :best_selling]
+    ]
   end
 end

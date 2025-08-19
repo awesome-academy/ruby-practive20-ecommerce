@@ -1,0 +1,8 @@
+vi:
+  static_pages:
+    home:
+      title: "Trang chủ"
+      featured_products: "Sản phẩm nổi bật"
+      welcome_message: "Chào mừng đến với cửa hàng của chúng tôi"
+      shop_now: "Mua ngay"
+      view_all_products: "Xem tất cả sản phẩm"

@@ -1,8 +1,9 @@
 class User < ApplicationRecord
   has_secure_password
 
-  USER_PERMIT = %i(name email password password_confirmation birthday
-gender).freeze
+  USER_PERMIT = %i(name email password password_confirmation birthday gender
+                   phone_number default_address default_recipient_name
+                   default_recipient_phone).freeze
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   MAX_NAME_LENGTH = 50
   MAX_EMAIL_LENGTH = 255
@@ -10,10 +11,11 @@ gender).freeze
   MIN_PASSWORD_LENGTH = 6
 
   enum gender: {female: 0, male: 1, other: 2}
+  enum role: {user: 0, admin: 1}
 
   before_save {self.email = email.downcase}
 
-  attr_accessor :remember_token, :session_token
+  attr_accessor :remember_token, :session_token, :activation_token, :reset_token
 
   class << self
     def digest string
@@ -55,10 +57,32 @@ gender).freeze
     self.session_token = nil
   end
 
-  def authenticated? token
-    return false if remember_digest.nil?
+  def authenticated? attribute, token
+    digest = send("#{attribute}_digest")
+    return false if digest.nil?
 
-    BCrypt::Password.new(remember_digest).is_password?(token)
+    BCrypt::Password.new(digest).is_password?(token)
+  end
+
+  # Account activation methods
+  def create_activation_digest
+    self.activation_token = User.new_token
+    self.activation_digest = User.digest(activation_token)
+  end
+
+  def activate
+    update_columns(activated: true, activated_at: Time.zone.now)
+  end
+
+  # Password reset methods
+  def create_reset_digest
+    self.reset_token = User.new_token
+    update_columns(reset_digest: User.digest(reset_token),
+                   reset_sent_at: Time.zone.now)
+  end
+
+  def password_reset_expired?
+    reset_sent_at < 2.hours.ago
   end
 
   validates :name, presence: true,

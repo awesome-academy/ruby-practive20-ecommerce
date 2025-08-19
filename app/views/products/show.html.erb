@@ -1,0 +1,155 @@
+<% content_for :title, @product.name %>
+
+<div class="container">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><%= link_to t("navigation.home"), root_path %></li>
+      <li class="breadcrumb-item"><%= link_to t("products.index.title"), products_path %></li>
+      <% if @product.categories.any? %>
+        <li class="breadcrumb-item">
+          <%= link_to @product.categories.first.name, products_path(category_id: @product.categories.first.id) %>
+        </li>
+      <% end %>
+      <li class="breadcrumb-item active" aria-current="page"><%= @product.name %></li>
+    </ol>
+  </nav>
+  
+  <div class="row">
+    <!-- Product Images -->
+    <div class="col-md-6">
+      <div class="product-images">
+        <% if @product.image_url.present? %>
+          <%= image_tag @product.image_url, class: "img-fluid main-image", alt: @product.name %>
+        <% else %>
+          <div class="no-image-placeholder">
+            <i class="fa fa-image fa-5x"></i>
+            <p><%= t(".no_image") %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <!-- Product Details -->
+    <div class="col-md-6">
+      <div class="product-details">
+        <h1 class="product-title"><%= @product.name %></h1>
+        
+        <!-- Brand -->
+        <% if @product.brand.present? %>
+          <p class="brand-info">
+            <strong><%= t(".brand") %>:</strong> 
+            <%= link_to @product.brand.name, products_path(brand_id: @product.brand.id) %>
+          </p>
+        <% end %>
+        
+        <!-- Categories -->
+        <% if @product.categories.any? %>
+          <p class="category-info">
+            <strong><%= t(".category") %>:</strong>
+            <% @product.categories.each do |category| %>
+              <%= link_to category.name, products_path(category_id: category.id), class: "badge badge-secondary mr-1" %>
+            <% end %>
+          </p>
+        <% end %>
+        
+        <!-- Price -->
+        <div class="price-section mb-3">
+          <% if @product.on_sale? %>
+            <span class="sale-price h3 text-danger">
+              <%= number_to_currency(@product.sale_price) %>
+            </span>
+            <span class="original-price text-muted">
+              <del><%= number_to_currency(@product.base_price) %></del>
+            </span>
+            <span class="discount-badge badge badge-danger">
+              <%= t(".discount", percent: @product.discount_percentage) %>
+            </span>
+          <% else %>
+            <span class="current-price h3 text-primary">
+              <%= number_to_currency(@product.base_price) %>
+            </span>
+          <% end %>
+        </div>
+        
+        <!-- Stock Status -->
+        <div class="stock-info mb-3">
+          <% if @product.in_stock? %>
+            <span class="badge badge-success">
+              <i class="fa fa-check-circle"></i> 
+              <%= t(".stock") %>: <%= @product.stock_quantity %>
+            </span>
+          <% else %>
+            <span class="badge badge-danger">
+              <i class="fa fa-times-circle"></i> 
+              <%= t(".out_of_stock") %>
+            </span>
+          <% end %>
+        </div>
+        
+        <!-- Short Description -->
+        <% if @product.short_description.present? %>
+          <div class="short-description mb-3">
+            <p class="lead"><%= @product.short_description %></p>
+          </div>
+        <% end %>
+        
+        <!-- Action Buttons -->
+        <div class="product-actions mb-4">
+          <% if @product.in_stock? %>
+            <button class="btn btn-primary btn-lg mr-2">
+              <i class="fa fa-shopping-cart"></i> <%= t(".add_to_cart") %>
+            </button>
+          <% else %>
+            <button class="btn btn-secondary btn-lg" disabled>
+              <%= t(".out_of_stock") %>
+            </button>
+          <% end %>
+          
+          <button class="btn btn-outline-secondary">
+            <i class="fa fa-heart"></i> <%= t("common.favorite") %>
+          </button>
+        </div>
+        
+        <!-- Product Stats -->
+        <div class="product-stats">
+          <small class="text-muted">
+            <%= t(".views", count: @product.view_count) %>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Product Description -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="product-description">
+        <h3><%= t(".description") %></h3>
+        <% if @product.description.present? %>
+          <div class="description-content">
+            <%= simple_format(@product.description) %>
+          </div>
+        <% else %>
+          <p class="text-muted"><%= t(".no_description") %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Related Products -->
+  <% if @related_products.any? %>
+    <div class="row mt-5">
+      <div class="col-12">
+        <h3><%= t(".related_products") %></h3>
+        <div class="row">
+          <% @related_products.each do |product| %>
+            <div class="col-md-3 col-sm-6 mb-4">
+              <%= render "shared/product_card", product: product %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
