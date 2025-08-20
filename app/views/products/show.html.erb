@@ -6,9 +6,9 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><%= link_to t("navigation.home"), root_path %></li>
       <li class="breadcrumb-item"><%= link_to t("products.index.title"), products_path %></li>
-      <% if @product.categories.any? %>
+      <% product_category_breadcrumb(@product).each do |category| %>
         <li class="breadcrumb-item">
-          <%= link_to @product.categories.first.name, products_path(category_id: @product.categories.first.id) %>
+          <%= link_to category.name, products_path(category_id: category.id) %>
         </li>
       <% end %>
       <li class="breadcrumb-item active" aria-current="page"><%= @product.name %></li>

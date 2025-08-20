@@ -1,0 +1,5 @@
+en:
+  shared:
+    error_messages:
+      form_contains: "The form contains"
+      error: "error"

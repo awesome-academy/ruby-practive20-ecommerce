@@ -222,7 +222,7 @@ $white: #fff;
   padding-left: 30px;
 }
 
-// Product title styling
+// Product title styling (for product cards)
 .product-title {
   color: $text-color;
   display: -webkit-box;
@@ -241,6 +241,21 @@ $white: #fff;
     color: $primary-color;
     text-decoration: none;
   }
+}
+
+// Product title styling for detail page
+.product-details .product-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  line-height: 1.2;
+  height: auto;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
 }
 
 // Results count styling

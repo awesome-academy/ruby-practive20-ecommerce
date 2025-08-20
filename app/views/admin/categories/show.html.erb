@@ -1,0 +1,197 @@
+<% content_for :title, @category.name %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h4 mb-0"><%= @category.name %></h1>
+  <div>
+    <%= link_to t("admin.categories.show.back_to_list"), admin_categories_path, class: "btn btn-outline-secondary me-2" %>
+    <%= link_to t("admin.categories.show.edit_category"), edit_admin_category_path(@category), class: "btn btn-primary me-2" %>
+    <%= link_to admin_category_path(@category), method: :delete, 
+                class: "btn btn-outline-danger", 
+                confirm: t("admin.categories.index.actions.confirm_delete") do %>
+      <i class="fas fa-trash me-1"></i>
+      <%= t("admin.categories.show.delete_category") %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <!-- Category Information -->
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-header bg-white">
+        <h6 class="mb-0"><%= t("admin.categories.show.category_info") %></h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <strong><%= t(".name") %>:</strong>
+              <div><%= @category.name %></div>
+            </div>
+            <div class="mb-3">
+              <strong><%= t(".slug") %>:</strong>
+              <div><code><%= @category.slug %></code></div>
+            </div>
+            <div class="mb-3">
+              <strong><%= t("admin.categories.show.parent_category") %>:</strong>
+              <div>
+                <% if @category.parent %>
+                  <%= link_to @category.parent.name, admin_category_path(@category.parent), class: "text-decoration-none" %>
+                <% else %>
+                  <span class="text-muted"><%= t("admin.categories.show.no_parent") %></span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <strong><%= t(".status") %>:</strong>
+              <div>
+                <span class="badge <%= @category.is_active? ? 'bg-success' : 'bg-secondary' %>">
+                  <%= @category.is_active? ? t("admin.status.active") : t("admin.status.inactive") %>
+                </span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <strong><%= t(".position") %>:</strong>
+              <div><%= @category.position %></div>
+            </div>
+            <div class="mb-3">
+              <strong><%= t(".products_count") %>:</strong>
+              <div>
+                <span class="badge bg-primary"><%= @category.products.count %></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <% if @category.description.present? %>
+          <div class="mb-3">
+            <strong><%= t(".description") %>:</strong>
+            <div class="mt-2"><%= simple_format(@category.description) %></div>
+          </div>
+        <% end %>
+
+        <% if @category.icon_url.present? %>
+          <div class="mb-3">
+            <strong><%= t(".icon") %>:</strong>
+            <div class="mt-2">
+              <img src="<%= @category.icon_url %>" alt="<%= @category.name %>" style="max-width: 50px; max-height: 50px;">
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- SEO Information -->
+    <% if @category.meta_title.present? || @category.meta_description.present? %>
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white">
+          <h6 class="mb-0"><%= t("admin.categories.show.seo_info") %></h6>
+        </div>
+        <div class="card-body">
+          <% if @category.meta_title.present? %>
+            <div class="mb-3">
+              <strong><%= t(".meta_title") %>:</strong>
+              <div><%= @category.meta_title %></div>
+            </div>
+          <% end %>
+          <% if @category.meta_description.present? %>
+            <div class="mb-3">
+              <strong><%= t(".meta_description") %>:</strong>
+              <div><%= @category.meta_description %></div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Child Categories -->
+    <% if @category.children.any? %>
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white">
+          <h6 class="mb-0"><%= t("admin.categories.show.child_categories") %></h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <% @category.children.each do |child| %>
+              <div class="col-md-6 mb-3">
+                <div class="d-flex justify-content-between align-items-center p-3 border rounded">
+                  <div>
+                    <%= link_to child.name, admin_category_path(child), class: "text-decoration-none fw-medium" %>
+                    <div class="small text-muted"><%= child.products.count %> <%= t(".products") %></div>
+                  </div>
+                  <span class="badge <%= child.is_active? ? 'bg-success' : 'bg-secondary' %>">
+                    <%= child.is_active? ? t("admin.status.active") : t("admin.status.inactive") %>
+                  </span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body text-center text-muted">
+          <i class="fas fa-tags fa-2x mb-3"></i>
+          <div><%= t("admin.categories.show.no_children") %></div>
+          <%= link_to t(".add_child_category"), new_admin_category_path(parent_id: @category.id), class: "btn btn-outline-primary btn-sm mt-2" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-4">
+    <!-- Statistics -->
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-header bg-white">
+        <h6 class="mb-0"><%= t("admin.categories.show.statistics") %></h6>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <strong><%= t("admin.categories.show.created_at") %>:</strong>
+          <div class="text-muted"><%= @category.created_at.strftime(Settings.date_formats.admin_display_with_time) %></div>
+        </div>
+        <div class="mb-3">
+          <strong><%= t("admin.categories.show.updated_at") %>:</strong>
+          <div class="text-muted"><%= @category.updated_at.strftime(Settings.date_formats.admin_display_with_time) %></div>
+        </div>
+        <div class="mb-3">
+          <strong><%= t(".total_products") %>:</strong>
+          <div class="h5 text-primary"><%= @category.products.count %></div>
+        </div>
+        <div class="mb-3">
+          <strong><%= t(".active_products") %>:</strong>
+          <div class="h6 text-success"><%= @category.products.active.count %></div>
+        </div>
+        <div>
+          <strong><%= t(".child_categories") %>:</strong>
+          <div class="h6 text-info"><%= @category.children.count %></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white">
+        <h6 class="mb-0"><%= t(".quick_actions") %></h6>
+      </div>
+      <div class="card-body">
+        <%= link_to toggle_status_admin_category_path(@category), method: :patch, 
+                    class: "btn btn-outline-#{@category.is_active? ? 'warning' : 'success'} w-100 mb-2" do %>
+          <i class="fas fa-power-off me-2"></i>
+          <%= @category.is_active? ? t(".deactivate") : t(".activate") %>
+        <% end %>
+        
+        <%= link_to t(".add_child_category"), new_admin_category_path(parent_id: @category.id), 
+                    class: "btn btn-outline-primary w-100 mb-2" %>
+        
+        <%= link_to admin_products_path(category_id: @category.id), 
+                    class: "btn btn-outline-info w-100" do %>
+          <i class="fas fa-box me-2"></i>
+          <%= t("admin.categories.show.view_all_products") %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

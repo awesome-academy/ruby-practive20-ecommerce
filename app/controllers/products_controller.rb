@@ -1,10 +1,12 @@
 class ProductsController < ApplicationController
+  PRODUCTS_INDEX_PRELOAD = %i(brand categories).freeze
+
   before_action :load_product, only: [:show]
   before_action :load_filter_data, only: [:index]
 
   # GET /products
   def index
-    products_scope = Product.includes(:brand, :categories)
+    products_scope = Product.includes(PRODUCTS_INDEX_PRELOAD)
                             .active
                             .search_products(search_params)
                             .filter_by_params(filter_params)

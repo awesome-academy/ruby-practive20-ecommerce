@@ -59,4 +59,38 @@ module ApplicationHelper
       [t("products.index.sort_options.best_selling"), :best_selling]
     ]
   end
+
+  # Build breadcrumb path for product categories
+  def product_category_breadcrumb product
+    return [] unless product.categories.any?
+
+    # Find category which has deepest hierarchy (child category)
+    deepest_category = product.categories.includes(:parent).max_by do |category|
+      depth = 0
+      current = category
+      while current.parent
+        depth += 1
+        current = current.parent
+      end
+      depth
+    end
+
+    # Build path from root to leaf
+    build_category_path(deepest_category)
+  end
+
+  private
+
+  def build_category_path category
+    path = []
+    current = category
+
+    # Go back from current category to root
+    while current
+      path.unshift(current)
+      current = current.parent
+    end
+
+    path
+  end
 end

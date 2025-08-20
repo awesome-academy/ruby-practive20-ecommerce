@@ -5,7 +5,6 @@ vi:
   navigation:
     home: "Trang chủ"
     products: "Sản phẩm"
-    microposts: "Microposts"
     help: "Trợ giúp"
     about: "Giới thiệu"
     contact: "Liên hệ"
@@ -39,10 +38,6 @@ vi:
       title: "Liên hệ"
       description: "Liên hệ với Ruby on Rails Tutorial về ứng dụng mẫu tại %{contact_link}."
       link_text: "trang liên hệ"
-    microposts:
-      title: "Tất cả Microposts"
-      no_posts: "Chưa có micropost nào!"
-      posted_ago: "Đã đăng %{time} trước."
   static_pages:
     home:
       title: "Trang chủ"
@@ -69,12 +64,10 @@ vi:
       title: "Liên hệ"
       description: "Liên hệ với Ruby on Rails Tutorial về ứng dụng mẫu tại %{contact_link}."
       link_text: "trang liên hệ"
-  microposts:
-    index:
-      title: "Tất cả Microposts"
-      no_posts: "Chưa có micropost nào!"
-      posted_ago: "Đã đăng %{time} trước."
   footer:
     tutorial_text: "%{tutorial_link} bởi %{author_link}"
     tutorial_link_text: "Ruby on Rails Tutorial"
     author_link_text: "Michael Hartl"
+  admin:
+    categories:
+      direct_products: "Trực tiếp:"

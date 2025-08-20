@@ -1,0 +1,61 @@
+vi:
+  admin:
+    access_denied: "Bạn không có quyền truy cập vào khu vực quản trị."
+    welcome_message: "Chào mừng, %{email}"
+    layout:
+      default_title: "Bảng điều khiển Admin"
+      site_title: "E-commerce Admin"
+      admin_panel: "Bảng quản trị"
+    categories:
+      index:
+        filter: "Lọc"
+        no_categories_message: "Bắt đầu bằng cách tạo danh mục đầu tiên của bạn"
+      new:
+        tips_title: "Mẹo"
+      edit:
+        category_info: "Thông tin danh mục"
+        products_count: "Sản phẩm"
+        child_categories: "Danh mục con"
+        status: "Trạng thái"
+      form:
+        meta_title_help: "Khuyến nghị: 50-60 ký tự"
+        meta_description_help: "Khuyến nghị: 150-160 ký tự"
+    dashboard:
+      title: "Bảng điều khiển"
+      stats:
+        products: "Sản phẩm"
+        categories: "Danh mục"
+        featured_products: "Sản phẩm nổi bật"
+        featured: "Nổi bật"
+        low_stock: "Tồn kho thấp"
+        active: "Đang hoạt động"
+        inactive: "Không hoạt động"
+        out_of_active: "Trong số %{total} đang hoạt động"
+        need_attention: "Cần chú ý"
+      recent_products:
+        title: "Sản phẩm gần đây"
+        view_all: "Xem tất cả sản phẩm"
+        stock: "Tồn kho"
+      category_overview:
+        title: "Tổng quan danh mục"
+        products: "sản phẩm"
+        manage: "Quản lý danh mục"
+      actions:
+        manage: "Quản lý"
+        view: "Xem"
+      no_data:
+        no_products: "Chưa có sản phẩm nào"
+        add_first_product: "Thêm sản phẩm đầu tiên"
+        no_categories: "Chưa có danh mục nào"
+        add_first_category: "Thêm danh mục đầu tiên"
+    products:
+      index:
+        filter: "Lọc"
+        apply: "Áp dụng"
+        clear: "Xóa"
+        showing_results: "Hiển thị %{from}-%{to} của %{count}"
+        export_csv: "Xuất CSV"
+        no_products_message: "Bắt đầu bằng cách tạo sản phẩm đầu tiên của bạn"
+    status:
+      active: "Đang hoạt động"
+      inactive: "Không hoạt động"

@@ -1,0 +1,61 @@
+en:
+  admin:
+    access_denied: "You do not have permission to access the admin area."
+    welcome_message: "Welcome, %{email}"
+    layout:
+      default_title: "Admin Panel"
+      site_title: "E-commerce Admin"
+      admin_panel: "Admin Panel"
+    categories:
+      index:
+        filter: "Filter"
+        no_categories_message: "Start by creating your first category"
+      new:
+        tips_title: "Tips"
+      edit:
+        category_info: "Category Info"
+        products_count: "Products"
+        child_categories: "Child Categories"
+        status: "Status"
+      form:
+        meta_title_help: "Recommended: 50-60 characters"
+        meta_description_help: "Recommended: 150-160 characters"
+    dashboard:
+      title: "Dashboard"
+      stats:
+        products: "Products"
+        categories: "Categories"
+        featured_products: "Featured Products"
+        featured: "Featured"
+        low_stock: "Low Stock"
+        active: "Active"
+        inactive: "Inactive"
+        out_of_active: "Out of %{total} active"
+        need_attention: "Need attention"
+      recent_products:
+        title: "Recent Products"
+        view_all: "View All Products"
+        stock: "Stock"
+      category_overview:
+        title: "Category Overview"
+        products: "products"
+        manage: "Manage Categories"
+      actions:
+        manage: "Manage"
+        view: "View"
+      no_data:
+        no_products: "No products yet"
+        add_first_product: "Add First Product"
+        no_categories: "No categories yet"
+        add_first_category: "Add First Category"
+    products:
+      index:
+        filter: "Filter"
+        apply: "Apply"
+        clear: "Clear"
+        showing_results: "Showing %{from}-%{to} of %{count}"
+        export_csv: "Export CSV"
+        no_products_message: "Start by creating your first product"
+    status:
+      active: "Active"
+      inactive: "Inactive"
