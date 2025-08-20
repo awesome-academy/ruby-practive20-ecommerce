@@ -1,0 +1,26 @@
+en:
+  admin:
+    access_denied: "You do not have permission to access the admin area."
+    welcome_message: "Welcome, %{email}"
+    dashboard:
+      title: "Admin Dashboard"
+      welcome: "Welcome"
+      stats:
+        products: "Products"
+        categories: "Categories"
+        featured_products: "Featured Products"
+        low_stock: "Low Stock"
+        active: "Active"
+        out_of_active: "Out of %{total} active"
+        need_attention: "Need attention"
+      recent_products:
+        title: "Recent Products"
+        view_all: "View All Products"
+        stock: "Stock"
+      category_overview:
+        title: "Category Overview"
+        products: "products"
+        manage: "Manage Categories"
+      actions:
+        manage: "Manage"
+        view: "View"

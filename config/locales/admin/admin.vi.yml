@@ -1,0 +1,26 @@
+vi:
+  admin:
+    access_denied: "Bạn không có quyền truy cập vào khu vực quản trị."
+    welcome_message: "Chào mừng, %{email}"
+    dashboard:
+      title: "Bảng điều khiển Admin"
+      welcome: "Chào mừng"
+      stats:
+        products: "Sản phẩm"
+        categories: "Danh mục"
+        featured_products: "Sản phẩm nổi bật"
+        low_stock: "Tồn kho thấp"
+        active: "Đang hoạt động"
+        out_of_active: "Trong số %{total} đang hoạt động"
+        need_attention: "Cần chú ý"
+      recent_products:
+        title: "Sản phẩm gần đây"
+        view_all: "Xem tất cả sản phẩm"
+        stock: "Tồn kho"
+      category_overview:
+        title: "Tổng quan danh mục"
+        products: "sản phẩm"
+        manage: "Quản lý danh mục"
+      actions:
+        manage: "Quản lý"
+        view: "Xem"

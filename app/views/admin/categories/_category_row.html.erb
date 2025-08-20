@@ -1,0 +1,66 @@
+<tr data-id="<%= category.id %>" class="category-item">
+  <td>
+    <div class="d-flex align-items-center">
+      <span class="drag-handle me-2">
+        <i class="fas fa-grip-vertical"></i>
+      </span>
+      <div>
+        <strong><%= category.name %></strong>
+        <% if category.description.present? %>
+          <div class="small text-muted mt-1"><%= truncate(category.description, length: 100) %></div>
+        <% end %>
+      </div>
+    </div>
+  </td>
+  <td><code><%= category.slug %></code></td>
+  <td>
+    <% if category.parent %>
+      <span class="badge bg-light text-dark"><%= category.parent.name %></span>
+    <% else %>
+      <span class="text-muted"><%= t("admin.categories.index.table.root_category") %></span>
+    <% end %>
+  </td>
+  <td>
+    <span class="badge bg-primary"><%= category.total_products_count %></span>
+    <% if category.children.any? %>
+      <div class="small text-muted">
+        <%= t("admin.categories.direct_products") %> <%= category.products.count %>
+      </div>
+    <% end %>
+  </td>
+  <td>
+    <span class="badge status-badge <%= category.is_active? ? 'active' : 'inactive' %>">
+      <%= category.is_active? ? t("admin.status.active") : t("admin.status.inactive") %>
+    </span>
+  </td>
+  <td>
+    <span class="badge bg-secondary"><%= category.position %></span>
+  </td>
+  <td>
+    <div class="btn-group btn-group-sm" role="group">
+      <%= link_to admin_category_path(category), class: "btn btn-outline-primary", title: t("admin.categories.index.actions.view") do %>
+        <i class="fas fa-eye"></i>
+      <% end %>
+      <%= link_to edit_admin_category_path(category), class: "btn btn-outline-secondary", title: t("admin.categories.index.actions.edit") do %>
+        <i class="fas fa-edit"></i>
+      <% end %>
+      <%= link_to toggle_status_admin_category_path(category), method: :patch, 
+                  class: "btn btn-outline-#{category.is_active? ? 'warning' : 'success'}", 
+                  title: category.is_active? ? t("admin.categories.index.actions.deactivate") : t("admin.categories.index.actions.activate") do %>
+        <i class="fas fa-power-off"></i>
+      <% end %>
+      <%= link_to admin_category_path(category), method: :delete, 
+                  class: "btn btn-outline-danger", 
+                  title: t("admin.categories.index.actions.delete"),
+                  confirm: t("admin.categories.index.actions.confirm_delete") do %>
+        <i class="fas fa-trash"></i>
+      <% end %>
+    </div>
+  </td>
+</tr>
+
+<% if category.children.any? %>
+  <% category.children.each do |child| %>
+    <%= render "category_row", category: child %>
+  <% end %>
+<% end %>

@@ -1,0 +1,13 @@
+en:
+  admin:
+    navigation:
+      dashboard: "Dashboard"
+      category_management: "Category Management"
+      product_management: "Product Management"
+      users: "Users (Coming Soon)"
+      reports: "Reports (Coming Soon)"
+      view_site: "View Site"
+      logout: "Logout"
+    layout:
+      admin_panel: "Admin Panel"
+      welcome: "Welcome"

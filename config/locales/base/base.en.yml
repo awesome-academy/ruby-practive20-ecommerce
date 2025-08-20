@@ -5,7 +5,6 @@ en:
   navigation:
     home: "Home"
     products: "Products"
-    microposts: "Microposts"
     help: "Help"
     about: "About"
     contact: "Contact"
@@ -39,10 +38,6 @@ en:
       title: "Contact"
       description: "Contact the Ruby on Rails Tutorial about the sample app at the %{contact_link}."
       link_text: "contact page"
-    microposts:
-      title: "All Microposts"
-      no_posts: "No microposts yet!"
-      posted_ago: "Posted %{time} ago."
   static_pages:
     home:
       title: "Home"
@@ -69,12 +64,10 @@ en:
       title: "Contact"
       description: "Contact the Ruby on Rails Tutorial about the sample app at the %{contact_link}."
       link_text: "contact page"
-  microposts:
-    index:
-      title: "All Microposts"
-      no_posts: "No microposts yet!"
-      posted_ago: "Posted %{time} ago."
   footer:
     tutorial_text: "The %{tutorial_link} by %{author_link}"
     tutorial_link_text: "Ruby on Rails Tutorial"
     author_link_text: "Michael Hartl"
+  admin:
+    categories:
+      direct_products: "Direct:"
