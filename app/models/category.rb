@@ -52,6 +52,16 @@ meta_title meta_description).freeze
       .group(:id)
       .select("categories.*, COUNT(product_categories.id) as products_count")
   end
+  scope :sorted_by, lambda {|sort_option|
+    case sort_option
+    when "position" then order(:position, :name)
+    when "name_asc" then order(:name)
+    when "name_desc" then order(name: :desc)
+    when "created_desc" then order(created_at: :desc)
+    when "created_asc" then order(created_at: :asc)
+    else order(:position, :name) # default
+    end
+  }
 
   def products_count
     @products_count ||= products.count

@@ -2,6 +2,12 @@ vi:
   admin:
     access_denied: "Bạn không có quyền truy cập vào khu vực quản trị."
     welcome_message: "Chào mừng, %{email}"
+    status:
+      active: "Hoạt động"
+      inactive: "Không hoạt động"
+    featured:
+      yes: "Nổi bật"
+      no: "Không nổi bật"
     layout:
       default_title: "Bảng điều khiển Admin"
       site_title: "E-commerce Admin"
@@ -48,6 +54,16 @@ vi:
         add_first_product: "Thêm sản phẩm đầu tiên"
         no_categories: "Chưa có danh mục nào"
         add_first_category: "Thêm danh mục đầu tiên"
+      low_stock_section:
+        title: "Sản phẩm sắp hết hàng"
+        view_all: "Xem tất cả sản phẩm sắp hết"
+        product: "Sản phẩm"
+        brand: "Thương hiệu"
+        current_stock: "Tồn kho hiện tại"
+        threshold: "Ngưỡng cảnh báo"
+        actions: "Thao tác"
+        units: "cái"
+        restock: "Nhập hàng"
     products:
       index:
         filter: "Lọc"
@@ -56,6 +72,3 @@ vi:
         showing_results: "Hiển thị %{from}-%{to} của %{count}"
         export_csv: "Xuất CSV"
         no_products_message: "Bắt đầu bằng cách tạo sản phẩm đầu tiên của bạn"
-    status:
-      active: "Đang hoạt động"
-      inactive: "Không hoạt động"

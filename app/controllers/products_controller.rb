@@ -20,10 +20,11 @@ class ProductsController < ApplicationController
   def show
     category_ids = @product.categories.pluck(:id)
     @related_products = Product.active
+                               .includes(PRODUCTS_INDEX_PRELOAD)
                                .joins(:categories)
                                .where(categories: {id: category_ids})
                                .where.not(id: @product.id)
-                               .limit(4)
+                               .limit(Settings.business.related_products_limit)
 
     # Increment view count
     Product.increment_counter(:view_count, @product.id)

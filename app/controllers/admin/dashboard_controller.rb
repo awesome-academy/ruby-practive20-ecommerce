@@ -14,10 +14,13 @@ class Admin::DashboardController < Admin::BaseController
     }
 
     @recent_products = Product.includes(RECENT_PRODUCTS_PRELOAD)
-                              .order(created_at: :desc).limit(5)
-    @low_stock_products = Product.low_stock.limit(5)
+                              .order(created_at: :desc).limit(Settings
+                              .admin.recent_products_limit)
+    @low_stock_products = Product.includes(RECENT_PRODUCTS_PRELOAD)
+                                 .low_stock.limit(Settings
+                                 .admin.low_stock_products_limit)
     @recent_categories = Category.includes(:products).order(:name)
                                  .limit(Settings
-                                        .admin.dashboard_categories_limit)
+                                 .admin.dashboard_categories_limit)
   end
 end

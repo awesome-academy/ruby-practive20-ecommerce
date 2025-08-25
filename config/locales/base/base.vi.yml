@@ -69,5 +69,11 @@ vi:
     tutorial_link_text: "Ruby on Rails Tutorial"
     author_link_text: "Michael Hartl"
   admin:
+    status:
+      active: "Hoạt động"
+      inactive: "Không hoạt động"
+    featured:
+      yes: "Nổi bật"
+      no: "Không nổi bật"
     categories:
       direct_products: "Trực tiếp:"

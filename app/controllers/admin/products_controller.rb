@@ -138,68 +138,16 @@ class Admin::ProductsController < Admin::BaseController
     params.require(:product).permit(permitted_params)
   end
 
-  def filtered_products
-    products = Product.includes(:categories, :brand)
-    products = apply_category_filter(products)
-    products = apply_brand_filter(products)
-    products = apply_status_filter(products)
-    products = apply_featured_filter(products)
-    products = apply_search_filter(products)
-    apply_sort_filter(products)
-  end
-
-  def apply_category_filter products
-    return products if params[:category_id].blank?
-
-    category = Category.find(params[:category_id])
-    category_ids = [category.id]
-    category_ids += category.children.pluck(:id) if category.children.any?
-    products.joins(:categories).where(categories: {id: category_ids})
-  end
-
-  def apply_brand_filter products
-    return products if params[:brand_id].blank?
-
-    products.where(brand: params[:brand_id])
-  end
-
-  def apply_status_filter products
-    case params[:status]
-    when "active" then products.active
-    when "inactive" then products.inactive
-    when "low_stock" then products.low_stock
-    when "out_of_stock" then products.out_of_stock
-    else products
-    end
-  end
-
-  def apply_featured_filter products
-    case params[:featured]
-    when "featured" then products.where(is_featured: true)
-    when "not_featured" then products.where(is_featured: false)
-    else products
-    end
-  end
-
-  def apply_search_filter products
-    return products if params[:search].blank?
-
-    search_term = "%#{params[:search]}%"
-    products.where("name LIKE ? OR sku LIKE ?", search_term, search_term)
-  end
-
-  def apply_sort_filter products
-    case params[:sort]
-    when "name_asc" then products.order(:name)
-    when "name_desc" then products.order(name: :desc)
-    when "price_asc" then products.order(:price)
-    when "price_desc" then products.order(price: :desc)
-    when "stock_asc" then products.order(:stock_quantity)
-    when "stock_desc" then products.order(stock_quantity: :desc)
-    when "created_asc" then products.order(:created_at)
-    when "created_desc" then products.order(created_at: :desc)
-    else products.order(:created_at)
-    end
+  def filtered_products # rubocop:disable Metrics/AbcSize
+    Product.includes(:categories, :brand)
+           .by_category(params[:category_id])
+           .by_brand(params[:brand_id])
+           .by_status(params[:status])
+           .by_stock_status(params[:stock_status])
+           .by_featured(params[:featured])
+           .in_price_range(params[:min_price], params[:max_price])
+           .search_by_query(params[:search])
+           .sorted_by(params[:sort])
   end
 
   def load_image

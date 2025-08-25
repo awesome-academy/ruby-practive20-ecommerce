@@ -77,20 +77,38 @@ business:
   # Product stock thresholds
   low_stock_threshold: 10
   # Validation limits
-  max_name_length: 100
+  max_name_length: 255
+  max_slug_length: 255
+  max_sku_length: 100
   max_description_length: 1000
+  # Product display limits
+  featured_products_limit: 8
+  related_products_limit: 4
+  # Auto-generation settings
+  sku_prefix_length: 3
+  sku_counter_padding: 4
+  default_sku_prefix: "PRD"
 
 # Cấu hình image handling
 images:
   thumbnail_size: [100, 100]
   medium_size: [300, 300]
   large_size: [800, 600]
+  placeholder:
+    card_height: "200px"
+    detail_height: "400px"
 
 # Cấu hình admin UI
 admin:
   categories_display_limit: 2
   dashboard_categories_limit: 8
-  recent_products_limit: 10
+  recent_products_limit: 5
+  low_stock_products_limit: 5
+  category_products_limit: 10
+  table:
+    checkbox_width: "40"
+    name_width: "30%"
+    action_column_width: "120"
 
 # Cấu hình date formats
 date_formats:

@@ -144,10 +144,29 @@ $admin-font-family: 'Segoe UI', 'Roboto', 'San Francisco', 'Helvetica Neue', Ari
 .drag-handle {
   color: #6c757d;
   cursor: move;
+  user-select: none;
+  
+  &:hover {
+    color: #495057;
+  }
 }
 
+// SortableJS styles
 .sortable-ghost {
   opacity: 0.4;
+  background-color: #f8f9fa !important;
+}
+
+.sortable-chosen {
+  transform: rotate(5deg);
+}
+
+.category-item {
+  transition: transform 0.2s ease;
+}
+
+.category-item.sortable-drag {
+  transform: rotate(5deg);
 }
 
 // Filter box

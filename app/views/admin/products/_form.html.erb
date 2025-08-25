@@ -26,8 +26,21 @@
           </div>
 
           <div class="mb-3">
+            <%= f.label :short_description, t(".short_description"), class: "form-label" %>
+            <%= f.text_area :short_description, class: "form-control", rows: 2, 
+                           placeholder: t(".short_description_placeholder") %>
+            <div class="form-text"><%= t(".short_description_help") %></div>
+          </div>
+
+          <div class="mb-3">
             <%= f.label :description, t(".description"), class: "form-label" %>
-            <%= f.text_area :description, class: "form-control", rows: 5 %>
+            <%= f.text_area :description, class: "form-control #{'is-invalid' if product.errors[:description].any?}", 
+                           rows: 5, placeholder: t(".description_placeholder") %>
+            <% if product.errors[:description].any? %>
+              <div class="invalid-feedback">
+                <%= product.errors[:description].first %>
+              </div>
+            <% end %>
           </div>
 
           <div class="row">
