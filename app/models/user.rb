@@ -13,6 +13,12 @@ class User < ApplicationRecord
   enum gender: {female: 0, male: 1, other: 2}
   enum role: {user: 0, admin: 1}
 
+  # Scopes
+  scope :active, -> {where(activated: true)}
+  scope :latest_first, -> {order(created_at: :desc)}
+  scope :admin, -> {where(role: :admin)}
+  scope :customer, -> {where(role: :customer)}
+
   before_save {self.email = email.downcase}
 
   attr_accessor :remember_token, :session_token, :activation_token, :reset_token

@@ -18,12 +18,6 @@ pagination:
   default_per_page: 10
   max_per_page: 100
 
-# Cấu hình micropost
-micropost:
-  max_content_length: 140
-  allowed_image_types: ["jpg", "jpeg", "gif", "png"]
-  max_image_size: 5 # MB
-
 # Cấu hình session
 session:
   remember_me_value: "1"
@@ -77,3 +71,36 @@ urls:
 # Cấu hình cache
 cache:
   expires_in: 3600 # seconds (1 hour)
+
+# Cấu hình business logic
+business:
+  # Product stock thresholds
+  low_stock_threshold: 10
+  # Validation limits
+  max_name_length: 100
+  max_description_length: 1000
+
+# Cấu hình image handling
+images:
+  thumbnail_size: [100, 100]
+  medium_size: [300, 300]
+  large_size: [800, 600]
+
+# Cấu hình admin UI
+admin:
+  categories_display_limit: 2
+  dashboard_categories_limit: 8
+  recent_products_limit: 10
+
+# Cấu hình date formats
+date_formats:
+  admin_display: "%B %d, %Y"
+  admin_display_with_time: "%B %d, %Y at %I:%M %p"
+  short_date: "%m/%d/%Y"
+  long_date: "%A, %B %d, %Y"
+
+# Cấu hình currency
+currency:
+  symbol: "$"
+  code: "USD"
+  position: "before" # before hoặc after
