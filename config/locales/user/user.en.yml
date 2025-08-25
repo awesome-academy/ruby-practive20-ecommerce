@@ -17,6 +17,14 @@ en:
       user_not_found: "User not found."
       created_at: "Member since"
       updated_at: "Last updated"
+    edit:
+      title: "Edit profile"
+      save_changes: "Save changes"
+      login_required: "Please log in to continue."
+      not_authorized: "You are not authorized to edit this profile."
+    update:
+      update_success: "Profile updated successfully."
+      update_failed: "There was a problem updating your profile."
     gender:
       female: "Female"
       male: "Male"

@@ -15,4 +15,18 @@ class ApplicationController < ActionController::Base
   def default_url_options
     {locale: I18n.locale}
   end
+
+  def require_login
+    return if logged_in?
+
+    flash[:danger] = t("users.edit.login_required")
+    redirect_to login_path
+  end
+
+  def correct_user
+    return if @user == current_user
+
+    flash[:danger] = t("users.edit.not_authorized")
+    redirect_to root_path
+  end
 end
