@@ -1,0 +1,68 @@
+<div class="suggested-products">
+  <div class="section-header">
+    <h3><%= t("cart.you_might_also_like") %></h3>
+  </div>
+  
+  <div class="product-grid">
+    <% products.each do |product| %>
+      <div class="product-card">
+        <div class="product-image">
+          <% if product.main_image %>
+            <%= link_to product_path(product) do %>
+              <%= image_tag product.main_image, 
+                           style: "height: 150px; width: 100%; object-fit: cover; border-radius: 6px;" %>
+            <% end %>
+          <% else %>
+            <%= t("products.no_image") %>
+          <% end %>
+        </div>
+        
+        <div class="product-info">
+          <h4>
+            <%= link_to product.name, product_path(product) %>
+          </h4>
+          
+          <div class="product-description">
+            <%= truncate(product.description, length: 80) %>
+          </div>
+          
+          <div class="product-price">
+            <span class="current-price">
+              <%= format_currency(product.current_price) %>
+            </span>
+            
+            <% if product.on_sale? %>
+              <span class="original-price">
+                <%= format_currency(product.base_price) %>
+              </span>
+              <span class="sale-badge">
+                <%= t("products.sale") %>
+              </span>
+            <% end %>
+          </div>
+          
+          <% if product.in_stock? %>
+            <%= form_with url: cart_add_path, local: false, class: "add-to-cart-form" do |form| %>
+              <%= form.hidden_field :product_id, value: product.id %>
+              <%= form.hidden_field :quantity, value: 1 %>
+              
+              <button type="submit" class="add-to-cart-btn">
+                <%= t("cart.add_to_cart") %>
+              </button>
+            <% end %>
+          <% else %>
+            <button class="add-to-cart-btn" disabled>
+              <%= t("products.out_of_stock") %>
+            </button>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  
+  <div class="view-all-link">
+    <%= link_to products_path do %>
+      <%= t("cart.view_all_products") %>
+    <% end %>
+  </div>
+</div>

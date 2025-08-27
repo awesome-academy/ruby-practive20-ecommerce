@@ -1,0 +1,10 @@
+en:
+  models:
+    cart_item:
+      errors:
+        product_already_in_cart: "Product is already in your cart"
+        product_not_active: "Product is not available"
+        variant_not_active: "Product variant is not available"
+        variant_not_belong_to_product: "Product variant does not belong to this product"
+        insufficient_stock: "Only %{available} items available in stock"
+        out_of_stock: "Product is out of stock"

@@ -79,6 +79,19 @@ module ApplicationHelper
     build_category_path(deepest_category)
   end
 
+  # Format currency using Settings configuration
+  def format_currency price
+    return "0 ₫" if price.blank? || price.zero?
+
+    number_to_currency(
+      price,
+      unit: Settings.currency.format.unit,
+      delimiter: Settings.currency.format.delimiter,
+      precision: Settings.currency.format.precision,
+      format: Settings.currency.format.format
+    )
+  end
+
   private
 
   def build_category_path category

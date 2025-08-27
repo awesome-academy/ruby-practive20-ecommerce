@@ -1,4 +1,7 @@
 vi:
+  products:
+    no_image: "Không có hình ảnh"
+    sale: "Giảm giá"
   activerecord:
     errors:
       models:

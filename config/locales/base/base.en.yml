@@ -15,6 +15,7 @@ en:
     profile: "Profile"
     settings: "Settings"
     logout: "Log out"
+    cart: "Cart"
   common:
     in_stock: "In Stock"
     out_of_stock: "Out of Stock"

@@ -1,0 +1,66 @@
+<div class="cart-item" id="cart-item-<%= cart_item.id %>">
+  <div class="item-image">
+    <% if cart_item.product.main_image %>
+      <%= image_tag cart_item.product.main_image, 
+                   class: "img-fluid rounded", 
+                   style: "max-height: 80px; width: 80px; object-fit: cover;" %>
+    <% else %>
+      <%= t("products.no_image") %>
+    <% end %>
+  </div>
+
+  <div class="item-details">
+    <h5 class="item-name">
+      <%= link_to cart_item.product.name, product_path(cart_item.product) %>
+    </h5>
+    <p class="item-sku">
+      <% if cart_item.variant %>
+        <%= cart_item.variant.name %> - <%= cart_item.variant.sku %>
+      <% else %>
+        <%= cart_item.product.sku %>
+      <% end %>
+    </p>
+    <% unless cart_item.in_stock? %>
+      <span class="badge bg-danger">
+        <i class="fas fa-exclamation-triangle me-1"></i>
+        <%= t("cart.out_of_stock") %>
+      </span>
+    <% end %>
+  </div>
+
+  <div class="item-price">
+    <%= format_currency(cart_item.current_price) %>
+  </div>
+
+  <div class="item-quantity">
+    <div class="quantity-controls">
+      <button type="button" class="quantity-btn" 
+              data-action="decrease" data-item-id="<%= cart_item.id %>">-</button>
+      
+      <input type="number" class="quantity-input" 
+             value="<%= cart_item.quantity %>" 
+             min="1" 
+             max="<%= cart_item.available_stock %>"
+             data-item-id="<%= cart_item.id %>"
+             data-available-stock="<%= cart_item.available_stock %>">
+      
+      <button type="button" class="quantity-btn" 
+              data-action="increase" data-item-id="<%= cart_item.id %>">+</button>
+    </div>
+    <div class="availability">
+      <%= t("cart.available", count: cart_item.available_stock) %>
+    </div>
+  </div>
+
+  <div class="item-total">
+    <div class="total-price" data-item-id="<%= cart_item.id %>">
+      <%= format_currency(cart_item.total_price) %>
+    </div>
+    <button type="button" class="remove-btn remove-item-btn" 
+            data-url="<%= cart_destroy_item_path(cart_item) %>"
+            data-item-id="<%= cart_item.id %>"
+            data-confirm="<%= t("cart.remove_confirm") %>">
+      <%= t("cart.remove") %>
+    </button>
+  </div>
+</div>

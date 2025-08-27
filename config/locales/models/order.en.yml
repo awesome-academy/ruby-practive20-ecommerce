@@ -1,0 +1,22 @@
+en:
+  models:
+    order:
+      statuses:
+        pending: "Pending"
+        confirmed: "Confirmed"
+        processing: "Processing"
+        shipping: "Shipping"
+        completed: "Completed"
+        cancelled: "Cancelled"
+      payment_statuses:
+        unpaid: "Unpaid"
+        paid: "Paid"
+        refunded: "Refunded"
+      payment_methods:
+        cod: "Cash on Delivery (COD)"
+        bank_transfer: "Bank Transfer"
+        ewallet: "E-wallet"
+      shipping_methods:
+        standard: "Standard Shipping"
+        express: "Express Shipping"
+        same_day: "Same Day Delivery"

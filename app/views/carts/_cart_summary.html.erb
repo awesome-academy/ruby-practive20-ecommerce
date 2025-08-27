@@ -1,0 +1,47 @@
+<div class="cart-summary">
+  <h2><%= t("cart.summary") %></h2>
+  
+  <div class="summary-row">
+    <span class="label"><%= t("cart.subtotal") %></span>
+    <span class="value cart-subtotal">
+      <%= format_currency(current_cart.subtotal) %>
+    </span>
+  </div>
+  
+  <div class="summary-row">
+    <span class="label"><%= t("cart.shipping") %></span>
+    <span class="value shipping">
+      <%= t("cart.calculated_at_checkout") %>
+    </span>
+  </div>
+  
+  <div class="summary-row total">
+    <span class="label"><%= t("cart.total") %></span>
+    <span class="value cart-total">
+      <%= format_currency(current_cart.total) %>
+    </span>
+  </div>
+  
+  <% if current_cart.has_out_of_stock_items? %>
+    <div class="alert alert-warning mb-3">
+      <i class="fas fa-exclamation-triangle me-2"></i>
+      <%= t("cart.out_of_stock_warning") %>
+    </div>
+  <% end %>
+  
+  <div class="checkout-actions">
+    <%= link_to checkout_path, 
+               class: "checkout-btn #{'disabled' if current_cart.has_out_of_stock_items?}",
+               data: { confirm: current_cart.has_out_of_stock_items? ? t("cart.cannot_checkout_out_of_stock") : nil } do %>
+      <%= t("cart.proceed_to_checkout") %>
+    <% end %>
+    
+    <%= link_to products_path, class: "continue-shopping-btn" do %>
+      <%= t("cart.continue_shopping") %>
+    <% end %>
+  </div>
+  
+  <div class="security-badge">
+    <%= t("cart.secure_checkout") %>
+  </div>
+</div>

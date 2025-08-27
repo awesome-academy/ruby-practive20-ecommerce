@@ -3,12 +3,15 @@ class UsersController < ApplicationController
   before_action :require_login, only: %i(edit update)
   before_action :correct_user, only: %i(edit update)
 
+  # GET /users/:id
   def show; end
 
+  # GET /users/new
   def new
     @user = User.new
   end
 
+  # POST /users
   def create
     @user = User.new(user_params)
 

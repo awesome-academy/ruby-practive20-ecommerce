@@ -122,3 +122,29 @@ currency:
   symbol: "$"
   code: "USD"
   position: "before" # before hoặc after
+  format:
+    unit: ""
+    delimiter: ","
+    precision: 2
+    format: "%n ₫"
+
+# Cấu hình shipping
+shipping:
+  fees:
+    standard: 30000 # 30k VND
+    express: 50000 # 50k VND
+    same_day: 80000 # 80k VND
+  default_method: "standard"
+
+# Cấu hình order
+order:
+  number:
+    prefix: "ORD"
+    date_format: "%Y%m%d"
+    random_length: 4
+
+# Cấu hình validation
+validation:
+  phone:
+    cleanup_pattern: "[\\s\\-()]"
+    vietnam_pattern: "\\A(\\+84|84|0[3|5|7|8|9])+([0-9]{8,9})\\z"

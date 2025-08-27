@@ -29,7 +29,7 @@
             </div>
           </div>
           <div class="text-end">
-            <div class="fw-bold"><%= number_to_currency(product.current_price) %></div>
+            <div class="fw-bold"><%= format_currency(product.current_price) %></div>
             <small class="text-muted"><%= t("admin.dashboard.recent_products.stock") %>: <%= product.stock_quantity %></small>
           </div>
         </div>

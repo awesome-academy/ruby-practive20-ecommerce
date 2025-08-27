@@ -1,0 +1,10 @@
+<div class="empty-cart">
+  <div class="empty-cart-icon">
+    <i class="fas fa-shopping-cart"></i>
+  </div>
+  <h3><%= t("cart.empty.title") %></h3>
+  <p><%= t("cart.empty.message") %></p>
+  <div class="empty-cart-actions">
+    <%= link_to t("cart.empty.start_shopping"), products_path, class: "btn btn-primary" %>
+  </div>
+</div>

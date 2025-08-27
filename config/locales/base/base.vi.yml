@@ -15,6 +15,7 @@ vi:
     profile: "Hồ sơ"
     settings: "Cài đặt"
     logout: "Đăng xuất"
+    cart: "Giỏ hàng"
   common:
     in_stock: "Còn hàng"
     out_of_stock: "Hết hàng"

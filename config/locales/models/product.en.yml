@@ -1,4 +1,7 @@
 en:
+  products:
+    no_image: "No Image"
+    sale: "Sale"
   activerecord:
     errors:
       models:

@@ -1,6 +1,9 @@
 class User < ApplicationRecord
   has_secure_password
 
+  # Associations
+  has_many :orders, dependent: :destroy, class_name: Order.name
+
   USER_PERMIT = %i(name email password password_confirmation birthday gender
                    phone_number default_address default_recipient_name
                    default_recipient_phone).freeze

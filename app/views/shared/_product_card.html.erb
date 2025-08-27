@@ -34,11 +34,11 @@
     
     <div class="price-section">
       <% if product.on_sale? %>
-        <span class="sale-price"><%= number_to_currency(product.sale_price) %></span>
-        <span class="original-price"><%= number_to_currency(product.base_price) %></span>
+        <span class="sale-price"><%= format_currency(product.sale_price) %></span>
+        <span class="original-price"><%= format_currency(product.base_price) %></span>
         <span class="discount-badge">-<%= product.discount_percentage %>%</span>
       <% else %>
-        <span class="current-price"><%= number_to_currency(product.base_price) %></span>
+        <span class="current-price"><%= format_currency(product.base_price) %></span>
       <% end %>
     </div>
   </div>

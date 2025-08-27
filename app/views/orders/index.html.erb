@@ -1,0 +1,84 @@
+<% content_for :title, t(".title") %>
+
+<div class="orders-index">
+  <div class="row">
+    <div class="col-md-12">
+      <h1><%= t(".title") %></h1>
+      
+      <% if @orders.any? %>
+        <div class="orders-list">
+          <% @orders.each do |order| %>
+            <div class="order-card">
+              <div class="order-header">
+                <div class="order-number">
+                  <strong><%= link_to order.order_number, order_path(order) %></strong>
+                </div>
+                <div class="order-date">
+                  <%= l(order.created_at, format: :long) %>
+                </div>
+                <div class="order-status">
+                  <span class="badge badge-<%= order.status %>">
+                    <%= order.status_display %>
+                  </span>
+                </div>
+              </div>
+              
+              <div class="order-content">
+                <div class="order-items">
+                  <% first_three_items = order.order_items.first(3) %>
+                  <% first_three_items.each do |item| %>
+                    <div class="order-item">
+                      <span class="item-name"><%= item.product_name %></span>
+                      <span class="item-quantity">x<%= item.quantity %></span>
+                    </div>
+                  <% end %>
+                  
+                  <% total_items = order.order_items.size %>
+                  <% if total_items > 3 %>
+                    <div class="more-items">
+                      <%= t(".more_items", count: total_items - 3) %>
+                    </div>
+                  <% end %>
+                </div>
+                
+                <div class="order-summary">
+                  <div class="order-total">
+                    <strong><%= format_currency(order.total_amount) %></strong>
+                  </div>
+                  <div class="order-payment">
+                    <%= order.payment_method_display %>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="order-actions">
+                <%= link_to t(".view_details"), order_path(order), class: "btn btn-sm btn-outline-primary" %>
+                <% if order.can_be_cancelled? %>
+                  <%= link_to t(".cancel_order"), order_path(order), 
+                      method: :patch, 
+                      data: { confirm: t(".cancel_confirm") },
+                      class: "btn btn-sm btn-outline-danger" %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="pagination-wrapper">
+          <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+        </div>
+        
+      <% else %>
+        <div class="empty-state">
+          <div class="empty-icon">
+            <i class="fas fa-shopping-bag"></i>
+          </div>
+          <h3><%= t(".no_orders") %></h3>
+          <p><%= t(".no_orders_message") %></p>
+          <%= link_to t(".start_shopping"), products_path, class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

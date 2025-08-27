@@ -1,0 +1,15 @@
+vi:
+  activerecord:
+    models:
+      cart: "Giỏ hàng"
+    attributes:
+      cart:
+        session_id: "Phiên"
+        status: "Trạng thái"
+        user: "Người dùng"
+    errors:
+      models:
+        cart:
+          attributes:
+            session_id:
+              already_has_active_cart: "đã có giỏ hàng đang hoạt động"

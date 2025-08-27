@@ -1,0 +1,15 @@
+en:
+  activerecord:
+    models:
+      cart: "Cart"
+    attributes:
+      cart:
+        session_id: "Session"
+        status: "Status"
+        user: "User"
+    errors:
+      models:
+        cart:
+          attributes:
+            session_id:
+              already_has_active_cart: "already has an active cart"
