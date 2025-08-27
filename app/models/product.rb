@@ -270,6 +270,16 @@ length: {maximum: Settings.business.max_sku_length}
     images.attached? ? images.first : nil
   end
 
+  # Image helper methods
+  def main_image_url
+    # Return image_url if present, otherwise fallback to Active Storage
+    image_url.presence
+  end
+
+  def has_image?
+    image_url.present? || images.attached?
+  end
+
   private
 
   def generate_slug_and_sku

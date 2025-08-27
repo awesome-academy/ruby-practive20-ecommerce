@@ -55,16 +55,52 @@ Category.create!(name: "Team Sports", parent: sports, position: 3, is_active: tr
 
 # Create admin user
 puts "Creating admin user..."
-User.create!(
-  name: "Admin User",
-  email: "admin@example.com",
-  password: "password123",
-  password_confirmation: "password123",
-  birthday: Date.new(1990, 1, 1),
-  gender: "male",
-  activated: true,
-  role: :admin
-)
+  admin_user = User.create!(
+    name: "Admin User",
+    email: "admin@example.com",
+    password: "password123",
+    password_confirmation: "password123",
+    birthday: Date.new(1990, 1, 1),
+    gender: "male",
+    activated: true,
+    role: :admin,
+    phone_number: "0123456789"
+  )
+
+# Create sample users
+puts "Creating sample users..."
+10.times do |i|
+  user = User.create!(
+    name: "User #{i + 1}",
+    email: "user#{i + 1}@example.com",
+    password: "password123",
+    password_confirmation: "password123",
+    birthday: Date.new(1990 + rand(20), rand(12) + 1, rand(28) + 1),
+    gender: ["male", "female", "other"].sample,
+    activated: [true, false].sample,
+    role: :user,
+    phone_number: "012345678#{i}",
+    default_address: "#{rand(100) + 1} Street #{i + 1}, District #{rand(10) + 1}, Ho Chi Minh City"
+  )
+
+  # Create some orders for active users
+  if user.activated? && rand(3) > 0
+    rand(1..5).times do |j|
+      Order.create!(
+        user: user,
+        order_number: "ORD-#{user.id}-#{j + 1}-#{Time.current.to_i}",
+        total_amount: rand(100_000..2_000_000),
+        status: Order.statuses.keys.sample,
+        shipping_address: user.default_address,
+        recipient_name: user.name,
+        recipient_phone: user.phone_number,
+        created_at: rand(30.days).seconds.ago
+      )
+    end
+  end
+end
+
+puts "Created #{User.count} users and #{Order.count} orders"
 
 # Create sample products with categories
 puts "Creating products..."
@@ -513,7 +549,7 @@ category_assignments = [
   { product_name: "Samsung Galaxy S24 Ultra", categories: [smartphones, electronics] },
   { product_name: "Samsung Galaxy S24+", categories: [smartphones, electronics] },
   { product_name: "Samsung Galaxy S24", categories: [smartphones, electronics] },
-  
+
   # Laptops
   { product_name: "MacBook Pro 16-inch M3 Pro", categories: [laptops, electronics] },
   { product_name: "MacBook Pro 14-inch M3", categories: [laptops, electronics] },
@@ -522,40 +558,40 @@ category_assignments = [
   { product_name: "Dell XPS 13 Plus", categories: [laptops, electronics] },
   { product_name: "HP Spectre x360 14", categories: [laptops, electronics] },
   { product_name: "Lenovo ThinkPad X1 Carbon", categories: [laptops, electronics] },
-  
+
   # Tablets
   { product_name: "iPad Pro 12.9-inch M4", categories: [tablets, electronics] },
   { product_name: "iPad Air 11-inch M4", categories: [tablets, electronics] },
   { product_name: "iPad 10th Generation", categories: [tablets, electronics] },
-  
+
   # Audio
   { product_name: "AirPods Pro 2nd Generation", categories: [audio, electronics] },
   { product_name: "AirPods 3rd Generation", categories: [audio, electronics] },
   { product_name: "Sony WH-1000XM5", categories: [audio, electronics] },
   { product_name: "Samsung Galaxy Buds2 Pro", categories: [audio, electronics] },
-  
+
   # Gaming
   { product_name: "Sony PlayStation 5", categories: [gaming, electronics] },
-  
+
   # Shoes - Nike
   { product_name: "Nike Air Jordan 1 Retro High OG", categories: [shoes, fashion, mens_fashion] },
   { product_name: "Nike Air Force 1 '07", categories: [shoes, fashion, mens_fashion, womens_fashion] },
   { product_name: "Nike Dunk Low Retro", categories: [shoes, fashion, mens_fashion, womens_fashion] },
   { product_name: "Nike Air Max 90", categories: [shoes, fashion, fitness, sports] },
   { product_name: "Nike React Infinity Run Flyknit 4", categories: [shoes, fashion, fitness, sports] },
-  
+
   # Shoes - Adidas
   { product_name: "Adidas Ultraboost 23", categories: [shoes, fashion, fitness, sports] },
   { product_name: "Adidas Stan Smith", categories: [shoes, fashion, mens_fashion, womens_fashion] },
   { product_name: "Adidas Superstar", categories: [shoes, fashion, mens_fashion, womens_fashion] },
   { product_name: "Adidas NMD_R1", categories: [shoes, fashion, mens_fashion, womens_fashion] },
-  
+
   # Shoes - Others
   { product_name: "Puma Suede Classic", categories: [shoes, fashion, mens_fashion, womens_fashion] },
   { product_name: "Puma RS-X3", categories: [shoes, fashion, fitness, sports] },
   { product_name: "New Balance 990v5", categories: [shoes, fashion, fitness, sports] },
   { product_name: "New Balance 574", categories: [shoes, fashion, mens_fashion, womens_fashion] },
-  
+
   # Accessories
   { product_name: "Samsung Galaxy Watch 6", categories: [accessories, fashion, electronics] }
 ]
@@ -572,6 +608,58 @@ category_assignments.each do |assignment|
   end
 end
 
+# Add sample images to products
+puts "Adding sample images to products..."
+
+# Simple image assignments - one image per product
+image_assignments = {
+  "iPhone 15 Pro Max" => "https://picsum.photos/800/800?random=1",
+  "iPhone 15 Pro" => "https://picsum.photos/800/800?random=2",
+  "iPhone 15" => "https://picsum.photos/800/800?random=3",
+  "Samsung Galaxy S24 Ultra" => "https://picsum.photos/800/800?random=4",
+  "Samsung Galaxy S24+" => "https://picsum.photos/800/800?random=5",
+  "Samsung Galaxy S24" => "https://picsum.photos/800/800?random=6",
+  "MacBook Pro 16-inch M3 Pro" => "https://picsum.photos/800/800?random=7",
+  "MacBook Pro 14-inch M3" => "https://picsum.photos/800/800?random=8",
+  "MacBook Air 15-inch M3" => "https://picsum.photos/800/800?random=9",
+  "MacBook Air 13-inch M3" => "https://picsum.photos/800/800?random=10",
+  "Dell XPS 13 Plus" => "https://picsum.photos/800/800?random=11",
+  "HP Spectre x360 14" => "https://picsum.photos/800/800?random=12",
+  "iPad Pro 12.9-inch M4" => "https://picsum.photos/800/800?random=13",
+  "iPad Air 11-inch M4" => "https://picsum.photos/800/800?random=14",
+  "iPad 10th Generation" => "https://picsum.photos/800/800?random=15",
+  "AirPods Pro 2nd Generation" => "https://picsum.photos/800/800?random=16",
+  "AirPods 3rd Generation" => "https://picsum.photos/800/800?random=17",
+  "Sony WH-1000XM5" => "https://picsum.photos/800/800?random=18",
+  "Sony PlayStation 5" => "https://picsum.photos/800/800?random=19",
+  "Nike Air Jordan 1 Retro High OG" => "https://picsum.photos/800/800?random=20",
+  "Nike Air Force 1 '07" => "https://picsum.photos/800/800?random=21",
+  "Nike Dunk Low Retro" => "https://picsum.photos/800/800?random=22",
+  "Nike Air Max 90" => "https://picsum.photos/800/800?random=23",
+  "Nike React Infinity Run Flyknit 4" => "https://picsum.photos/800/800?random=24",
+  "Adidas Ultraboost 23" => "https://picsum.photos/800/800?random=25",
+  "Adidas Stan Smith" => "https://picsum.photos/800/800?random=26",
+  "Adidas Superstar" => "https://picsum.photos/800/800?random=27",
+  "Adidas NMD_R1" => "https://picsum.photos/800/800?random=28",
+  "Puma Suede Classic" => "https://picsum.photos/800/800?random=29",
+  "Puma RS-X3" => "https://picsum.photos/800/800?random=30",
+  "New Balance 990v5" => "https://picsum.photos/800/800?random=31",
+  "New Balance 574" => "https://picsum.photos/800/800?random=32",
+  "Lenovo ThinkPad X1 Carbon" => "https://picsum.photos/800/800?random=33",
+  "Samsung Galaxy Watch 6" => "https://picsum.photos/800/800?random=34",
+  "Samsung Galaxy Buds2 Pro" => "https://picsum.photos/800/800?random=35"
+}
+
+image_assignments.each do |product_name, image_url|
+  product = Product.find_by(name: product_name)
+  if product
+    product.update!(image_url: image_url)
+    puts "  ✓ Added image to #{product_name}"
+  else
+    puts "  ✗ Product '#{product_name}' not found"
+  end
+end
+
 # Print summary
 puts "\n" + "="*50
 puts "SEEDING COMPLETED SUCCESSFULLY!"
@@ -583,6 +671,7 @@ puts "  - #{Category.where.not(parent_id: nil).count} subcategories"
 puts "Created #{Product.count} products"
 puts "  - #{Product.where(is_featured: true).count} featured products"
 puts "  - #{Product.where(is_active: true).count} active products"
+puts "  - #{Product.where.not(image_url: nil).count} products with images"
 puts "Created #{ProductCategory.count} product-category associations"
 puts "Created #{User.count} users (#{User.where(role: :admin).count} admin)"
 
@@ -591,7 +680,7 @@ puts "\nCategory breakdown:"
 Category.where(parent_id: nil).each do |main_cat|
   product_count = main_cat.total_products_count
   puts "  #{main_cat.name}: #{product_count} products"
-  
+
   main_cat.children.each do |sub_cat|
     sub_product_count = sub_cat.total_products_count
     puts "    └── #{sub_cat.name}: #{sub_product_count} products"
