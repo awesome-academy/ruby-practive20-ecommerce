@@ -100,6 +100,10 @@ vi:
       sort:
         success: "Sắp xếp danh mục thành công"
         error: "Sắp xếp danh mục thất bại"
+      javascript:
+        reorder_success: "Sắp xếp danh mục thành công!"
+        reorder_error: "Sắp xếp danh mục thất bại"
+        reorder_exception: "Lỗi khi sắp xếp danh mục"
       not_found: "Không tìm thấy danh mục"
       cannot_delete: "Không thể xóa danh mục này vì có sản phẩm hoặc danh mục con"
       form:

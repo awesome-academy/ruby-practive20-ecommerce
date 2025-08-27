@@ -31,7 +31,7 @@
               <table class="table table-borderless">
                 <tbody>
                   <tr>
-                    <th width="30%"><%= t(".name") %>:</th>
+                    <th width="<%= Settings.admin.table.name_width %>"><%= t(".name") %>:</th>
                     <td><%= @product.name %></td>
                   </tr>
                   <tr>
@@ -39,8 +39,24 @@
                     <td><code><%= @product.sku %></code></td>
                   </tr>
                   <tr>
+                    <th><%= t(".short_description") %>:</th>
+                    <td>
+                      <% if @product.short_description.present? %>
+                        <%= simple_format(@product.short_description) %>
+                      <% else %>
+                        <span class="text-muted">-</span>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
                     <th><%= t(".description") %>:</th>
-                    <td><%= simple_format(@product.description) %></td>
+                    <td>
+                      <% if @product.description.present? %>
+                        <%= simple_format(@product.description) %>
+                      <% else %>
+                        <span class="text-muted">-</span>
+                      <% end %>
+                    </td>
                   </tr>
                   <tr>
                     <th><%= t(".categories") %>:</th>

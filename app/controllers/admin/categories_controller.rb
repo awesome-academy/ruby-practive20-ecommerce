@@ -11,18 +11,20 @@ class Admin::CategoriesController < Admin::BaseController
     @categories = filtered_categories
                   .includes(CATEGORIES_INDEX_PRELOAD)
                   .where(parent_id: nil)
-                  .order(:position, :name)
+    @categories = apply_sort(@categories)
   end
 
   # GET /admin/categories/:id
   def show
     @childrens = @category.children.order(:position, :name)
-    @products = @category.products.active.limit(10)
+    @products = @category.products.active.limit(Settings
+                                                .admin.category_products_limit)
   end
 
   # GET /admin/categories/new
   def new
     @category = Category.new
+    @category.parent_id = params[:parent_id] if params[:parent_id].present?
   end
 
   # POST /admin/categories
@@ -63,11 +65,15 @@ class Admin::CategoriesController < Admin::BaseController
 
   # PATCH /admin/categories/sort
   def sort
-    params[:category].each_with_index do |id, index|
-      Category.where(id:).update_all(position: index + 1)
+    Category.transaction do
+      params[:category].each_with_index do |id, index|
+        Category.where(id:).update_all(position: index + 1)
+      end
     end
-
     head :ok
+  rescue StandardError => e
+    Rails.logger.error "Category sorting failed: #{e.message}"
+    head :unprocessable_entity
   end
 
   # PATCH /admin/categories/:id/update_position
@@ -81,17 +87,31 @@ class Admin::CategoriesController < Admin::BaseController
 
   # PATCH /admin/categories/:id/toggle_status
   def toggle_status
-    if @category.update(is_active: !@category.is_active)
-      status_text = if @category.is_active?
+    new_status = !@category.is_active
+
+    begin
+      Category.transaction do
+        @category.update!(is_active: new_status)
+
+        # Update all child categories
+        update_child_categories_status(@category, new_status)
+
+        # Update all products in this category and its children
+        update_category_products_status(@category, new_status)
+      end
+
+      status_text = if new_status
                       t("admin.status.active")
                     else
                       t("admin.status.inactive")
                     end
       redirect_back(
         fallback_location: admin_categories_path,
-        notice: t("admin.categories.toggle_status.success", status: status_text)
+        notice: t("admin.categories.toggle_status.success",
+                  status: status_text)
       )
-    else
+    rescue StandardError => e
+      Rails.logger.error "Category toggle status failed: #{e.message}"
       redirect_back(
         fallback_location: admin_categories_path,
         alert: t("admin.categories.toggle_status.error")
@@ -106,6 +126,10 @@ class Admin::CategoriesController < Admin::BaseController
             .search_by_name(params[:search])
             .by_status(params[:status])
             .by_parent(params[:parent_id])
+  end
+
+  def apply_sort categories
+    categories.sorted_by(params[:sort])
   end
 
   def load_category
@@ -132,5 +156,34 @@ class Admin::CategoriesController < Admin::BaseController
 
     redirect_to admin_categories_path,
                 alert: t("admin.categories.cannot_delete")
+  end
+
+  def update_child_categories_status category, new_status
+    category.children.find_each do |child|
+      child.update!(is_active: new_status)
+      # Recursively update grandchildren
+      update_child_categories_status(child, new_status) if child.children.any?
+    end
+  end
+
+  def update_category_products_status category, new_status
+    # Get all category IDs including children recursively
+    category_ids = get_all_category_ids(category)
+
+    # Update all products in these categories
+    Product.joins(:categories)
+           .where(categories: {id: category_ids})
+           .distinct
+           .find_each do |product|
+      product.update!(is_active: new_status)
+    end
+  end
+
+  def get_all_category_ids category
+    ids = [category.id]
+    category.children.find_each do |child|
+      ids += get_all_category_ids(child)
+    end
+    ids
   end
 end

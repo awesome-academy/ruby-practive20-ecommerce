@@ -1,5 +1,5 @@
 class Product < ApplicationRecord
-  PERMITTED_PARAMS = %i(name description price original_price
+  PERMITTED_PARAMS = %i(name short_description description price original_price
                          stock_quantity brand_id active featured sku).freeze
 
   # Relationships
@@ -14,9 +14,12 @@ class Product < ApplicationRecord
   has_many_attached :images
 
   # Validations
-  validates :name, presence: true, length: {maximum: 255}
-  validates :slug, presence: true, uniqueness: true, length: {maximum: 255}
-  validates :sku, presence: true, uniqueness: true, length: {maximum: 100}
+  validates :name, presence: true,
+length: {maximum: Settings.business.max_name_length}
+  validates :slug, presence: true, uniqueness: true,
+length: {maximum: Settings.business.max_slug_length}
+  validates :sku, presence: true, uniqueness: true,
+length: {maximum: Settings.business.max_sku_length}
   validates :base_price, presence: true, numericality: {greater_than: 0}
   validates :sale_price, numericality: {greater_than: 0}, allow_nil: true
   validates :stock_quantity, presence: true,
@@ -74,6 +77,41 @@ class Product < ApplicationRecord
   }
   scope :by_brand, lambda {|brand_id|
     where(brand_id:) if brand_id.present?
+  }
+  scope :by_status, lambda {|status|
+    case status
+    when "active" then active
+    when "inactive" then inactive
+    else all
+    end
+  }
+  scope :by_stock_status, lambda {|stock_status|
+    case stock_status
+    when "in_stock" then with_stock
+    when "low_stock" then low_stock
+    when "out_of_stock" then out_of_stock
+    else all
+    end
+  }
+  scope :by_featured, lambda {|featured_status|
+    case featured_status
+    when "featured" then featured
+    when "not_featured" then where(is_featured: false)
+    else all
+    end
+  }
+  scope :sorted_by, lambda {|sort_option|
+    case sort_option
+    when "name_asc" then order(:name)
+    when "name_desc" then order(name: :desc)
+    when "price_asc" then order(:base_price)
+    when "price_desc" then order(base_price: :desc)
+    when "stock_asc" then order(:stock_quantity)
+    when "stock_desc" then order(stock_quantity: :desc)
+    when "created_asc" then order(:created_at)
+    when "created_desc" then order(created_at: :desc)
+    else order(created_at: :desc) # default
+    end
   }
 
   # Search scopes - converted from search_products method
@@ -140,26 +178,36 @@ class Product < ApplicationRecord
 
   # Compatibility methods for form
   def price
-    base_price
+    # Return current selling price (sale_price if on sale, otherwise base_price)
+    sale_price.presence || base_price
   end
 
   def price= value
-    self.base_price = value
+    if original_price.present?
+      # If original_price exists, this is sale_price
+      self.sale_price = value
+    else
+      # If no original_price, this is base_price
+      self.base_price = value
+    end
   end
 
   def original_price
-    return nil if sale_price.blank?
+    # Return base_price only if sale_price exists (product is on sale)
+    return base_price if sale_price.present?
 
-    base_price
+    nil
   end
 
   def original_price= value
     if value.present? && value.to_f.positive?
-      # If original_price is set, current price becomes sale_price
-      self.sale_price = base_price if base_price.present?
+      # Set original price and move current price to sale_price
+      current_selling_price = price
       self.base_price = value
+      self.sale_price = current_selling_price if current_selling_price != value
     else
-      # If original_price is cleared, remove sale
+      # Clear sale - move sale_price back to base_price
+      self.base_price = sale_price if sale_price.present?
       self.sale_price = nil
     end
   end
@@ -245,11 +293,17 @@ class Product < ApplicationRecord
   end
 
   def generate_unique_sku
-    base_sku = name.present? ? name.first(3).upcase : "PRD"
+    base_sku = if name.present?
+                 name.first(Settings.business.sku_prefix_length).upcase
+               else
+                 Settings.business.default_sku_prefix
+               end
     counter = 1
 
     loop do
-      candidate_sku = "#{base_sku}#{counter.to_s.rjust(4, '0')}"
+      candidate_sku = "#{base_sku}#{counter.to_s.rjust(
+        Settings.business.sku_counter_padding, '0'
+      )}"
       break self.sku = candidate_sku unless Product.exists?(sku: candidate_sku)
 
       counter += 1

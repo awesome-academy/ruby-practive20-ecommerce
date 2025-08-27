@@ -1,0 +1,48 @@
+<div class="card border-0 shadow-sm">
+  <div class="card-header bg-white">
+    <h6 class="card-title mb-0"><%= t("admin.dashboard.recent_products.title") %></h6>
+  </div>
+  <div class="card-body">
+    <% if @recent_products.any? %>
+      <% @recent_products.each do |product| %>
+        <div class="d-flex align-items-center mb-3">
+          <div class="me-3">
+            <div class="product-image-thumb bg-light d-flex align-items-center justify-content-center">
+              <i class="fas fa-image text-muted"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1">
+            <h6 class="mb-1"><%= product.name %></h6>
+            <small class="text-muted">
+              <%= product.brand&.name %>
+              <% if product.categories.any? %>
+                • <%= product.categories.first.name %>
+              <% end %>
+            </small>
+            <div class="mt-1">
+              <span class="badge <%= product.is_active? ? 'bg-success' : 'bg-secondary' %>">
+                <%= product.is_active? ? t("admin.dashboard.stats.active") : t("admin.dashboard.stats.inactive") %>
+              </span>
+              <% if product.is_featured? %>
+                <span class="badge bg-warning"><%= t("admin.dashboard.stats.featured") %></span>
+              <% end %>
+            </div>
+          </div>
+          <div class="text-end">
+            <div class="fw-bold"><%= number_to_currency(product.current_price) %></div>
+            <small class="text-muted"><%= t("admin.dashboard.recent_products.stock") %>: <%= product.stock_quantity %></small>
+          </div>
+        </div>
+      <% end %>
+      <div class="text-center mt-3">
+        <%= link_to t("admin.dashboard.recent_products.view_all"), admin_products_path, class: "btn btn-outline-primary btn-sm" %>
+      </div>
+    <% else %>
+      <div class="text-center text-muted py-4">
+        <i class="fas fa-box fa-3x mb-3"></i>
+        <div><%= t("admin.dashboard.no_data.no_products") %></div>
+        <%= link_to t("admin.dashboard.no_data.add_first_product"), new_admin_product_path, class: "btn btn-primary btn-sm mt-2" %>
+      </div>
+    <% end %>
+  </div>
+</div>

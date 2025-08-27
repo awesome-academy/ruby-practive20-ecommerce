@@ -2,6 +2,12 @@ en:
   admin:
     access_denied: "You do not have permission to access the admin area."
     welcome_message: "Welcome, %{email}"
+    status:
+      active: "Active"
+      inactive: "Inactive"
+    featured:
+      yes: "Featured"
+      no: "Not Featured"
     layout:
       default_title: "Admin Panel"
       site_title: "E-commerce Admin"
@@ -48,6 +54,16 @@ en:
         add_first_product: "Add First Product"
         no_categories: "No categories yet"
         add_first_category: "Add First Category"
+      low_stock_section:
+        title: "Low Stock Products"
+        view_all: "View All Low Stock"
+        product: "Product"
+        brand: "Brand"
+        current_stock: "Current Stock"
+        threshold: "Threshold"
+        actions: "Actions"
+        units: "units"
+        restock: "Restock"
     products:
       index:
         filter: "Filter"
@@ -56,6 +72,3 @@ en:
         showing_results: "Showing %{from}-%{to} of %{count}"
         export_csv: "Export CSV"
         no_products_message: "Start by creating your first product"
-    status:
-      active: "Active"
-      inactive: "Inactive"

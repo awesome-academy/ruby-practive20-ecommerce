@@ -15,6 +15,9 @@ module RailsTutorial
     config.i18n.available_locales = Settings.i18n.available_locales
     config.i18n.default_locale = Settings.i18n.default_locale
 
+    # Asset pipeline configuration
+    config.assets.paths << Rails.root.join("app/assets/javascripts")
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

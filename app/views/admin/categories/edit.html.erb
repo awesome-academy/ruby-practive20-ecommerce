@@ -4,9 +4,12 @@
   <h1 class="h4 mb-0"><%= t("admin.categories.edit.title") %></h1>
   <div>
     <%= link_to t("admin.categories.edit.cancel"), admin_category_path(@category), class: "btn btn-outline-secondary me-2" %>
-    <%= link_to admin_category_path(@category), method: :delete, 
+    <%= link_to admin_category_path(@category), 
                 class: "btn btn-outline-danger", 
-                confirm: t("admin.categories.index.actions.confirm_delete") do %>
+                data: { 
+                  turbo_method: :delete,
+                  turbo_confirm: t("admin.categories.index.actions.confirm_delete") 
+                } do %>
       <i class="fas fa-trash me-1"></i>
       <%= t("admin.categories.show.delete_category") %>
     <% end %>

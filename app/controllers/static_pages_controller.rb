@@ -3,7 +3,9 @@ class StaticPagesController < ApplicationController
 
   def home
     @featured_products = Product.active.featured
-                                .includes(FEATURED_PRODUCTS_PRELOAD).limit(8)
+                                .includes(FEATURED_PRODUCTS_PRELOAD)
+                                .limit(Settings
+                                .business.featured_products_limit)
   end
 
   def help; end

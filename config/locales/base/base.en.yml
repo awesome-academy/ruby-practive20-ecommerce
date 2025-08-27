@@ -69,5 +69,11 @@ en:
     tutorial_link_text: "Ruby on Rails Tutorial"
     author_link_text: "Michael Hartl"
   admin:
+    status:
+      active: "Active"
+      inactive: "Inactive"
+    featured:
+      yes: "Featured"
+      no: "Not Featured"
     categories:
       direct_products: "Direct:"

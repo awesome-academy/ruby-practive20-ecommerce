@@ -49,6 +49,7 @@
         <table class="table table-hover">
           <thead>
             <tr>
+              <th width="<%= Settings.admin.table.checkbox_width %>"></th>
               <th><%= t("admin.categories.index.table.name") %></th>
               <th><%= t("admin.categories.index.table.slug") %></th>
               <th><%= t("admin.categories.index.table.parent") %></th>
@@ -75,5 +76,5 @@
 </div>
 
 <%= content_for :javascript do %>
-  <%= javascript_include_tag "custom/admin/categories_index", defer: true %>
+  <%= javascript_include_tag "custom/admin/categories_index" %>
 <% end %>

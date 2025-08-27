@@ -100,6 +100,10 @@ en:
       sort:
         success: "Categories sorted successfully"
         error: "Failed to sort categories"
+      javascript:
+        reorder_success: "Categories reordered successfully!"
+        reorder_error: "Failed to reorder categories"
+        reorder_exception: "Error reordering categories"
       not_found: "Category not found"
       cannot_delete: "Cannot delete this category because it has products or child categories"
       form:

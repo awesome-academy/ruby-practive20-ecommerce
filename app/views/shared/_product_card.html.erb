@@ -1,13 +1,18 @@
 <div class="product-card card">
-  <% if product.image_url.present? %>
+  <% if product.images.attached? %>
+    <%= link_to product_path(product) do %>
+      <%= image_tag product.main_image.variant(resize_to_limit: Settings.images.medium_size), 
+                    class: "card-img-top", alt: product.name %>
+    <% end %>
+  <% elsif product.image_url.present? %>
     <%= link_to product_path(product) do %>
       <%= image_tag product.image_url, class: "card-img-top", alt: product.name %>
     <% end %>
   <% else %>
     <%= link_to product_path(product) do %>
-      <div class="card-img-top no-image">
-        <i class="fa fa-image"></i>
-        <p><%= t("products.show.no_image") %></p>
+      <div class="card-img-top no-image d-flex flex-column justify-content-center align-items-center bg-light" style="height: <%= Settings.images.placeholder.card_height %>;">
+        <i class="fa fa-image fa-2x text-muted"></i>
+        <p class="mt-2 text-muted"><%= t("products.show.no_image") %></p>
       </div>
     <% end %>
   <% end %>
