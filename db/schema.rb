@@ -214,7 +214,15 @@ ActiveRecord::Schema[7.0].define(version: 2025_08_28_075320) do
     t.datetime "activated_at"
     t.string "reset_digest"
     t.datetime "reset_sent_at"
+    t.datetime "deleted_at"
+    t.text "inactive_reason"
+    t.datetime "last_login_at"
+    t.string "avatar_url"
+    t.index ["activated"], name: "index_users_on_activated"
+    t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["last_login_at"], name: "index_users_on_last_login_at"
+    t.index ["role"], name: "index_users_on_role"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

@@ -55,17 +55,17 @@ Category.create!(name: "Team Sports", parent: sports, position: 3, is_active: tr
 
 # Create admin user
 puts "Creating admin user..."
-  admin_user = User.create!(
-    name: "Admin User",
-    email: "admin@example.com",
-    password: "password123",
-    password_confirmation: "password123",
-    birthday: Date.new(1990, 1, 1),
-    gender: "male",
-    activated: true,
-    role: :admin,
-    phone_number: "0123456789"
-  )
+admin_user = User.create!(
+  name: "Admin User",
+  email: "admin@example.com",
+  password: "password123",
+  password_confirmation: "password123",
+  birthday: Date.new(1990, 1, 1),
+  gender: "male",
+  activated: true,
+  role: :admin,
+  phone_number: "0123456789"
+)
 
 # Create sample users
 puts "Creating sample users..."

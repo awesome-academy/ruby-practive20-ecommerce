@@ -1,8 +1,10 @@
 class User < ApplicationRecord
+  acts_as_paranoid
   has_secure_password
 
   # Associations
   has_many :orders, dependent: :destroy, class_name: Order.name
+  has_one_attached :avatar
 
   USER_PERMIT = %i(name email password password_confirmation birthday gender
                    phone_number default_address default_recipient_name
@@ -18,9 +20,72 @@ class User < ApplicationRecord
 
   # Scopes
   scope :active, -> {where(activated: true)}
+  scope :inactive, -> {where(activated: false)}
   scope :latest_first, -> {order(created_at: :desc)}
   scope :admin, -> {where(role: :admin)}
-  scope :customer, -> {where(role: :customer)}
+  scope :customer, -> {where(role: :user)}
+
+  # Search scopes
+  scope :search_by_name, lambda {|query|
+    where("name LIKE ?", "%#{query}%") if query.present?
+  }
+  scope :search_by_email, lambda {|query|
+    where("email LIKE ?", "%#{query}%") if query.present?
+  }
+  scope :search_by_query, lambda {|query|
+    if query.present?
+      search_term = "%#{query.strip}%"
+      where("name LIKE ? OR email LIKE ?", search_term, search_term)
+    end
+  }
+
+  # Filter scopes
+  scope :by_status, lambda {|status|
+    case status
+    when "active" then active
+    when "inactive" then inactive
+    else all
+    end
+  }
+
+  scope :by_role, lambda {|role|
+    case role
+    when "admin" then admin
+    when "user" then customer
+    else all
+    end
+  }
+
+  scope :registered_between, lambda {|start_date, end_date|
+    if start_date.present? && end_date.present?
+      where(created_at: start_date.beginning_of_day..end_date.end_of_day)
+    end
+  }
+
+  # Sort scopes
+  scope :sorted_by, lambda {|sort_option|
+    case sort_option
+    when "name_asc" then order(:name)
+    when "name_desc" then order(name: :desc)
+    when "email_asc" then order(:email)
+    when "email_desc" then order(email: :desc)
+    when "oldest" then order(:created_at)
+    else latest_first # default: newest first
+    end
+  }
+  scope :by_role, ->(role) {where(role:) if role.present?}
+  scope :by_status, lambda {|status|
+    case status
+    when "active" then active
+    when "inactive" then inactive
+    else all
+    end
+  }
+  scope :registered_between, lambda {|start_date, end_date|
+    return unless start_date && end_date
+
+    where(created_at: start_date.beginning_of_day..end_date.end_of_day)
+  }
 
   before_save {self.email = email.downcase}
 
@@ -106,4 +171,62 @@ class User < ApplicationRecord
   validates :gender, presence: true
   validates :password,
             length: {minimum: MIN_PASSWORD_LENGTH}, allow_nil: true
+
+  # User management methods
+  def can_be_deactivated_by? admin_user
+    return false if admin_user == self # Cannot deactivate self
+    # Admin cannot deactivate other admins
+    return false if admin? && admin_user.admin?
+
+    true
+  end
+
+  def deactivate! reason = nil, admin_user = nil
+    unless admin_user&.admin?
+      raise StandardError, "Only admin users can deactivate accounts"
+    end
+
+    unless can_be_deactivated_by?(admin_user)
+      raise StandardError, "This user cannot be deactivated by the " \
+                           "current admin"
+    end
+
+    update!(activated: false, inactive_reason: reason)
+  end
+
+  def activate! admin_user = nil
+    unless admin_user&.admin?
+      raise StandardError, "Only admin users can activate accounts"
+    end
+
+    update!(activated: true, inactive_reason: nil)
+  end
+
+  def total_spent
+    orders.completed.sum(:total_amount)
+  end
+
+  def recent_orders limit = 5
+    orders.recent.limit(limit)
+  end
+
+  def last_order
+    orders.recent.first
+  end
+
+  def update_last_login!
+    update_column(:last_login_at, Time.current)
+  end
+
+  def display_name
+    name.presence || email.split("@").first
+  end
+
+  def status_text
+    activated? ? "Active" : "Inactive"
+  end
+
+  def role_text
+    role.humanize
+  end
 end
