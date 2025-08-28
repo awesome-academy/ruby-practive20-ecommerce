@@ -5,6 +5,8 @@ en:
       category_management: "Category Management"
       product_management: "Product Management"
       user_management: "User Management"
+      order_management: "Order Management"
+      users: "Users (Coming Soon)"
       reports: "Reports (Coming Soon)"
       view_site: "View Site"
       logout: "Logout"

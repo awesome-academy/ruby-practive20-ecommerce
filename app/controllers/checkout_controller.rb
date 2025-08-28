@@ -3,6 +3,8 @@ class CheckoutController < ApplicationController
 
   before_action :load_cart
   before_action :ensure_cart_not_empty, except: [:success]
+  before_action :validate_cart_items, except: [:success]
+  before_action :require_login_for_checkout, only: %i(new create)
   before_action :set_checkout_data, only: %i(new create)
   before_action :load_order_by_number, only: [:success]
 
@@ -63,6 +65,15 @@ class CheckoutController < ApplicationController
 
   private
 
+  def require_login_for_checkout
+    return if logged_in?
+
+    # Store the cart URL so user can return after login to see merged cart
+    session[:forwarding_url] = cart_path
+    flash[:warning] = t(".login_required")
+    redirect_to login_path
+  end
+
   def load_order_by_number
     @order = Order.find_by!(order_number: params[:order_number])
   rescue ActiveRecord::RecordNotFound
@@ -87,6 +98,16 @@ class CheckoutController < ApplicationController
 
     flash[:warning] = t(".cart_empty")
     redirect_to cart_path
+  end
+
+  def validate_cart_items
+    if @cart.has_invalid_items?
+      flash[:warning] = t(".cart_items_invalid")
+      redirect_to cart_path
+    elsif @cart.has_updated_items?
+      flash[:warning] = t(".cart_items_changed")
+      redirect_to cart_path
+    end
   end
 
   def set_checkout_data

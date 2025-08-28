@@ -8,7 +8,7 @@ class Admin::ProductsController < Admin::BaseController
 
   before_action :load_product,
                 only: %i(show edit update destroy toggle_status toggle_featured
-                        remove_image)
+                        remove_image duplicate)
   before_action :load_categories, only: %i(new edit create update)
   before_action :load_brands, only: %i(new edit create update)
   before_action :load_image, only: %i(remove_image)
@@ -50,6 +50,9 @@ class Admin::ProductsController < Admin::BaseController
   # PATCH/PUT /admin/products/:id
   def update
     if @product.update(product_params)
+      # Attach new images if any
+      attach_new_images if params[:product][:images].present?
+
       flash[:success] = t(".success")
       redirect_to admin_product_path(@product)
     else
@@ -59,10 +62,14 @@ class Admin::ProductsController < Admin::BaseController
 
   # DELETE /admin/products/:id
   def destroy
-    if @product.destroy
-      flash[:success] = t(".success")
+    if @product.can_be_deleted?
+      if @product.destroy
+        flash[:success] = t(".success")
+      else
+        flash[:danger] = t(".error")
+      end
     else
-      flash[:danger] = t(".error")
+      flash[:warning] = t(".cannot_delete_has_orders")
     end
     redirect_to admin_products_path
   end
@@ -103,6 +110,44 @@ class Admin::ProductsController < Admin::BaseController
     # position column
   end
 
+  # POST /admin/products/:id/duplicate
+  def duplicate # rubocop:disable Metrics/AbcSize
+    Product.transaction do
+      duplicated_product = @product.dup
+
+      # Update name and SKU to make them unique
+      duplicated_product.name = "#{@product.name} (Copy)"
+      duplicated_product.sku = nil # Will auto-generate in model callback
+      duplicated_product.slug = nil # Will auto-generate in model callback
+
+      # Set as inactive by default
+      duplicated_product.is_active = false
+      duplicated_product.is_featured = false
+
+      if duplicated_product.save
+        # Copy categories
+        duplicated_product.category_ids = @product.category_ids
+
+        # Copy images if they exist
+        if @product.images.attached?
+          @product.images.each do |image|
+            duplicated_product.images.attach(image.blob)
+          end
+        end
+
+        flash[:success] = t(".success", name: duplicated_product.name)
+        redirect_to edit_admin_product_path(duplicated_product)
+      else
+        flash[:danger] = t(".error")
+        redirect_to admin_product_path(@product)
+      end
+    end
+  rescue StandardError => e
+    Rails.logger.error "Product duplication failed: #{e.message}"
+    flash[:danger] = t(".error")
+    redirect_to admin_product_path(@product)
+  end
+
   # DELETE /admin/products/:id/remove_image/:image_id
   def remove_image
     if @image.purge
@@ -133,9 +178,23 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def product_params
-    permitted_params =
-      Product::PERMITTED_PARAMS + [category_ids: [], images: []]
+    # Exclude images from mass assignment to handle them separately
+    permitted_params = Product::PERMITTED_PARAMS + [category_ids: []]
+
+    # Only include images for create action, not update
+    permitted_params += [images: []] if action_name == "create"
+
     params.require(:product).permit(permitted_params)
+  end
+
+  def attach_new_images
+    return if params[:product][:images].blank?
+
+    params[:product][:images].each do |image|
+      next if image.blank?
+
+      @product.images.attach(image)
+    end
   end
 
   def filtered_products # rubocop:disable Metrics/AbcSize
@@ -151,7 +210,7 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def load_image
-    @image = @product.images.find_by(id: params[:image_id])
+    @image = @product.images.find {|img| img.signed_id == params[:image_id]}
     return if @image
 
     flash[:danger] = t("admin.products.image_not_found")

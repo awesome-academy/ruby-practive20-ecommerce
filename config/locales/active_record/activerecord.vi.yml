@@ -8,6 +8,8 @@ vi:
         gender: "Giới tính"
         password: "Mật khẩu"
         password_confirmation: "Xác nhận mật khẩu"
+      product:
+        images: "Hình ảnh"
     errors:
       models:
         user:
@@ -27,3 +29,8 @@ vi:
               blank: "không được để trống"
             password:
               too_short: "quá ngắn (tối thiểu %{count} ký tự)"
+        product:
+          attributes:
+            images:
+              invalid_format: "phải có định dạng JPG, PNG, GIF hoặc WebP"
+              too_large: "phải nhỏ hơn %{size} MB"

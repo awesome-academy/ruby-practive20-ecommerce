@@ -22,23 +22,35 @@ class OrdersController < ApplicationController
 
   # PATCH /orders/:id/cancel
   def cancel # rubocop:disable Metrics/AbcSize
-    begin
-      if @order.can_be_cancelled?
-        @order.cancel!(t(".user_cancellation"))
+    reason = params[:cancelled_reason]
+
+    if reason.blank?
+      flash[:danger] = t(".cancel_reason_required")
+      redirect_to @order
+      return
+    end
+
+    if @order.can_be_cancelled?
+      if @order.cancel!(reason)
+        create_status_history("cancelled", reason)
         flash[:success] =
           t(".cancel_success", order_number: @order.order_number)
       else
         flash[:danger] = t(".cancel_failed")
       end
-    rescue ActiveRecord::RecordInvalid => e
-      flash[:danger] = t(".cancel_error")
-      Rails.logger.error "Order cancellation failed: #{e.message}"
-    rescue StandardError => e
-      flash[:danger] = t(".unexpected_error")
-      Rails.logger.error "Unexpected error during order cancellation:
-                          #{e.message}"
+    else
+      flash[:danger] = t(".cannot_cancel")
     end
 
+    redirect_to @order
+  rescue ActiveRecord::RecordInvalid => e
+    flash[:danger] = t(".cancel_error")
+    Rails.logger.error "Order cancellation failed: #{e.message}"
+    redirect_to @order
+  rescue StandardError => e
+    flash[:danger] = t(".unexpected_error")
+    Rails.logger.error "Unexpected error
+                        during order cancellation: #{e.message}"
     redirect_to @order
   end
 
@@ -63,5 +75,14 @@ class OrdersController < ApplicationController
     return true if logged_in? && order.user == current_user
 
     false
+  end
+
+  def create_status_history status, reason = nil
+    @order.order_status_histories.create!(
+      status:,
+      note: reason,
+      admin_user: nil, # User cancellation, not admin
+      changed_at: Time.current
+    )
   end
 end

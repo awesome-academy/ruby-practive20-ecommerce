@@ -31,11 +31,14 @@ en:
       stats:
         products: "Products"
         categories: "Categories"
+        orders: "Orders"
         featured_products: "Featured Products"
         featured: "Featured"
         low_stock: "Low Stock"
         active: "Active"
         inactive: "Inactive"
+        pending: "Pending"
+        completed: "Completed"
         out_of_active: "Out of %{total} active"
         need_attention: "Need attention"
       recent_products:

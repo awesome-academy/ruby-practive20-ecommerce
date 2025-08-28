@@ -95,6 +95,7 @@ en:
         success: "Product featured status changed to %{featured}"
         error: "Failed to change featured status"
       not_found: "Product not found"
+      image_not_found: "Image not found"
       remove_image:
         image_removed: "Image removed successfully"
         image_remove_error: "Failed to remove image"

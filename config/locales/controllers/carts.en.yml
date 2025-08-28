@@ -28,6 +28,12 @@ en:
       one: "%{count} available"
       other: "%{count} available"
   carts:
+    show:
+      items_removed_notice: "Some items were removed from your cart:"
+      items_updated_notice: "Some products in your cart have been updated. Please review before checkout."
+      removed_item_product_deactivated: "%{name} (product deactivated)"
+      removed_item_product_out_of_stock: "%{name} (out of stock)"
+      removed_item_product_unavailable: "%{name} (no longer available)"
     add_item:
       product_not_found: "Product not found"
       item_added_success: "Item added to cart successfully"

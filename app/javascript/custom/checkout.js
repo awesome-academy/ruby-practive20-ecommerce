@@ -21,12 +21,23 @@ function initializeCheckoutJS() {
     return; // Exit if required elements are not found
   }
   
-  const subtotal = parseFloat(subtotalElement.textContent.replace(/[^\d]/g, ''));
-  console.log('Initializing checkout with subtotal:', subtotal);
+  // Parse Vietnamese currency format: "30,558.00 ₫" -> 30558.00
+  const subtotalText = subtotalElement.textContent.trim();
+  // Remove currency symbol and spaces, keep dots and commas for now
+  let cleanText = subtotalText.replace(/₫|\s/g, '');
+  // Handle Vietnamese number format: replace comma thousands separator but keep decimal dot
+  // Pattern: digits,digits,digits.digits -> digits digits digits.digits -> digitsdigitsdigits.digits
+  cleanText = cleanText.replace(/(\d+),(\d{3})/g, '$1$2');
+  const subtotal = parseFloat(cleanText) || 0;
+  console.log('Initializing checkout with subtotal:', subtotal, 'from text:', subtotalText, 'cleaned:', cleanText);
   
-  // Function to format currency in Vietnamese format
+  // Function to format currency in Vietnamese format to match database format
   function formatCurrency(amount) {
-    return new Intl.NumberFormat('vi-VN').format(amount) + ' ₫';
+    // Convert to fixed 2 decimals and format with Vietnamese style
+    const formatted = amount.toFixed(2);
+    const parts = formatted.split('.');
+    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return integerPart + ',00 ₫';
   }
   
   // Remove any existing event listeners to prevent duplicates

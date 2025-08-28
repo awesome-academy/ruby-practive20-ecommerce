@@ -34,9 +34,18 @@ en:
         toggle_status: "Toggle Status"
         toggle_featured: "Toggle Featured"
         delete: "Delete"
+        confirm_duplicate: "Are you sure you want to duplicate this product?"
         confirm_toggle_status: "Are you sure you want to toggle the status?"
         confirm_toggle_featured: "Are you sure you want to toggle featured status?"
         confirm_delete: "Are you sure you want to delete this product?"
+
+      duplicate:
+        success: "Product '%{name}' duplicated successfully"
+        error: "Failed to duplicate product"
+
+      remove_image:
+        image_removed: "Image removed successfully"
+        image_remove_error: "Failed to remove image"
 
       new:
         title: "New Product"
@@ -69,7 +78,11 @@ en:
         image: "Product Image"
         product_image: "Upload Images"
         image_help: "Recommended: 500x500px, JPG/PNG format. Multiple images allowed"
+        image_size_limit: "Maximum file size: %{size} MB"
+        image_formats: "Allowed formats: %{formats}"
         current_images: "Current images"
+        remove_image: "Remove"
+        confirm_remove_image: "Are you sure you want to remove this image?"
         settings: "Settings"
         active_product: "Active Product"
         featured_product: "Featured Product"
@@ -77,3 +90,8 @@ en:
         update_product: "Update Product"
         cancel: "Cancel"
         view_product: "View Product"
+
+      destroy:
+        success: "Product deleted successfully"
+        error: "Failed to delete product"
+        cannot_delete_has_orders: "Cannot delete product that has been ordered or is in customer carts. Please deactivate the product instead."

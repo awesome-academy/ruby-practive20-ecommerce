@@ -7,12 +7,11 @@ class Order < ApplicationRecord
 
   # Enums
   enum status: {
-    pending_confirmation: 0,
-    confirmed: 1,
-    processing: 2,
-    shipping: 3,
-    completed: 4,
-    cancelled: 5
+    pending: 0,
+    processing: 1,
+    confirmed: 2,
+    delivered: 3,
+    cancelled: 4
   }, _prefix: true
 
   enum payment_method: {
@@ -38,6 +37,8 @@ class Order < ApplicationRecord
   belongs_to :user, optional: true, class_name: User.name
   has_many :order_items, dependent: :destroy, class_name: OrderItem.name
   has_many :products, through: :order_items, class_name: Product.name
+  has_many :order_status_histories, dependent: :destroy,
+class_name: OrderStatusHistory.name
 
   # Validations
   validates :order_number, presence: true, uniqueness: true
@@ -67,57 +68,64 @@ class Order < ApplicationRecord
 
   # Instance methods
   def can_be_cancelled?
-    status_pending_confirmation?
-  end
-
-  def can_be_confirmed?
-    status_pending_confirmation?
+    status_pending? || status_processing?
   end
 
   def can_be_processed?
-    status_confirmed?
+    status_pending?
   end
 
-  def can_be_shipped?
+  def can_be_confirmed?
     status_processing?
   end
 
-  def can_be_completed?
-    status_shipping?
+  def can_be_delivered?
+    status_confirmed?
+  end
+
+  def can_transition_to? new_status
+    case status.to_sym
+    when :pending
+      %w(processing cancelled).include?(new_status)
+    when :processing
+      %w(confirmed cancelled).include?(new_status)
+    when :confirmed
+      %w(delivered).include?(new_status)
+    else
+      false
+    end
   end
 
   def total_items
     order_items.sum(:quantity)
   end
 
-  def confirm!
-    return false unless can_be_confirmed?
-
-    update!(status: :confirmed, confirmed_at: Time.current)
-  end
-
   def process!
     return false unless can_be_processed?
 
     update!(status: :processing, processing_at: Time.current)
+    true
   end
 
-  def ship!
-    return false unless can_be_shipped?
+  def confirm!
+    return false unless can_be_confirmed?
 
-    update!(status: :shipping, shipping_at: Time.current)
+    update!(status: :confirmed, confirmed_at: Time.current)
+    true
   end
 
-  def complete!
-    return false unless can_be_completed?
+  def deliver!
+    return false unless can_be_delivered?
 
     transaction do
-      update!(status: :completed, completed_at: Time.current)
+      update!(status: :delivered, delivered_at: Time.current)
       # Update product sold counts
       order_items.includes(:product).find_each do |item|
         item.product.increment!(:sold_count, item.quantity)
       end
     end
+
+    true
   end
 
   def cancel! reason = nil
@@ -132,6 +140,8 @@ class Order < ApplicationRecord
       # Restore stock quantities
       restore_stock_quantities!
     end
+
+    true
   end
 
   def status_display
@@ -170,14 +180,12 @@ class Order < ApplicationRecord
 
   def update_status_timestamps # rubocop:disable Metrics/AbcSize
     case status.to_sym
-    when :confirmed
-      self.confirmed_at = Time.current if confirmed_at.blank?
     when :processing
       self.processing_at = Time.current if processing_at.blank?
-    when :shipping
-      self.shipping_at = Time.current if shipping_at.blank?
-    when :completed
-      self.completed_at = Time.current if completed_at.blank?
+    when :confirmed
+      self.confirmed_at = Time.current if confirmed_at.blank?
+    when :delivered
+      self.delivered_at = Time.current if delivered_at.blank?
     when :cancelled
       self.cancelled_at = Time.current if cancelled_at.blank?
     end

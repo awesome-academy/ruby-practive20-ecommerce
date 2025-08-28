@@ -13,6 +13,7 @@ en:
     signup: "Sign up now!"
     account: "Account"
     profile: "Profile"
+    order_history: "Order History"
     settings: "Settings"
     logout: "Log out"
     cart: "Cart"
@@ -78,3 +79,7 @@ en:
       no: "Not Featured"
     categories:
       direct_products: "Direct:"
+  javascript:
+    image_upload:
+      file_size_error: "File size must be less than %{size} MB"
+      invalid_format: "Invalid file format. Please use JPG, PNG, GIF, or WebP"

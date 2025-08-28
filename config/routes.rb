@@ -58,6 +58,7 @@ Rails.application.routes.draw do
 
     # Admin routes
     namespace :admin do
+      # GET /admin
       root "dashboard#index"
       resources :categories do
         member do
@@ -72,6 +73,7 @@ Rails.application.routes.draw do
         member do
           patch :toggle_status
           patch :toggle_featured
+          post :duplicate
           delete "remove_image/:image_id", to: "products#remove_image", as: :remove_image
         end
         collection do
@@ -85,6 +87,15 @@ Rails.application.routes.draw do
         end
         collection do
           patch :bulk_update
+        end
+      end
+      resources :orders, only: %i[index show] do
+        member do
+          patch :process_order
+          patch :confirm
+          patch :deliver
+          patch :update_status
+          patch :cancel
         end
       end
     end

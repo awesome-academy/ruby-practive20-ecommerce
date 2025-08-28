@@ -24,6 +24,9 @@ vi:
     out_of_stock: "Hết hàng"
     out_of_stock_warning: "Một số sản phẩm trong giỏ hàng đã hết hàng"
     cannot_checkout_out_of_stock: "Không thể thanh toán khi có sản phẩm hết hàng"
+    cart_validation_warning: "Một số sản phẩm trong giỏ hàng không còn khả dụng hoặc đã được cập nhật"
+    cart_updated_warning: "Một số sản phẩm trong giỏ hàng vừa được cập nhật. Vui lòng kiểm tra trước khi thanh toán."
+    cannot_checkout_invalid_items: "Không thể thanh toán. Vui lòng kiểm tra lại giỏ hàng."
     you_might_also_like: "Có thể bạn cũng thích"
     view_all_products: "Xem tất cả sản phẩm"
     available:

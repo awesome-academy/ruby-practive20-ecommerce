@@ -139,7 +139,9 @@
           <div class="d-flex justify-content-between">
             <div>
               <%= link_to t(".edit"), edit_admin_product_path(@product), class: "btn btn-primary" %>
-              <%= link_to t(".duplicate"), admin_products_path, class: "btn btn-info" %>
+              <%= link_to t(".duplicate"), duplicate_admin_product_path(@product), 
+                          data: { turbo_method: :post, turbo_confirm: t(".confirm_duplicate") },
+                          class: "btn btn-info" %>
             </div>
             <div>
               <%= link_to t(".toggle_status"), toggle_status_admin_product_path(@product),

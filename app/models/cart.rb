@@ -46,6 +46,36 @@ class Cart < ApplicationRecord
     end
   end
 
+  def clean_invalid_items!
+    removed_items = []
+
+    cart_items.includes(:product).find_each do |item|
+      removal_reason = get_item_removal_reason(item)
+      next unless removal_reason
+
+      removed_items << {
+        name: item.product&.name || "Unknown Product",
+        reason: removal_reason
+      }
+      item.destroy!
+    end
+
+    removed_items
+  end
+
+  def has_invalid_items?
+    cart_items.includes(:product).any? do |item|
+      get_item_removal_reason(item).present?
+    end
+  end
+
+  def has_updated_items?
+    cart_items.includes(:product).any? do |item|
+      item.product_updated_since_cart? && item
+        .product&.available_for_purchase? && item.in_stock?
+    end
+  end
+
   def add_product product, variant: nil, quantity: 1
     existing_item = cart_items.find_by(
       product:,
@@ -111,6 +141,23 @@ class Cart < ApplicationRecord
   end
 
   private
+
+  def get_removal_reason item
+    return "product_not_found" if item.product.nil?
+    return "product_inactive" unless item.product.active?
+    return "out_of_stock" unless item.in_stock?
+
+    "unknown"
+  end
+
+  def get_item_removal_reason item
+    return "product_not_found" if item.product.nil?
+    return "product_inactive" unless item.product.active?
+    return "out_of_stock" unless item.in_stock?
+
+    # Don't remove items that are just updated but still available
+    nil
+  end
 
   def only_one_active_cart_per_session
     return if session_id.blank?

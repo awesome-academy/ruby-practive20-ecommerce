@@ -3,24 +3,32 @@ class SessionsController < ApplicationController
   def new; end
 
   # POST /login
-  def create # rubocop:disable Metrics/AbcSize
+  def create # rubocop:disable Metrics/AbcSize,Metrics/PerceivedComplexity
     user = User.find_by(email: params.dig(:session, :email)&.downcase)
     if user&.authenticate(params.dig(:session, :password))
-      # Store cart session ID before resetting session
+      # Store important session data before reset
       cart_session_id = session[:cart_session_id]
+      forwarding_url = session[:forwarding_url]
 
       reset_session
       log_in user
 
-      # Restore cart session ID for cart merging
+      # Restore important session data
       session[:cart_session_id] = cart_session_id if cart_session_id.present?
+      session[:forwarding_url] = forwarding_url if forwarding_url.present?
 
       # Explicitly trigger cart merge after login
       sync_guest_cart_with_user_cart
 
       remember_user_if_needed(user)
       flash[:success] = t(".login_success")
-      redirect_to user
+
+      # Redirect based on user role
+      if user.admin?
+        redirect_to admin_root_path
+      else
+        redirect_back_or(root_path)
+      end
     else
       flash.now[:danger] = t(".login_failed")
       render :new, status: :unprocessable_entity

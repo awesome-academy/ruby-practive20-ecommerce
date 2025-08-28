@@ -16,7 +16,7 @@ vi:
         no_image: "Không có hình ảnh"
         name: "Tên"
         sku: "Mã SKU"
-        short_description: "Short Description"
+        short_description: "Mô tả ngắn"
         description: "Mô tả"
         categories: "Danh mục"
         brand: "Thương hiệu"
@@ -34,9 +34,18 @@ vi:
         toggle_status: "Thay đổi trạng thái"
         toggle_featured: "Thay đổi nổi bật"
         delete: "Xóa"
+        confirm_duplicate: "Bạn có chắc muốn nhân bản sản phẩm này?"
         confirm_toggle_status: "Bạn có chắc muốn thay đổi trạng thái?"
         confirm_toggle_featured: "Bạn có chắc muốn thay đổi trạng thái nổi bật?"
         confirm_delete: "Bạn có chắc muốn xóa sản phẩm này?"
+
+      duplicate:
+        success: "Sản phẩm '%{name}' đã được nhân bản thành công"
+        error: "Không thể nhân bản sản phẩm"
+
+      remove_image:
+        image_removed: "Đã xóa ảnh thành công"
+        image_remove_error: "Không thể xóa ảnh"
 
       new:
         title: "Thêm sản phẩm mới"
@@ -69,7 +78,11 @@ vi:
         image: "Hình ảnh sản phẩm"
         product_image: "Tải nhiều ảnh lên"
         image_help: "Khuyến nghị: 500x500px, định dạng JPG/PNG. Cho phép nhiều ảnh"
+        image_size_limit: "Kích thước file tối đa: %{size} MB"
+        image_formats: "Định dạng cho phép: %{formats}"
         current_images: "Ảnh hiện tại"
+        remove_image: "Xóa"
+        confirm_remove_image: "Bạn có chắc muốn xóa ảnh này?"
         settings: "Cài đặt"
         active_product: "Sản phẩm hoạt động"
         featured_product: "Sản phẩm nổi bật"
@@ -77,3 +90,8 @@ vi:
         update_product: "Cập nhật sản phẩm"
         cancel: "Hủy"
         view_product: "Xem sản phẩm"
+
+      destroy:
+        success: "Đã xóa sản phẩm thành công"
+        error: "Không thể xóa sản phẩm"
+        cannot_delete_has_orders: "Không thể xóa sản phẩm đã được đặt hàng hoặc có trong giỏ hàng của khách hàng. Vui lòng vô hiệu hóa sản phẩm thay thế."

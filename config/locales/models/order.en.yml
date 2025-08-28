@@ -3,10 +3,9 @@ en:
     order:
       statuses:
         pending: "Pending"
-        confirmed: "Confirmed"
         processing: "Processing"
-        shipping: "Shipping"
-        completed: "Completed"
+        confirmed: "Confirmed"
+        delivered: "Delivered"
         cancelled: "Cancelled"
       payment_statuses:
         unpaid: "Unpaid"

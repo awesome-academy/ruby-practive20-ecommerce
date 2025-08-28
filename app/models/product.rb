@@ -25,6 +25,8 @@ length: {maximum: Settings.business.max_sku_length}
   validates :stock_quantity, presence: true,
             numericality: {greater_than_or_equal_to: 0}
   validate :sale_price_less_than_base_price
+  validate :image_format
+  validate :image_size
 
   # Callbacks
   before_validation :generate_slug_and_sku
@@ -50,16 +52,20 @@ length: {maximum: Settings.business.max_sku_length}
             "%#{query}%", "%#{query}%")
     end
   }
-  scope :base_price_gteq, lambda {|min_price|
-    where("base_price >= ?", min_price) if min_price.present?
+  scope :current_price_gteq, lambda {|min_price|
+    if min_price.present?
+      where("COALESCE(sale_price, base_price) >= ?", min_price)
+    end
   }
-  scope :base_price_lteq, lambda {|max_price|
-    where("base_price <= ?", max_price) if max_price.present?
+  scope :current_price_lteq, lambda {|max_price|
+    if max_price.present?
+      where("COALESCE(sale_price, base_price) <= ?", max_price)
+    end
   }
   scope :in_price_range, lambda {|min, max|
     scope = all
-    scope = scope.base_price_gteq(min) if min.present?
-    scope = scope.base_price_lteq(max) if max.present?
+    scope = scope.current_price_gteq(min) if min.present?
+    scope = scope.current_price_lteq(max) if max.present?
     scope
   }
   scope :by_category, lambda {|category_id|
@@ -104,8 +110,8 @@ length: {maximum: Settings.business.max_sku_length}
     case sort_option
     when "name_asc" then order(:name)
     when "name_desc" then order(name: :desc)
-    when "price_asc" then order(:base_price)
-    when "price_desc" then order(base_price: :desc)
+    when "price_asc" then order(Arel.sql("COALESCE(sale_price, base_price) ASC")) # rubocop:disable Layout/LineLength
+    when "price_desc" then order(Arel.sql("COALESCE(sale_price, base_price) DESC")) # rubocop:disable Layout/LineLength
     when "stock_asc" then order(:stock_quantity)
     when "stock_desc" then order(stock_quantity: :desc)
     when "created_asc" then order(:created_at)
@@ -150,8 +156,8 @@ length: {maximum: Settings.business.max_sku_length}
   # Sort scopes - converted from sort_by_param method
   scope :sort_by_name_asc, -> {order(:name)}
   scope :sort_by_name_desc, -> {order(name: :desc)}
-  scope :sort_by_price_asc, -> {order(:base_price)}
-  scope :sort_by_price_desc, -> {order(base_price: :desc)}
+  scope :sort_by_price_asc, -> {order(Arel.sql("COALESCE(sale_price, base_price) ASC"))} # rubocop:disable Layout/LineLength
+  scope :sort_by_price_desc, -> {order(Arel.sql("COALESCE(sale_price, base_price) DESC"))} # rubocop:disable Layout/LineLength
   scope :sort_by_newest, -> {order(created_at: :desc)}
   scope :sort_by_oldest, -> {order(created_at: :asc)}
   scope :sort_by_popular, -> {order(view_count: :desc)}
@@ -280,6 +286,16 @@ length: {maximum: Settings.business.max_sku_length}
     image_url.present? || images.attached?
   end
 
+  def can_be_deleted?
+    # Check if product is referenced in any order_items or cart_items
+    !OrderItem.exists?(product_id: id) && !CartItem.exists?(product_id: id)
+  end
+
+  # Check if product is available for purchase
+  def available_for_purchase?
+    active? && in_stock?
+  end
+
   private
 
   def generate_slug_and_sku
@@ -326,5 +342,29 @@ length: {maximum: Settings.business.max_sku_length}
     return unless sale_price >= base_price
 
     errors.add(:sale_price, :less_than_base_price)
+  end
+
+  def image_format
+    return unless images.attached?
+
+    acceptable_types = Settings.product.allowed_mime_types
+    images.each do |image|
+      next if acceptable_types.include?(image.blob.content_type)
+
+      errors.add(:images, :invalid_format)
+      break
+    end
+  end
+
+  def image_size
+    return unless images.attached?
+
+    max_size = Settings.product.max_image_size.megabytes
+    images.each do |image|
+      next unless image.blob.byte_size > max_size
+
+      errors.add(:images, :too_large, size: Settings.product.max_image_size)
+      break
+    end
   end
 end

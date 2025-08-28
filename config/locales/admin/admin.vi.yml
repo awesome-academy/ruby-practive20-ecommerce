@@ -31,11 +31,14 @@ vi:
       stats:
         products: "Sản phẩm"
         categories: "Danh mục"
+        orders: "Đơn hàng"
         featured_products: "Sản phẩm nổi bật"
         featured: "Nổi bật"
         low_stock: "Tồn kho thấp"
         active: "Đang hoạt động"
         inactive: "Không hoạt động"
+        pending: "Chờ xử lý"
+        completed: "Hoàn thành"
         out_of_active: "Trong số %{total} đang hoạt động"
         need_attention: "Cần chú ý"
       recent_products:

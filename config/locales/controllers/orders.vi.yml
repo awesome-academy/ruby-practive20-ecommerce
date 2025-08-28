@@ -1,5 +1,29 @@
 vi:
   orders:
+    status:
+      pending_confirmation: "Chờ xác nhận"
+      pending: "Chờ xử lý"
+      processing: "Đang xử lý"
+      confirmed: "Đã xác nhận"
+      shipping: "Đang giao hàng"
+      delivered: "Đã giao hàng"
+      completed: "Hoàn thành"
+      cancelled: "Đã hủy"
+    payment_method:
+      cod: "Thanh toán khi nhận hàng"
+      bank_transfer: "Chuyển khoản ngân hàng"
+      ewallet: "Ví điện tử"
+    payment_status:
+      unpaid: "Chưa thanh toán"
+      paid: "Đã thanh toán"
+      failed: "Thanh toán thất bại"
+      refunded: "Đã hoàn tiền"
+    shipping_method:
+      standard: "Tiêu chuẩn"
+      express: "Nhanh"
+      same_day: "Trong ngày"
+    system: "Hệ thống"
+
     index:
       title: "Đơn hàng của tôi"
       view_details: "Xem chi tiết"
@@ -11,11 +35,17 @@ vi:
       start_shopping: "Bắt đầu mua sắm"
       login_required: "Vui lòng đăng nhập để xem đơn hàng"
       access_denied: "Bạn không có quyền truy cập đơn hàng này"
+
     cancel:
       user_cancellation: "Khách hàng hủy đơn hàng"
       cancel_success: "Đã hủy đơn hàng %{order_number} thành công"
       cancel_failed: "Không thể hủy đơn hàng này"
+      cannot_cancel: "Đơn hàng này không thể hủy"
+      cancel_reason_required: "Cần có lý do hủy đơn hàng"
+      cancel_error: "Có lỗi xảy ra khi hủy đơn hàng"
+      unexpected_error: "Có lỗi không mong muốn xảy ra"
       access_denied: "Bạn không có quyền truy cập đơn hàng này"
+
     show:
       title: "Đơn hàng %{order_number}"
       order_items: "Sản phẩm trong đơn hàng"
@@ -27,10 +57,9 @@ vi:
       order_timeline: "Tiến trình đơn hàng"
       timeline:
         order_placed: "Đặt hàng"
-        order_confirmed: "Xác nhận"
         order_processing: "Đang xử lý"
-        order_shipping: "Đang giao hàng"
-        order_completed: "Hoàn thành"
+        order_confirmed: "Xác nhận"
+        order_delivered: "Đã giao hàng"
         order_cancelled: "Đã hủy"
       order_summary: "Tóm tắt đơn hàng"
       payment_info: "Thông tin thanh toán"
@@ -43,6 +72,12 @@ vi:
       total: "Tổng cộng"
       cancel_order: "Hủy đơn hàng"
       cancel_confirm: "Bạn có chắc chắn muốn hủy đơn hàng này?"
+      cancel_reason: "Lý do hủy đơn"
+      cancel_reason_placeholder: "Vui lòng cung cấp lý do hủy đơn hàng..."
+      confirm_cancel: "Xác nhận hủy đơn"
       back_to_orders: "Quay lại danh sách"
       continue_shopping: "Tiếp tục mua sắm"
+      cancelled_reason: "Lý do hủy"
+      created_at: "Đặt hàng ngày %{date}"
+      order_not_found: "Không tìm thấy đơn hàng"
       access_denied: "Bạn không có quyền truy cập đơn hàng này"

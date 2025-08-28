@@ -7,6 +7,15 @@ class CartsController < ApplicationController
 
   # GET /cart
   def show
+    # Clean invalid items and show notifications
+    removed_items = @cart.clean_invalid_items!
+
+    if removed_items.any?
+      flash.now[:warning] = build_removal_message(removed_items)
+    elsif @cart.has_updated_items?
+      flash.now[:info] = t("carts.show.items_updated_notice")
+    end
+
     @cart_items = @cart.cart_items.includes(:product, :variant)
     @suggested_products = suggested_products
   end
@@ -80,30 +89,30 @@ class CartsController < ApplicationController
 
   # DELETE /cart/items/:id
   def destroy_item
-    @cart_item.destroy
+    if @cart_item.destroy
+      # Calculate updated values
+      cart_total = @cart.total_amount
+      cart_items_count = @cart.total_items
 
-    # Calculate updated values
-    cart_total = @cart.total_amount
-    cart_items_count = @cart.total_items
-
-    respond_to do |format|
-      format.json do
-        render json: {
-          success: true,
-          message: t(".item_removed_success"),
-          cart_total:,
-          cart_items_count:
-        }
+      respond_to do |format|
+        format.json do
+          render json: {
+            success: true,
+            message: t(".item_removed_success"),
+            cart_total:,
+            cart_items_count:
+          }
+        end
+        format.html {redirect_to cart_path, notice: t(".item_removed_success")}
       end
-      format.html {redirect_to cart_path, notice: t(".item_removed_success")}
-    end
-  rescue StandardError
-    respond_to do |format|
-      format.json do
-        render json: {success: false, message: t(".remove_item_error")},
-               status: :unprocessable_entity
+    else
+      respond_to do |format|
+        format.json do
+          render json: {success: false, message: t(".remove_item_error")},
+                 status: :unprocessable_entity
+        end
+        format.html {redirect_to cart_path, alert: t(".remove_item_error")}
       end
-      format.html {redirect_to cart_path, alert: t(".remove_item_error")}
     end
   end
 
@@ -131,6 +140,23 @@ class CartsController < ApplicationController
   end
 
   private
+
+  def build_removal_message removed_items
+    messages = removed_items.map do |item|
+      reason_key = case item[:reason]
+                   when "product_inactive"
+                     "product_deactivated"
+                   when "out_of_stock"
+                     "product_out_of_stock"
+                   else
+                     "product_unavailable"
+                   end
+
+      t("carts.show.removed_item_#{reason_key}", name: item[:name])
+    end
+
+    "#{t('carts.show.items_removed_notice')} #{messages.join(', ')}"
+  end
 
   def load_product
     @product = Product.find_by(id: params[:product_id])

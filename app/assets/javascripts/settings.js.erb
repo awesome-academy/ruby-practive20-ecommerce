@@ -1,0 +1,7 @@
+// Expose Rails Settings to JavaScript
+window.Settings = {
+  product: {
+    max_image_size: <%= Settings.product.max_image_size %>,
+    allowed_mime_types: <%= Settings.product.allowed_mime_types.to_json.html_safe %>
+  }
+};
