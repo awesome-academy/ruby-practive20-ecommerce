@@ -6,6 +6,13 @@
         <li><%= link_to t("navigation.home"), root_path %></li>
         <li><%= link_to t("navigation.products"), products_path %></li>
         <li><%= link_to t("navigation.help"), help_path %></li>
+        <li>
+          <%= link_to cart_path, class: "cart-link" do %>
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-text"><%= t("navigation.cart") %></span>
+            <span id="cart-items-count" class="cart-badge"><%= current_cart_items_count %></span>
+          <% end %>
+        </li>
         <% if logged_in? %>
           <li class="dropdown">
             <a href="#" id="account" class="dropdown-toggle">

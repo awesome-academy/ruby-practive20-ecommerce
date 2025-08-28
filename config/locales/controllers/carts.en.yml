@@ -1,0 +1,55 @@
+en:
+  cart:
+    title: "Shopping Cart"
+    add_to_cart: "Add to Cart"
+    you_might_also_like: "You might also like"
+    view_all_products: "View All Products"
+    empty:
+      title: "Your cart is empty"
+      message: "Looks like you haven't added any items to your cart yet."
+      start_shopping: "Start Shopping"
+    continue_shopping: "Continue Shopping"
+    clear: "Clear Cart"
+    clear_confirm: "Are you sure you want to clear your cart?"
+    remove: "Remove"
+    remove_confirm: "Are you sure you want to remove this item?"
+    summary: "Order Summary"
+    subtotal: "Subtotal"
+    shipping: "Shipping"
+    calculated_at_checkout: "Calculated at checkout"
+    total: "Total"
+    out_of_stock: "Out of Stock"
+    out_of_stock_warning: "Some items in your cart are out of stock"
+    cannot_checkout_out_of_stock: "Cannot checkout with out of stock items"
+    proceed_to_checkout: "Proceed to Checkout"
+    login_to_checkout: "Login to Checkout"
+    secure_checkout: "Secure checkout with SSL encryption"
+    available:
+      one: "%{count} available"
+      other: "%{count} available"
+  carts:
+    add_item:
+      product_not_found: "Product not found"
+      item_added_success: "Item added to cart successfully"
+      add_item_error: "An error occurred while adding the item to cart"
+    update_item:
+      cart_updated_success: "Cart updated successfully"
+      item_not_found: "Item not found in cart"
+      update_item_error: "An error occurred while updating the cart item"
+    destroy_item:
+      item_removed_success: "Item removed from cart successfully"
+      item_not_found: "Item not found in cart"
+      remove_item_error: "An error occurred while removing the item from cart"
+    clear:
+      cart_cleared_success: "Cart cleared successfully"
+      clear_cart_error: "An error occurred while clearing the cart"
+    javascript:
+      product_added: "Product added to cart"
+      cart_updated: "Cart updated"
+      product_removed: "Product removed from cart"
+      adding_product: "Adding..."
+      error_occurred: "An error occurred"
+      add_product_error: "An error occurred while adding product"
+      update_cart_error: "An error occurred while updating cart"
+      remove_product_error: "An error occurred while removing product"
+      stock_warning: "Only %{count} products left in stock"

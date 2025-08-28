@@ -1,0 +1,78 @@
+<% content_for :title, t(".title") %>
+
+<div class="checkout-success">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="success-message">
+        <div class="success-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        
+        <h1><%= t(".title") %></h1>
+        <p class="lead"><%= t(".message") %></p>
+        
+        <div class="order-details">
+          <h3><%= t(".order_details") %></h3>
+          
+          <table class="table">
+            <tr>
+              <td><strong><%= t(".order_number") %></strong></td>
+              <td><%= @order.order_number %></td>
+            </tr>
+            <tr>
+              <td><strong><%= t(".status") %></strong></td>
+              <td>
+                <span class="badge badge-<%= @order.status %>">
+                  <%= @order.status_display %>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong><%= t(".payment_method") %></strong></td>
+              <td><%= @order.payment_method_display %></td>
+            </tr>
+            <tr>
+              <td><strong><%= t(".shipping_method") %></strong></td>
+              <td><%= @order.shipping_method_display %></td>
+            </tr>
+            <tr>
+              <td><strong><%= t(".total_amount") %></strong></td>
+              <td><%= format_currency(@order.total_amount) %></td>
+            </tr>
+            <tr>
+              <td><strong><%= t(".delivery_address") %></strong></td>
+              <td><%= simple_format(@order.delivery_address) %></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="next-steps">
+          <h4><%= t(".next_steps") %></h4>
+          
+          <% if @order.payment_method_cod? %>
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle"></i>
+              <%= t(".cod_instructions") %>
+            </div>
+          <% else %>
+            <div class="alert alert-success">
+              <i class="fas fa-check-circle"></i>
+              <%= t(".payment_success") %>
+            </div>
+          <% end %>
+          
+          <p><%= t(".email_confirmation") %></p>
+          <p><%= t(".delivery_time") %></p>
+        </div>
+
+        <div class="actions">
+          <% if logged_in? %>
+            <%= link_to t(".view_order"), order_path(@order), class: "btn btn-primary" %>
+            <%= link_to t(".view_all_orders"), orders_path, class: "btn btn-outline-primary" %>
+          <% end %>
+          <%= link_to t(".continue_shopping"), products_path, class: "btn btn-outline-secondary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

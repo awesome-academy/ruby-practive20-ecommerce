@@ -13,7 +13,7 @@
             <% end %>
           </div>
           <div class="text-end">
-            <span class="badge bg-primary"><%= category.products.count %> <%= t("admin.dashboard.category_overview.products") %></span>
+            <span class="badge bg-primary"><%= category.products.size %> <%= t("admin.dashboard.category_overview.products") %></span>
             <span class="badge <%= category.is_active? ? 'bg-success' : 'bg-secondary' %>">
               <%= category.is_active? ? t("admin.dashboard.stats.active") : t("admin.dashboard.stats.inactive") %>
             </span>

@@ -1,0 +1,4 @@
+en:
+  activemodel:
+    models:
+      order_form: "order form"

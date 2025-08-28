@@ -1,0 +1,22 @@
+vi:
+  models:
+    order:
+      statuses:
+        pending: "Đang chờ"
+        confirmed: "Đã xác nhận"
+        processing: "Đang xử lý"
+        shipping: "Đang giao hàng"
+        completed: "Hoàn thành"
+        cancelled: "Đã hủy"
+      payment_statuses:
+        unpaid: "Chưa thanh toán"
+        paid: "Đã thanh toán"
+        refunded: "Đã hoàn tiền"
+      payment_methods:
+        cod: "Thanh toán khi nhận hàng (COD)"
+        bank_transfer: "Chuyển khoản ngân hàng"
+        ewallet: "Ví điện tử"
+      shipping_methods:
+        standard: "Giao hàng tiêu chuẩn"
+        express: "Giao hàng nhanh"
+        same_day: "Giao hàng hỏa tốc"

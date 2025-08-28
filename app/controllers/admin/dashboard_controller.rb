@@ -1,6 +1,7 @@
 class Admin::DashboardController < Admin::BaseController
   RECENT_PRODUCTS_PRELOAD = %i(brand categories).freeze
 
+  # GET /admin
   def index # rubocop:disable Metrics/AbcSize
     @stats = {
       total_products: Product.count,

@@ -1,0 +1,55 @@
+vi:
+  cart:
+    title: "Giỏ hàng"
+    add_to_cart: "Thêm vào giỏ"
+    you_might_also_like: "Bạn có thể thích"
+    view_all_products: "Xem tất cả sản phẩm"
+    empty:
+      title: "Giỏ hàng trống"
+      message: "Có vẻ như bạn chưa thêm sản phẩm nào vào giỏ hàng."
+      start_shopping: "Bắt đầu mua sắm"
+    continue_shopping: "Tiếp tục mua sắm"
+    clear: "Xóa giỏ hàng"
+    clear_confirm: "Bạn có chắc muốn xóa toàn bộ giỏ hàng?"
+    remove: "Xóa"
+    remove_confirm: "Bạn có chắc muốn xóa sản phẩm này?"
+    summary: "Tóm tắt đơn hàng"
+    subtotal: "Tạm tính"
+    shipping: "Phí vận chuyển"
+    calculated_at_checkout: "Tính khi thanh toán"
+    total: "Tổng cộng"
+    out_of_stock: "Hết hàng"
+    out_of_stock_warning: "Một số sản phẩm trong giỏ hàng đã hết hàng"
+    cannot_checkout_out_of_stock: "Không thể thanh toán khi có sản phẩm hết hàng"
+    proceed_to_checkout: "Tiến hành thanh toán"
+    login_to_checkout: "Đăng nhập để thanh toán"
+    secure_checkout: "Thanh toán bảo mật với SSL"
+    available:
+      one: "%{count} available"
+      other: "Còn %{count} sản phẩm"
+  carts:
+    add_item:
+      product_not_found: "Không tìm thấy sản phẩm"
+      item_added_success: "Thêm sản phẩm vào giỏ hàng thành công"
+      add_item_error: "Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng"
+    update_item:
+      cart_updated_success: "Cập nhật giỏ hàng thành công"
+      item_not_found: "Không tìm thấy sản phẩm trong giỏ hàng"
+      update_item_error: "Có lỗi xảy ra khi cập nhật sản phẩm trong giỏ hàng"
+    destroy_item:
+      item_removed_success: "Xóa sản phẩm khỏi giỏ hàng thành công"
+      item_not_found: "Không tìm thấy sản phẩm trong giỏ hàng"
+      remove_item_error: "Có lỗi xảy ra khi xóa sản phẩm khỏi giỏ hàng"
+    clear:
+      cart_cleared_success: "Xóa toàn bộ giỏ hàng thành công"
+      clear_cart_error: "Có lỗi xảy ra khi xóa giỏ hàng"
+    javascript:
+      product_added: "Đã thêm sản phẩm vào giỏ hàng"
+      cart_updated: "Đã cập nhật giỏ hàng"
+      product_removed: "Đã xóa sản phẩm khỏi giỏ hàng"
+      adding_product: "Đang thêm..."
+      error_occurred: "Có lỗi xảy ra"
+      add_product_error: "Có lỗi xảy ra khi thêm sản phẩm"
+      update_cart_error: "Có lỗi xảy ra khi cập nhật giỏ hàng"
+      remove_product_error: "Có lỗi xảy ra khi xóa sản phẩm"
+      stock_warning: "Chỉ còn %{count} sản phẩm trong kho"

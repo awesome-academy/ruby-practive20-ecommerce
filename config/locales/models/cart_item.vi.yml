@@ -1,0 +1,10 @@
+vi:
+  models:
+    cart_item:
+      errors:
+        product_already_in_cart: "Sản phẩm đã có trong giỏ hàng"
+        product_not_active: "Sản phẩm không có sẵn"
+        variant_not_active: "Phiên bản sản phẩm không có sẵn"
+        variant_not_belong_to_product: "Phiên bản sản phẩm không thuộc về sản phẩm này"
+        insufficient_stock: "Chỉ còn %{available} sản phẩm trong kho"
+        out_of_stock: "Sản phẩm đã hết hàng"

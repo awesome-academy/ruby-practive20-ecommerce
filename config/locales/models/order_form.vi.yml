@@ -1,0 +1,4 @@
+vi:
+  activemodel:
+    models:
+      order_form: "đơn đặt hàng"

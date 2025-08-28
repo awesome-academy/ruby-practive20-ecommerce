@@ -1,0 +1,156 @@
+<% content_for :title, t(".title") %>
+
+<div class="checkout-page">
+  <div class="row">
+    <div class="col-md-8">
+      <h1><%= t(".title") %></h1>
+      
+      <%= form_with model: @order_form, url: checkout_path, local: true, class: "checkout-form" do |f| %>
+        <%= render "shared/error_messages", object: f.object %>
+        
+        <!-- Delivery Information -->
+        <div class="checkout-section">
+          <h3><%= t(".delivery_info") %></h3>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <%= f.label :recipient_name, t(".recipient_name") %>
+                <%= f.text_field :recipient_name, class: "form-control", required: true %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <%= f.label :recipient_phone, t(".recipient_phone") %>
+                <%= f.telephone_field :recipient_phone, class: "form-control", 
+                    placeholder: "0987654321", required: true %>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <%= f.label :delivery_address, t(".delivery_address") %>
+            <%= f.text_area :delivery_address, class: "form-control", rows: 3, 
+                placeholder: t(".address_placeholder"), required: true %>
+          </div>
+          
+          <div class="form-group">
+            <%= f.label :note, t(".note") %>
+            <%= f.text_area :note, class: "form-control", rows: 2, 
+                placeholder: t(".note_placeholder") %>
+          </div>
+        </div>
+
+        <!-- Shipping Methods -->
+        <div class="checkout-section">
+          <h3><%= t(".shipping_methods.title") %></h3>
+          
+          <div class="shipping-options">
+            <% @shipping_options.each do |option| %>
+              <div class="shipping-option">
+                <label class="radio-label">
+                  <%= f.radio_button :shipping_method, option[:id], 
+                      data: { price: option[:price] }, class: "shipping-radio" %>
+                  <div class="shipping-info">
+                    <div class="shipping-name">
+                      <%= option[:name] %>
+                      <span class="shipping-price"><%= format_currency(option[:price]) %></span>
+                    </div>
+                    <div class="shipping-desc"><%= option[:description] %></div>
+                  </div>
+                </label>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="checkout-section">
+          <h3><%= t(".payment_methods.title") %></h3>
+          
+          <div class="payment-options">
+            <% @payment_methods.each do |method| %>
+              <div class="payment-option">
+                <label class="radio-label">
+                  <%= f.radio_button :payment_method, method[:id], class: "payment-radio" %>
+                  <div class="payment-info">
+                    <div class="payment-name"><%= method[:name] %></div>
+                    <div class="payment-desc"><%= method[:description] %></div>
+                  </div>
+                </label>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Terms and Conditions -->
+        <div class="checkout-section">
+          <div class="form-group">
+            <label class="checkbox-label">
+              <%= f.check_box :terms_accepted, required: true %>
+              <%= t(".terms_text") %>
+              <%= link_to t(".terms_link"), "#", target: "_blank" %>
+            </label>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-actions">
+          <%= f.submit t(".place_order"), class: "btn btn-primary btn-lg btn-block", 
+              id: "place-order-btn" %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Order Summary Sidebar -->
+    <div class="col-md-4">
+      <div class="order-summary">
+        <h3><%= t(".order_summary") %></h3>
+        
+        <!-- Cart Items -->
+        <div class="cart-items">
+          <% @cart_items.each do |item| %>
+            <div class="cart-item">
+              <div class="item-info">
+                <h5><%= item.product.name %></h5>
+                <% if item.variant %>
+                  <small class="text-muted"><%= item.variant.name %></small>
+                <% end %>
+                <div class="item-details">
+                  <span class="quantity">x<%= item.quantity %></span>
+                  <span class="price"><%= format_currency(item.total_price) %></span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Price Breakdown -->
+        <div class="price-breakdown">
+          <div class="price-row">
+            <span><%= t(".subtotal") %></span>
+            <span><%= format_currency(@subtotal) %></span>
+          </div>
+          
+          <div class="price-row shipping-row">
+            <span><%= t(".shipping") %></span>
+            <span id="shipping-fee">
+              <%= format_currency(@shipping_options.first[:price]) %>
+            </span>
+          </div>
+          
+          <hr>
+          
+          <div class="price-row total-row">
+            <strong>
+              <span><%= t(".total") %></span>
+              <span id="total-amount">
+                <%= format_currency(@subtotal + @shipping_options.first[:price]) %>
+              </span>
+            </strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,216 @@
+<% content_for :title, t(".title", order_number: @order.order_number) %>
+
+<div class="order-detail">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="order-header">
+        <h1><%= t(".title", order_number: @order.order_number) %></h1>
+        <div class="order-meta">
+          <span class="order-date"><%= l(@order.created_at, format: :long) %></span>
+          <span class="order-status">
+            <span class="badge badge-<%= @order.status %>">
+              <%= @order.status_display %>
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Order Items -->
+      <div class="order-section">
+        <h3><%= t(".order_items") %></h3>
+        
+        <div class="order-items">
+          <% @order_items.each do |item| %>
+            <div class="order-item">
+              <div class="item-info">
+                <h5><%= item.product_name %></h5>
+                <% if item.variant_name.present? %>
+                  <small class="text-muted"><%= item.variant_name %></small>
+                <% end %>
+                <% if item.product_sku.present? %>
+                  <small class="sku">SKU: <%= item.product_sku %></small>
+                <% end %>
+              </div>
+              <div class="item-pricing">
+                <div class="unit-price">
+                  <%= format_currency(item.unit_price) %>
+                </div>
+                <div class="quantity">x<%= item.quantity %></div>
+                <div class="total-price">
+                  <strong><%= format_currency(item.total_price) %></strong>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Delivery Information -->
+      <div class="order-section">
+        <h3><%= t(".delivery_info") %></h3>
+        
+        <div class="delivery-details">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="info-group">
+                <label><%= t(".recipient_name") %></label>
+                <p><%= @order.recipient_name %></p>
+              </div>
+              
+              <div class="info-group">
+                <label><%= t(".recipient_phone") %></label>
+                <p><%= @order.recipient_phone %></p>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="info-group">
+                <label><%= t(".delivery_address") %></label>
+                <p><%= simple_format(@order.delivery_address) %></p>
+              </div>
+            </div>
+          </div>
+          
+          <% if @order.note.present? %>
+            <div class="info-group">
+              <label><%= t(".note") %></label>
+              <p><%= simple_format(@order.note) %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Order Timeline -->
+      <div class="order-section">
+        <h3><%= t(".order_timeline") %></h3>
+        
+        <div class="timeline">
+          <div class="timeline-item <%= 'active' if @order.created_at %>">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h5><%= t(".timeline.order_placed") %></h5>
+              <% if @order.created_at %>
+                <p><%= l(@order.created_at, format: :long) %></p>
+              <% end %>
+            </div>
+          </div>
+          
+          <div class="timeline-item <%= 'active' if @order.confirmed_at %>">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h5><%= t(".timeline.order_confirmed") %></h5>
+              <% if @order.confirmed_at %>
+                <p><%= l(@order.confirmed_at, format: :long) %></p>
+              <% end %>
+            </div>
+          </div>
+          
+          <div class="timeline-item <%= 'active' if @order.processing_at %>">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h5><%= t(".timeline.order_processing") %></h5>
+              <% if @order.processing_at %>
+                <p><%= l(@order.processing_at, format: :long) %></p>
+              <% end %>
+            </div>
+          </div>
+          
+          <div class="timeline-item <%= 'active' if @order.shipping_at %>">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h5><%= t(".timeline.order_shipping") %></h5>
+              <% if @order.shipping_at %>
+                <p><%= l(@order.shipping_at, format: :long) %></p>
+              <% end %>
+            </div>
+          </div>
+          
+          <div class="timeline-item <%= 'active' if @order.completed_at %>">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h5><%= t(".timeline.order_completed") %></h5>
+              <% if @order.completed_at %>
+                <p><%= l(@order.completed_at, format: :long) %></p>
+              <% end %>
+            </div>
+          </div>
+          
+          <% if @order.cancelled_at %>
+            <div class="timeline-item cancelled active">
+              <div class="timeline-marker"></div>
+              <div class="timeline-content">
+                <h5><%= t(".timeline.order_cancelled") %></h5>
+                <p><%= l(@order.cancelled_at, format: :long) %></p>
+                <% if @order.cancelled_reason.present? %>
+                  <p class="reason"><%= @order.cancelled_reason %></p>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Summary Sidebar -->
+    <div class="col-md-4">
+      <div class="order-summary">
+        <h3><%= t(".order_summary") %></h3>
+        
+        <!-- Payment Information -->
+        <div class="summary-section">
+          <h4><%= t(".payment_info") %></h4>
+          <table class="summary-table">
+            <tr>
+              <td><%= t(".payment_method") %></td>
+              <td><%= @order.payment_method_display %></td>
+            </tr>
+            <tr>
+              <td><%= t(".payment_status") %></td>
+              <td>
+                <span class="badge badge-<%= @order.payment_status %>">
+                  <%= @order.payment_status_display %>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td><%= t(".shipping_method") %></td>
+              <td><%= @order.shipping_method_display %></td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Price Breakdown -->
+        <div class="summary-section">
+          <h4><%= t(".price_breakdown") %></h4>
+          <table class="summary-table">
+            <tr>
+              <td><%= t(".subtotal") %></td>
+              <td><%= format_currency(@order.subtotal_amount) %></td>
+            </tr>
+            <tr>
+              <td><%= t(".shipping_fee") %></td>
+              <td><%= format_currency(@order.shipping_fee) %></td>
+            </tr>
+            <tr class="total-row">
+              <td><strong><%= t(".total") %></strong></td>
+              <td><strong><%= format_currency(@order.total_amount) %></strong></td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Actions -->
+        <div class="order-actions">
+          <% if @order.can_be_cancelled? %>
+            <%= link_to t(".cancel_order"), order_path(@order), 
+                method: :patch,
+                data: { confirm: t(".cancel_confirm") },
+                class: "btn btn-danger btn-block" %>
+          <% end %>
+          
+          <%= link_to t(".back_to_orders"), orders_path, class: "btn btn-outline-secondary btn-block" %>
+          <%= link_to t(".continue_shopping"), products_path, class: "btn btn-primary btn-block" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

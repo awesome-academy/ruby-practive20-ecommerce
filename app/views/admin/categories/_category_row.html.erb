@@ -24,7 +24,7 @@
     <span class="badge bg-primary"><%= category.total_products_count %></span>
     <% if category.children.any? %>
       <div class="small text-muted">
-        <%= t("admin.categories.direct_products") %> <%= category.products.count %>
+        <%= t("admin.categories.direct_products") %> <%= category.products.size %>
         <br>
         <span class="text-info"><%= category.children.size %> <%= t("admin.categories.subcategories") %></span>
       </div>

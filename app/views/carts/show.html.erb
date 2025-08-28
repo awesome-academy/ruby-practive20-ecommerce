@@ -1,0 +1,38 @@
+<% content_for :title, t("cart.title") %>
+
+<div class="cart-page">
+  <div class="cart-header">
+    <div class="cart-title-section">
+      <h1><%= t("cart.title") %></h1>
+      <div class="cart-count"><%= current_cart.cart_items.sum(:quantity) %></div>
+    </div>
+    <div class="cart-actions">
+      <%= link_to t("cart.clear"), cart_clear_path, 
+          class: "clear-cart-btn",
+          data: { 
+            "turbo-method": :delete,
+            confirm: t("cart.clear_confirm") 
+          } %>
+    </div>
+  </div>
+
+  <% if current_cart.cart_items.any? %>
+    <div class="cart-content">
+      <div class="cart-items">
+        <% current_cart.cart_items.includes(product: :brand).each do |cart_item| %>
+          <%= render "cart_item", cart_item: cart_item %>
+        <% end %>
+      </div>
+
+      <div class="cart-sidebar">
+        <%= render "cart_summary" %>
+      </div>
+    </div>
+
+    <div class="suggested-products">
+      <%= render "suggested_products", products: @suggested_products %>
+    </div>
+  <% else %>
+    <%= render "empty_cart" %>
+  <% end %>
+</div>

@@ -1,0 +1,32 @@
+vi:
+  errors:
+    template:
+      header:
+        one: "1 lỗi ngăn không cho lưu %{model} này"
+        other: "%{count} lỗi ngăn không cho lưu %{model} này"
+      body: "Có vấn đề với những trường sau:"
+    messages:
+      inclusion: "không có trong danh sách"
+      exclusion: "đã được sử dụng"
+      invalid: "không hợp lệ"
+      confirmation: "không khớp với xác nhận"
+      accepted: "phải được chấp nhận"
+      empty: "không thể để trống"
+      blank: "không thể để trống"
+      present: "phải để trống"
+      too_long: "quá dài (tối đa %{count} ký tự)"
+      too_short: "quá ngắn (tối thiểu %{count} ký tự)"
+      wrong_length: "độ dài không đúng (phải có %{count} ký tự)"
+      not_a_number: "không phải là số"
+      not_an_integer: "phải là số nguyên"
+      greater_than: "phải lớn hơn %{count}"
+      greater_than_or_equal_to: "phải lớn hơn hoặc bằng %{count}"
+      equal_to: "phải bằng %{count}"
+      less_than: "phải nhỏ hơn %{count}"
+      less_than_or_equal_to: "phải nhỏ hơn hoặc bằng %{count}"
+      other_than: "phải khác %{count}"
+      odd: "phải là số lẻ"
+      even: "phải là số chẵn"
+      taken: "đã được sử dụng"
+      invalid_phone: "Số điện thoại không hợp lệ"
+      must_accept_terms: "Bạn phải đồng ý với điều khoản và điều kiện"
