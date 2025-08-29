@@ -1,34 +1,73 @@
 <% content_for :title, t(".title") %>
-
-<div class="jumbotron">
+<!-- Hero Section -->
+<section class="hero-section">
   <div class="container">
-    <h1 class="display-4"><%= t(".welcome_message") %></h1>
-    <p class="lead"><%= t(".quality_description") %></p>
-    <%= link_to t(".shop_now"), products_path, class: "btn btn-primary btn-lg" %>
-  </div>
-</div>
-
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <h2 class="section-title">
-        <%= t(".featured_products") %>
-        <%= link_to t(".view_all_products"), products_path, class: "btn btn-outline-primary btn-sm pull-right" %>
-      </h2>
-      
-      <% if @featured_products.any? %>
-        <div class="row">
-          <% @featured_products.each do |product| %>
-            <div class="col-md-3 col-sm-6">
-              <%= render "shared/product_card", product: product %>
-            </div>
-          <% end %>
-        </div>
-      <% else %>
-        <div class="alert alert-info">
-          <p class="text-center"><%= t(".no_featured_products") %></p>
-        </div>
-      <% end %>
+    <div class="hero-content">
+      <h1><%= t(".welcome_message") %></h1>
+      <p class="lead"><%= t(".quality_description") %></p>
+      <%= link_to t(".shop_now"), products_path, class: "btn btn-primary btn-lg cta-button" %>
     </div>
   </div>
-</div>
+</section>
+<!-- Features Section -->
+<section class="features-section">
+  <div class="container">
+    <div class="section-title">
+      <h2><%= t(".why_choose_us") %></h2>
+      <p><%= t(".features_description") %></p>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-shipping-fast"></i>
+          </div>
+          <h4><%= t(".fast_shipping") %></h4>
+          <p><%= t(".fast_shipping_desc") %></p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h4><%= t(".quality_guarantee") %></h4>
+          <p><%= t(".quality_guarantee_desc") %></p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h4><%= t(".customer_support") %></h4>
+          <p><%= t(".customer_support_desc") %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Featured Products Section -->
+<section class="products-section">
+  <div class="container">
+    <div class="section-header">
+      <h2><%= t(".featured_products") %></h2>
+      <%= link_to t(".view_all_products"), products_path, class: "btn view-all-btn" %>
+    </div>
+    <% if @featured_products.any? %>
+      <div class="row">
+        <% @featured_products.each do |product| %>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <%= render "shared/product_card", product: product %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="no-products-message">
+        <i class="fas fa-box-open"></i>
+        <h3><%= t(".no_featured_products") %></h3>
+        <p><%= t(".no_featured_products_desc") %></p>
+      </div>
+    <% end %>
+  </div>
+</section>

@@ -1,0 +1,64 @@
+<tr class="cart-item-row" id="cart-item-<%= cart_item.id %>">
+  <!-- Product Column -->
+  <td class="product-column">
+    <div class="product-info">
+      <!-- Remove Button -->
+      <button type="button" class="remove-item-btn"
+              data-url="<%= cart_destroy_item_path(cart_item) %>"
+              data-item-id="<%= cart_item.id %>"
+              data-confirm="Are you sure you want to remove this item?">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="product-image">
+        <% if cart_item.product.main_image %>
+          <%= image_tag cart_item.product.main_image,
+                       alt: cart_item.product.name %>
+        <% else %>
+          <div class="no-image">No Image</div>
+        <% end %>
+      </div>
+      <div class="product-details">
+        <h3 class="product-name"><%= cart_item.product.name %></h3>
+        <p class="product-brand">
+          Color: <% if cart_item.product.brand %>
+            <%= cart_item.product.brand.name %>
+          <% else %>
+            Brown
+          <% end %>
+        </p>
+        <p class="product-size">Size: XL</p>
+      </div>
+    </div>
+  </td>
+  <!-- Price Column -->
+  <td class="price-column" data-label="Price">
+    <div class="product-price">
+      <%= format_currency(cart_item.current_price) %>
+    </div>
+  </td>
+  <!-- Quantity Column -->
+  <td class="quantity-column" data-label="Quantity">
+    <div class="product-quantity">
+      <div class="quantity-controls">
+        <button type="button" class="quantity-btn decrease"
+                data-action="decrease" data-item-id="<%= cart_item.id %>">-</button>
+        <input type="number" class="quantity-input"
+               value="<%= cart_item.quantity %>"
+               min="1"
+               max="<%= cart_item.available_stock %>"
+               data-item-id="<%= cart_item.id %>"
+               data-available-stock="<%= cart_item.available_stock %>">
+        <button type="button" class="quantity-btn increase"
+                data-action="increase" data-item-id="<%= cart_item.id %>">+</button>
+      </div>
+    </div>
+  </td>
+  <!-- Total Column -->
+  <td class="total-column" data-label="Total">
+    <div class="product-total">
+      <span class="total-price" data-item-id="<%= cart_item.id %>">
+        <%= format_currency(cart_item.total_price) %>
+      </span>
+    </div>
+  </td>
+</tr>

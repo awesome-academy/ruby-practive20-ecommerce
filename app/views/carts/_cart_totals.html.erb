@@ -1,0 +1,24 @@
+<div class="cart-totals">
+  <h3 class="totals-title">Cart Totals</h3>
+  <div class="totals-row">
+    <span class="label">Subtotals:</span>
+    <span class="value cart-subtotal">
+      <%= format_currency(current_cart.subtotal) %>
+    </span>
+  </div>
+  <div class="totals-row total-row">
+    <span class="label">Totals:</span>
+    <span class="value cart-total">
+      <%= format_currency(current_cart.total) %>
+    </span>
+  </div>
+  <div class="shipping-note">
+    <i class="fas fa-check-circle"></i>
+    <span>Shipping & taxes calculated at checkout</span>
+  </div>
+  <div class="checkout-actions">
+    <%= link_to "Proceed To Checkout", checkout_path,
+               class: "proceed-checkout-btn #{'disabled' if current_cart.has_out_of_stock_items?}",
+               data: { confirm: current_cart.has_out_of_stock_items? ? "Some items are out of stock" : nil } %>
+  </div>
+</div>
