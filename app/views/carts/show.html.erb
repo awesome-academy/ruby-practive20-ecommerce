@@ -1,38 +1,61 @@
-<% content_for :title, t("cart.title") %>
-
-<div class="cart-page">
-  <div class="cart-header">
-    <div class="cart-title-section">
-      <h1><%= t("cart.title") %></h1>
-      <div class="cart-count"><%= current_cart.cart_items.sum(:quantity) %></div>
-    </div>
-    <div class="cart-actions">
-      <%= link_to t("cart.clear"), cart_clear_path, 
-          class: "clear-cart-btn",
-          data: { 
-            "turbo-method": :delete,
-            confirm: t("cart.clear_confirm") 
-          } %>
+<% content_for :title, "Shopping Cart" %>
+<div class="shopping-cart-page">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-section">
+    <div class="container">
+      <nav class="breadcrumb-nav">
+        <span class="breadcrumb-item">Home</span>
+        <span class="breadcrumb-separator">></span>
+        <span class="breadcrumb-item">Pages</span>
+        <span class="breadcrumb-separator">></span>
+        <span class="breadcrumb-item active">Shopping Cart</span>
+      </nav>
     </div>
   </div>
-
-  <% if current_cart.cart_items.any? %>
-    <div class="cart-content">
-      <div class="cart-items">
-        <% current_cart.cart_items.includes(product: :brand).each do |cart_item| %>
-          <%= render "cart_item", cart_item: cart_item %>
-        <% end %>
-      </div>
-
-      <div class="cart-sidebar">
-        <%= render "cart_summary" %>
-      </div>
+  <!-- Cart Content -->
+  <div class="container">
+    <div class="cart-header">
+      <h1 class="cart-title">Shopping Cart</h1>
     </div>
-
-    <div class="suggested-products">
-      <%= render "suggested_products", products: @suggested_products %>
-    </div>
-  <% else %>
-    <%= render "empty_cart" %>
-  <% end %>
+    <% if current_cart.cart_items.any? %>
+      <div class="cart-layout">
+        <!-- Cart Items Table -->
+        <div class="cart-table-section">
+          <table class="cart-table">
+            <!-- Table Header -->
+            <thead>
+              <tr class="cart-table-header">
+                <th class="header-product">Product</th>
+                <th class="header-price">Price</th>
+                <th class="header-quantity">Quantity</th>
+                <th class="header-total">Total</th>
+              </tr>
+            </thead>
+            <!-- Cart Items -->
+            <tbody class="cart-items">
+              <% current_cart.cart_items.includes(product: :brand).each do |cart_item| %>
+                <%= render "cart_item_row", cart_item: cart_item %>
+              <% end %>
+            </tbody>
+          </table>
+          <!-- Cart Actions -->
+          <div class="cart-actions">
+            <button class="update-cart-btn">Update Cart</button>
+            <%= link_to "Clear Cart", cart_clear_path,
+                class: "clear-cart-btn",
+                data: {
+                  "turbo-method": :delete,
+                  confirm: "Are you sure you want to clear your cart?"
+                } %>
+          </div>
+        </div>
+        <!-- Cart Totals -->
+        <div class="cart-totals-section">
+          <%= render "cart_totals" %>
+        </div>
+      </div>
+    <% else %>
+      <%= render "empty_cart" %>
+    <% end %>
+  </div>
 </div>

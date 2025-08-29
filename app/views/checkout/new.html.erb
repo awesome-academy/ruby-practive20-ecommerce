@@ -1,156 +1,167 @@
 <% content_for :title, t(".title") %>
-
 <div class="checkout-page">
-  <div class="row">
-    <div class="col-md-8">
-      <h1><%= t(".title") %></h1>
-      
-      <%= form_with model: @order_form, url: checkout_path, local: true, class: "checkout-form" do |f| %>
-        <%= render "shared/error_messages", object: f.object %>
-        
-        <!-- Delivery Information -->
-        <div class="checkout-section">
-          <h3><%= t(".delivery_info") %></h3>
-          
-          <div class="row">
-            <div class="col-md-6">
+  <div class="container">
+    <div class="checkout-header">
+      <h1 class="checkout-title"><%= t(".title") %></h1>
+    </div>
+    <div class="checkout-layout">
+      <div class="checkout-main">
+        <%= form_with model: @order_form, url: checkout_path, local: true, class: "checkout-form" do |f| %>
+          <%= render "shared/error_messages", object: f.object %>
+          <!-- Delivery Information -->
+          <div class="checkout-section">
+            <h3 class="section-title">
+              <i class="fas fa-shipping-fast"></i>
+              <%= t(".delivery_info") %>
+            </h3>
+            <div class="form-grid">
               <div class="form-group">
-                <%= f.label :recipient_name, t(".recipient_name") %>
+                <%= f.label :recipient_name, t(".recipient_name"), class: "form-label" %>
                 <%= f.text_field :recipient_name, class: "form-control", required: true %>
               </div>
-            </div>
-            <div class="col-md-6">
               <div class="form-group">
-                <%= f.label :recipient_phone, t(".recipient_phone") %>
-                <%= f.telephone_field :recipient_phone, class: "form-control", 
+                <%= f.label :recipient_phone, t(".recipient_phone"), class: "form-label" %>
+                <%= f.telephone_field :recipient_phone, class: "form-control",
                     placeholder: "0987654321", required: true %>
               </div>
             </div>
+            <div class="form-group">
+              <%= f.label :delivery_address, t(".delivery_address"), class: "form-label" %>
+              <%= f.text_area :delivery_address, class: "form-control", rows: 3,
+                  placeholder: t(".address_placeholder"), required: true %>
+            </div>
+            <div class="form-group">
+              <%= f.label :note, t(".note"), class: "form-label" %>
+              <%= f.text_area :note, class: "form-control", rows: 2,
+                  placeholder: t(".note_placeholder") %>
+            </div>
           </div>
-          
-          <div class="form-group">
-            <%= f.label :delivery_address, t(".delivery_address") %>
-            <%= f.text_area :delivery_address, class: "form-control", rows: 3, 
-                placeholder: t(".address_placeholder"), required: true %>
-          </div>
-          
-          <div class="form-group">
-            <%= f.label :note, t(".note") %>
-            <%= f.text_area :note, class: "form-control", rows: 2, 
-                placeholder: t(".note_placeholder") %>
-          </div>
-        </div>
-
-        <!-- Shipping Methods -->
-        <div class="checkout-section">
-          <h3><%= t(".shipping_methods.title") %></h3>
-          
-          <div class="shipping-options">
-            <% @shipping_options.each do |option| %>
-              <div class="shipping-option">
-                <label class="radio-label">
-                  <%= f.radio_button :shipping_method, option[:id], 
-                      data: { price: option[:price] }, class: "shipping-radio" %>
-                  <div class="shipping-info">
-                    <div class="shipping-name">
-                      <%= option[:name] %>
-                      <span class="shipping-price"><%= format_currency(option[:price]) %></span>
+          <!-- Shipping Methods -->
+          <div class="checkout-section">
+            <h3 class="section-title">
+              <i class="fas fa-truck"></i>
+              <%= t(".shipping_methods.title") %>
+            </h3>
+            <div class="shipping-options">
+              <% @shipping_options.each do |option| %>
+                <div class="shipping-option">
+                  <label class="option-label">
+                    <%= f.radio_button :shipping_method, option[:id],
+                        data: { price: option[:price] }, class: "option-radio" %>
+                    <div class="option-content">
+                      <div class="option-header">
+                        <span class="option-name"><%= option[:name] %></span>
+                        <span class="option-price"><%= format_currency(option[:price]) %></span>
+                      </div>
+                      <div class="option-desc"><%= option[:description] %></div>
                     </div>
-                    <div class="shipping-desc"><%= option[:description] %></div>
-                  </div>
-                </label>
-              </div>
-            <% end %>
+                    <div class="option-check">
+                      <i class="fas fa-check"></i>
+                    </div>
+                  </label>
+                </div>
+              <% end %>
+            </div>
           </div>
-        </div>
-
-        <!-- Payment Methods -->
-        <div class="checkout-section">
-          <h3><%= t(".payment_methods.title") %></h3>
-          
-          <div class="payment-options">
-            <% @payment_methods.each do |method| %>
-              <div class="payment-option">
-                <label class="radio-label">
-                  <%= f.radio_button :payment_method, method[:id], class: "payment-radio" %>
-                  <div class="payment-info">
-                    <div class="payment-name"><%= method[:name] %></div>
-                    <div class="payment-desc"><%= method[:description] %></div>
-                  </div>
-                </label>
-              </div>
-            <% end %>
+          <!-- Payment Methods -->
+          <div class="checkout-section">
+            <h3 class="section-title">
+              <i class="fas fa-credit-card"></i>
+              <%= t(".payment_methods.title") %>
+            </h3>
+            <div class="payment-options">
+              <% @payment_methods.each do |method| %>
+                <div class="payment-option">
+                  <label class="option-label">
+                    <%= f.radio_button :payment_method, method[:id], class: "option-radio" %>
+                    <div class="option-content">
+                      <div class="option-header">
+                        <span class="option-name"><%= method[:name] %></span>
+                      </div>
+                      <div class="option-desc"><%= method[:description] %></div>
+                    </div>
+                    <div class="option-check">
+                      <i class="fas fa-check"></i>
+                    </div>
+                  </label>
+                </div>
+              <% end %>
+            </div>
           </div>
-        </div>
-
-        <!-- Terms and Conditions -->
-        <div class="checkout-section">
-          <div class="form-group">
-            <label class="checkbox-label">
-              <%= f.check_box :terms_accepted, required: true %>
-              <%= t(".terms_text") %>
-              <%= link_to t(".terms_link"), "#", target: "_blank" %>
-            </label>
+          <!-- Terms and Conditions -->
+          <div class="checkout-section">
+            <div class="terms-section">
+              <label class="terms-label">
+                <%= f.check_box :terms_accepted, required: true, class: "terms-checkbox" %>
+                <span class="checkmark"></span>
+                <span class="terms-text">
+                  <%= t(".terms_text") %>
+                  <%= link_to t(".terms_link"), "#", target: "_blank", class: "terms-link" %>
+                </span>
+              </label>
+            </div>
           </div>
-        </div>
-
-        <!-- Submit Button -->
-        <div class="form-actions">
-          <%= f.submit t(".place_order"), class: "btn btn-primary btn-lg btn-block", 
-              id: "place-order-btn" %>
-        </div>
-      <% end %>
-    </div>
-
-    <!-- Order Summary Sidebar -->
-    <div class="col-md-4">
-      <div class="order-summary">
-        <h3><%= t(".order_summary") %></h3>
-        
-        <!-- Cart Items -->
-        <div class="cart-items">
-          <% @cart_items.each do |item| %>
-            <div class="cart-item">
-              <div class="item-info">
-                <h5><%= item.product.name %></h5>
-                <% if item.variant %>
-                  <small class="text-muted"><%= item.variant.name %></small>
-                <% end %>
+          <!-- Submit Button -->
+          <div class="form-actions">
+            <%= f.submit t(".place_order"), class: "place-order-btn",
+                id: "place-order-btn" %>
+          </div>
+        <% end %>
+      </div>
+      <!-- Order Summary Sidebar -->
+      <div class="checkout-sidebar">
+        <div class="order-summary">
+          <h3 class="summary-title">
+            <i class="fas fa-receipt"></i>
+            <%= t(".order_summary") %>
+          </h3>
+          <!-- Cart Items -->
+          <div class="summary-items">
+            <% @cart_items.each do |item| %>
+              <div class="summary-item">
+                <div class="item-image">
+                  <% if item.product.main_image %>
+                    <%= image_tag item.product.main_image, alt: item.product.name %>
+                  <% else %>
+                    <div class="no-image">
+                      <i class="fas fa-image"></i>
+                    </div>
+                  <% end %>
+                </div>
                 <div class="item-details">
-                  <span class="quantity">x<%= item.quantity %></span>
-                  <span class="price"><%= format_currency(item.total_price) %></span>
+                  <h5 class="item-name"><%= item.product.name %></h5>
+                  <% if item.variant %>
+                    <small class="item-variant"><%= item.variant.name %></small>
+                  <% end %>
+                  <div class="item-pricing">
+                    <span class="item-quantity">x<%= item.quantity %></span>
+                    <span class="item-price"><%= format_currency(item.total_price) %></span>
+                  </div>
                 </div>
               </div>
+            <% end %>
+          </div>
+          <!-- Price Breakdown -->
+          <div class="price-summary">
+            <div class="price-row">
+              <span class="price-label"><%= t(".subtotal") %></span>
+              <span class="price-value"><%= format_currency(@subtotal) %></span>
             </div>
-          <% end %>
-        </div>
-
-        <!-- Price Breakdown -->
-        <div class="price-breakdown">
-          <div class="price-row">
-            <span><%= t(".subtotal") %></span>
-            <span><%= format_currency(@subtotal) %></span>
-          </div>
-          
-          <div class="price-row shipping-row">
-            <span><%= t(".shipping") %></span>
-            <span id="shipping-fee">
-              <%= format_currency(@shipping_options.first[:price]) %>
-            </span>
-          </div>
-          
-          <hr>
-          
-          <div class="price-row total-row">
-            <strong>
-              <span><%= t(".total") %></span>
-              <span id="total-amount">
+            <div class="price-row">
+              <span class="price-label"><%= t(".shipping") %></span>
+              <span class="price-value" id="shipping-fee">
+                <%= format_currency(@shipping_options.first[:price]) %>
+              </span>
+            </div>
+            <div class="price-divider"></div>
+            <div class="price-row total-row">
+              <span class="price-label"><%= t(".total") %></span>
+              <span class="price-value" id="total-amount">
                 <%= format_currency(@subtotal + @shipping_options.first[:price]) %>
               </span>
-            </strong>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>

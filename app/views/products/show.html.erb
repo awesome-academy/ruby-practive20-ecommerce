@@ -1,163 +1,320 @@
 <% content_for :title, @product.name %>
-
-<div class="container">
+<div class="product-detail-page">
   <!-- Breadcrumb -->
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><%= link_to t("navigation.home"), root_path %></li>
-      <li class="breadcrumb-item"><%= link_to t("products.index.title"), products_path %></li>
-      <% product_category_breadcrumb(@product).each do |category| %>
-        <li class="breadcrumb-item">
-          <%= link_to category.name, products_path(category_id: category.id) %>
-        </li>
-      <% end %>
-      <li class="breadcrumb-item active" aria-current="page"><%= @product.name %></li>
-    </ol>
-  </nav>
-  
-  <div class="row">
-    <!-- Product Images -->
-    <div class="col-md-6">
-      <div class="product-images">
-        <% if @product.images.attached? %>
-          <%= image_tag @product.main_image.variant(resize_to_limit: Settings.images.large_size), 
-                        class: "img-fluid main-image", alt: @product.name %>
-        <% elsif @product.image_url.present? %>
-          <%= image_tag @product.image_url, class: "img-fluid main-image", alt: @product.name %>
-        <% else %>
-          <div class="no-image-placeholder d-flex flex-column justify-content-center align-items-center bg-light" style="height: <%= Settings.images.placeholder.detail_height %>;">
-            <i class="fa fa-image fa-5x text-muted"></i>
-            <p class="mt-3 text-muted"><%= t(".no_image") %></p>
-          </div>
-        <% end %>
-      </div>
-    </div>
-    
-    <!-- Product Details -->
-    <div class="col-md-6">
-      <div class="product-details">
-        <h1 class="product-title"><%= @product.name %></h1>
-        
-        <!-- Brand -->
-        <% if @product.brand.present? %>
-          <p class="brand-info">
-            <strong><%= t(".brand") %>:</strong> 
-            <%= link_to @product.brand.name, products_path(brand_id: @product.brand.id) %>
-          </p>
-        <% end %>
-        
-        <!-- Categories -->
-        <% if @product.categories.any? %>
-          <p class="category-info">
-            <strong><%= t(".category") %>:</strong>
-            <% @product.categories.each do |category| %>
-              <%= link_to category.name, products_path(category_id: category.id), class: "badge badge-secondary mr-1" %>
-            <% end %>
-          </p>
-        <% end %>
-        
-        <!-- Price -->
-        <div class="price-section mb-3">
-          <% if @product.on_sale? %>
-            <span class="sale-price h3 text-danger">
-              <%= format_currency(@product.sale_price) %>
-            </span>
-            <span class="original-price text-muted">
-              <del><%= format_currency(@product.base_price) %></del>
-            </span>
-            <span class="discount-badge badge badge-danger">
-              <%= t(".discount", percent: @product.discount_percentage) %>
-            </span>
-          <% else %>
-            <span class="current-price h3 text-primary">
-              <%= format_currency(@product.base_price) %>
-            </span>
+  <div class="container">
+    <div class="product-breadcrumb">
+      <h1 class="page-title"><%= t(".title") %></h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><%= link_to t("navigation.home"), root_path %></li>
+          <li class="breadcrumb-item"><%= link_to t("products.index.title"), products_path %></li>
+          <% product_category_breadcrumb(@product).each do |category| %>
+            <li class="breadcrumb-item">
+              <%= link_to category.name, products_path(category_id: category.id) %>
+            </li>
           <% end %>
-        </div>
-        
-        <!-- Stock Status -->
-        <div class="stock-info mb-3">
-          <% if @product.in_stock? %>
-            <span class="badge badge-success">
-              <i class="fa fa-check-circle"></i> 
-              <%= t(".stock") %>: <%= @product.stock_quantity %>
-            </span>
-          <% else %>
-            <span class="badge badge-danger">
-              <i class="fa fa-times-circle"></i> 
-              <%= t(".out_of_stock") %>
-            </span>
-          <% end %>
-        </div>
-        
-        <!-- Short Description -->
-        <% if @product.short_description.present? %>
-          <div class="short-description mb-3">
-            <p class="lead"><%= @product.short_description %></p>
-          </div>
-        <% end %>
-        
-        <!-- Action Buttons -->
-        <div class="product-actions mb-4">
-          <% if @product.in_stock? %>
-            <%= form_with url: cart_add_path, method: :post, local: false, class: "d-inline-block add-to-cart-form" do |form| %>
-              <%= form.hidden_field :product_id, value: @product.id %>
-              <%= form.hidden_field :quantity, value: 1 %>
-              
-              <button type="submit" class="btn btn-primary btn-lg mr-2">
-                <i class="fa fa-shopping-cart"></i> <%= t(".add_to_cart") %>
-              </button>
-            <% end %>
-          <% else %>
-            <button class="btn btn-secondary btn-lg" disabled>
-              <%= t(".out_of_stock") %>
-            </button>
-          <% end %>
-          
-          <button class="btn btn-outline-secondary">
-            <i class="fa fa-heart"></i> <%= t("common.favorite") %>
-          </button>
-        </div>
-        
-        <!-- Product Stats -->
-        <div class="product-stats">
-          <small class="text-muted">
-            <%= t(".views", count: @product.view_count) %>
-          </small>
-        </div>
-      </div>
+          <li class="breadcrumb-item active" aria-current="page"><%= @product.name %></li>
+        </ol>
+      </nav>
     </div>
   </div>
-  
-  <!-- Product Description -->
-  <div class="row mt-4">
-    <div class="col-12">
-      <div class="product-description">
-        <h3><%= t(".description") %></h3>
-        <% if @product.description.present? %>
+  <!-- Product Details Section -->
+  <div class="container">
+    <div class="product-detail-content">
+      <div class="row">
+        <!-- Product Images -->
+        <div class="col-lg-7 col-md-6">
+          <div class="product-images-wrapper">
+            <!-- Thumbnail Images -->
+            <div class="product-thumbnails">
+              <% if @product.images.attached? %>
+                <% @product.images.each_with_index do |image, index| %>
+                  <div class="thumbnail-item <%= 'active' if index == 0 %>" data-image="<%= index %>">
+                    <%= image_tag image.variant(resize_to_limit: [100, 100]),
+                                  class: "thumbnail-image", alt: @product.name %>
+                  </div>
+                <% end %>
+              <% elsif @product.image_url.present? %>
+                <div class="thumbnail-item active" data-image="0">
+                  <%= image_tag @product.image_url, class: "thumbnail-image", alt: @product.name %>
+                </div>
+              <% else %>
+                <div class="thumbnail-item active no-image" data-image="0">
+                  <i class="fas fa-image"></i>
+                </div>
+              <% end %>
+            </div>
+            <!-- Main Image -->
+            <div class="product-main-image">
+              <% if @product.images.attached? %>
+                <% @product.images.each_with_index do |image, index| %>
+                  <div class="main-image-item <%= 'active' if index == 0 %>" data-image="<%= index %>">
+                    <%= image_tag image.variant(resize_to_limit: Settings.images.large_size),
+                                  class: "main-image", alt: @product.name %>
+                  </div>
+                <% end %>
+              <% elsif @product.image_url.present? %>
+                <div class="main-image-item active" data-image="0">
+                  <%= image_tag @product.image_url, class: "main-image", alt: @product.name %>
+                </div>
+              <% else %>
+                <div class="main-image-item active no-image-main" data-image="0">
+                  <i class="fas fa-image"></i>
+                  <p><%= t(".no_image") %></p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <!-- Product Info -->
+        <div class="col-lg-5 col-md-6">
+          <div class="product-info">
+            <h1 class="product-name"><%= @product.name %></h1>
+            <!-- Rating -->
+            <div class="product-rating">
+              <div class="stars">
+                <% 4.times do %>
+                  <i class="fas fa-star filled"></i>
+                <% end %>
+                <% 1.times do %>
+                  <i class="fas fa-star"></i>
+                <% end %>
+                <span class="rating-text">(92)</span>
+              </div>
+            </div>
+            <!-- Price -->
+            <div class="product-price">
+              <% if @product.on_sale? %>
+                <span class="current-price">$<%= @product.sale_price %></span>
+                <span class="original-price">$<%= @product.base_price %></span>
+              <% else %>
+                <span class="current-price">$<%= @product.base_price %></span>
+              <% end %>
+            </div>
+            <!-- Short Description -->
+            <% if @product.short_description.present? %>
+              <div class="product-short-description">
+                <p class="short-description-text">
+                  <%= @product.short_description %>
+                </p>
+              </div>
+            <% end %>
+            <!-- Add to Cart -->
+            <div class="product-actions">
+              <% if @product.in_stock? %>
+                <%= form_with url: cart_add_path, method: :post, local: false, class: "add-to-cart-form" do |form| %>
+                  <%= form.hidden_field :product_id, value: @product.id %>
+                  <%= form.hidden_field :quantity, value: 1 %>
+                  <div class="cart-controls">
+                    <%= form.button type: "submit", class: "btn-add-to-cart" do %>
+                      Add To Cart
+                    <% end %>
+                    <button type="button" class="btn-wishlist">
+                      <i class="far fa-heart"></i>
+                    </button>
+                  </div>
+                <% end %>
+              <% else %>
+                <div class="cart-controls">
+                  <button class="btn-add-to-cart" disabled>
+                    <%= t(".out_of_stock") %>
+                  </button>
+                  <button type="button" class="btn-wishlist">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </div>
+              <% end %>
+            </div>
+            <!-- Categories -->
+            <div class="product-meta">
+              <div class="meta-item">
+                <span class="meta-label">Categories:</span>
+                <% if @product.categories.any? %>
+                  <% @product.categories.each do |category| %>
+                    <%= link_to category.name, products_path(category_id: category.id), class: "meta-link" %>
+                  <% end %>
+                <% end %>
+              </div>
+              <!-- Tags -->
+              <div class="meta-item">
+                <span class="meta-label">Tags:</span>
+              </div>
+              <!-- Share -->
+              <div class="meta-item">
+                <span class="meta-label">Share:</span>
+                <div class="share-buttons">
+                  <a href="#" class="share-btn facebook"><i class="fab fa-facebook-f"></i></a>
+                  <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                  <a href="#" class="share-btn pinterest"><i class="fab fa-pinterest"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Product Tabs -->
+      <div class="product-tabs-section">
+        <div class="product-tabs">
+          <div class="description-header">
+            <h3>Product Description</h3>
+          </div>
           <div class="description-content">
-            <%= simple_format(@product.description, {}, wrapper_tag: "div") %>
+            <% if @product.description.present? %>
+              <div class="product-description">
+                <%= simple_format(@product.description) %>
+              </div>
+            <% else %>
+              <p>This premium quality product is designed to meet your highest expectations. Crafted with attention to detail and using the finest materials, it offers exceptional performance and durability.</p>
+            <% end %>
+            <% if @product.categories.any? %>
+              <h5>Categories</h5>
+              <ul class="details-list">
+                <% @product.categories.each do |category| %>
+                  <li>→ <%= link_to category.name, products_path(category_id: category.id), class: "category-link" %></li>
+                <% end %>
+              </ul>
+            <% end %>
+            <% if @product.brand.present? %>
+              <h5>Brand Information</h5>
+              <ul class="details-list">
+                <li>→ Brand: <%= @product.brand.name %></li>
+                <li>→ SKU: <%= @product.sku %></li>
+                <li>→ Stock: <%= @product.stock_quantity %> items available</li>
+              </ul>
+            <% end %>
           </div>
-        <% else %>
-          <p class="text-muted"><%= t(".no_description") %></p>
-        <% end %>
+        </div>
       </div>
     </div>
-  </div>
-  
-  <!-- Related Products -->
-  <% if @related_products.any? %>
-    <div class="row mt-5">
-      <div class="col-12">
-        <h3><%= t(".related_products") %></h3>
-        <div class="row">
+    <!-- Related Products -->
+    <div class="related-products-section">
+      <h2 class="section-title">Related Products</h2>
+      <div class="related-products-grid">
+        <% if @related_products&.any? %>
           <% @related_products.each do |product| %>
-            <div class="col-md-3 col-sm-6 mb-4">
+            <div class="related-product-item">
               <%= render "shared/product_card", product: product %>
             </div>
           <% end %>
-        </div>
+        <% else %>
+          <!-- Sample related products for demo -->
+          <div class="related-product-item">
+            <div class="product-card">
+              <div class="product-image">
+                <img src="https://via.placeholder.com/300x300" alt="Mens Fashion Wear">
+              </div>
+              <div class="product-info">
+                <h5>Mens Fashion Wear</h5>
+                <div class="rating">
+                  <% 5.times do |i| %>
+                    <i class="fas fa-star"></i>
+                  <% end %>
+                </div>
+                <div class="price">$43.00</div>
+              </div>
+            </div>
+          </div>
+          <div class="related-product-item">
+            <div class="product-card">
+              <div class="product-image">
+                <img src="https://via.placeholder.com/300x300" alt="Women's Fashion">
+              </div>
+              <div class="product-info">
+                <h5>Women's Fashion</h5>
+                <div class="rating">
+                  <% 5.times do |i| %>
+                    <i class="fas fa-star"></i>
+                  <% end %>
+                </div>
+                <div class="price">$67.00</div>
+              </div>
+            </div>
+          </div>
+          <div class="related-product-item">
+            <div class="product-card">
+              <div class="product-image">
+                <img src="https://via.placeholder.com/300x300" alt="Wolx Dummy Fashion">
+              </div>
+              <div class="product-info">
+                <h5>Wolx Dummy Fashion</h5>
+                <div class="rating">
+                  <% 5.times do |i| %>
+                    <i class="fas fa-star"></i>
+                  <% end %>
+                </div>
+                <div class="price">$67.00</div>
+              </div>
+            </div>
+          </div>
+          <div class="related-product-item">
+            <div class="product-card">
+              <div class="product-image">
+                <img src="https://via.placeholder.com/300x300" alt="Top Wall Digital Clock">
+              </div>
+              <div class="product-info">
+                <h5>Top Wall Digital Clock</h5>
+                <div class="rating">
+                  <% 5.times do |i| %>
+                    <i class="fas fa-star"></i>
+                  <% end %>
+                </div>
+                <div class="price">$51.00</div>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
-  <% end %>
+  </div>
 </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize product image gallery
+    const thumbnails = document.querySelectorAll('.thumbnail-item');
+    const mainImages = document.querySelectorAll('.main-image-item');
+
+    thumbnails.forEach(function(thumbnail) {
+      thumbnail.addEventListener('click', function() {
+        const imageIndex = this.getAttribute('data-image');
+
+        // Remove active class from all thumbnails
+        thumbnails.forEach(function(thumb) {
+          thumb.classList.remove('active');
+        });
+
+        // Add active class to clicked thumbnail
+        this.classList.add('active');
+
+        // Hide all main images
+        mainImages.forEach(function(image) {
+          image.classList.remove('active');
+        });
+
+        // Show corresponding main image
+        const targetImage = document.querySelector('.main-image-item[data-image="' + imageIndex + '"]');
+        if (targetImage) {
+          targetImage.classList.add('active');
+        }
+      });
+    });
+
+    // Wishlist functionality
+    const wishlistBtns = document.querySelectorAll('.btn-wishlist');
+    wishlistBtns.forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const icon = this.querySelector('i');
+        if (icon.classList.contains('far')) {
+          icon.classList.remove('far');
+          icon.classList.add('fas');
+          this.style.color = '#e91e63';
+        } else {
+          icon.classList.remove('fas');
+          icon.classList.add('far');
+          this.style.color = '';
+        }
+      });
+    });
+  });
+</script>
