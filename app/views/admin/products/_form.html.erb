@@ -113,20 +113,42 @@
         <div class="card-body">
           <div class="mb-3">
             <%= f.label :images, t(".product_image"), class: "form-label" %>
-            <%= f.file_field :images, class: "form-control", accept: "image/*", multiple: true %>
-            <div class="form-text"><%= t(".image_help") %></div>
+            <%= f.file_field :images, class: "form-control", accept: "image/*", multiple: true, id: "product_images" %>
+            <div class="form-text">
+              <%= t(".image_help") %><br>
+              <small class="text-muted">
+                <%= t(".image_size_limit", size: Settings.product.max_image_size) %><br>
+                <%= t(".image_formats", formats: Settings.product.allowed_mime_types.map { |type| type.split('/').last.upcase }.join(', ')) %>
+              </small>
+            </div>
           </div>
 
           <% if product.persisted? && product.images.attached? %>
             <div class="current-images">
-              <% product.images.each do |image| %>
-                <div class="d-inline-block me-2 mb-2">
-                  <%= image_tag image.variant(resize_to_limit: Settings.images.thumbnail_size),
-                                alt: product.name,
-                                class: "img-fluid rounded" %>
-                </div>
-              <% end %>
-              <p class="text-muted mt-2"><%= t(".current_images") %></p>
+              <h6><%= t(".current_images") %></h6>
+              <div class="row">
+                <% product.images.each_with_index do |image, index| %>
+                  <div class="col-md-6 col-lg-4 mb-3">
+                    <div class="card">
+                      <div class="card-body text-center p-2">
+                        <%= image_tag image.variant(resize_to_limit: Settings.images.thumbnail_size),
+                                      alt: product.name,
+                                      class: "img-fluid rounded mb-2",
+                                      style: "max-height: 120px;" %>
+                        <div class="d-grid">
+                          <%= link_to t(".remove_image"), 
+                                      remove_image_admin_product_path(product, image_id: image.signed_id),
+                                      data: { 
+                                        turbo_method: :delete, 
+                                        turbo_confirm: t(".confirm_remove_image") 
+                                      },
+                                      class: "btn btn-danger btn-sm" %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
             </div>
           <% end %>
         </div>
@@ -174,4 +196,5 @@
 
 <%= content_for :javascript do %>
   <%= javascript_include_tag "custom/admin/product_form", defer: true %>
+  <%= javascript_include_tag "custom/image_upload", defer: true %>
 <% end %>

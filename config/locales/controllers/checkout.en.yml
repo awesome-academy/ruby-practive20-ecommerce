@@ -2,6 +2,7 @@ en:
   checkout:
     new:
       title: "Checkout"
+      login_required: "Please login to continue. You'll be redirected to your cart after login."
       delivery_info: "Delivery Information"
       recipient_name: "Recipient Name"
       recipient_phone: "Phone Number"
@@ -34,10 +35,14 @@ en:
       total: "Total"
       place_order: "Place Order"
       cart_empty: "Your cart is empty"
+      cart_items_changed: "Cart items have changed. Please review your cart."
+      cart_items_invalid: "Some items in your cart are no longer available. Please review your cart."
       order_success: "Order placed successfully! Order number: %{order_number}"
       order_failed: "Failed to place order. Please try again."
       form_invalid: "Please check your information"
     create:
+      cart_items_changed: "Cart items have changed. Please review your cart."
+      cart_items_invalid: "Some items in your cart are no longer available. Please review your cart."
       order_success: "Order placed successfully! Order number: %{order_number}"
       order_failed: "Failed to place order. Please try again."
       form_invalid: "Please check your information"

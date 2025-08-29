@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_08_28_075320) do
+ActiveRecord::Schema[7.0].define(version: 2025_08_28_181228) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -61,6 +61,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_08_28_075320) do
     t.integer "quantity", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.timestamp "cart_snapshot_at"
     t.index ["cart_id", "product_id", "variant_id"], name: "index_cart_items_unique_product_variant", unique: true
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
     t.index ["product_id"], name: "index_cart_items_on_product_id"
@@ -113,6 +114,20 @@ ActiveRecord::Schema[7.0].define(version: 2025_08_28_075320) do
     t.index ["variant_id"], name: "index_order_items_on_variant_id"
   end
 
+  create_table "order_status_histories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.integer "status", null: false
+    t.text "note"
+    t.bigint "admin_user_id"
+    t.datetime "changed_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_user_id"], name: "index_order_status_histories_on_admin_user_id"
+    t.index ["order_id", "changed_at"], name: "index_order_status_histories_on_order_id_and_changed_at"
+    t.index ["order_id"], name: "index_order_status_histories_on_order_id"
+    t.index ["status"], name: "index_order_status_histories_on_status"
+  end
+
   create_table "orders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "order_number", limit: 30, null: false
     t.bigint "user_id"
@@ -128,13 +143,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_08_28_075320) do
     t.decimal "total_amount", precision: 12, scale: 2, default: "0.0", null: false
     t.datetime "confirmed_at"
     t.datetime "processing_at"
-    t.datetime "shipping_at"
-    t.datetime "completed_at"
     t.datetime "cancelled_at"
     t.text "cancelled_reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "shipping_method", default: 0, null: false
+    t.datetime "delivered_at"
     t.index ["created_at"], name: "index_orders_on_created_at"
     t.index ["order_number"], name: "index_orders_on_order_number", unique: true
     t.index ["shipping_method"], name: "index_orders_on_shipping_method"
@@ -235,6 +249,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_08_28_075320) do
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "product_variants", column: "variant_id"
   add_foreign_key "order_items", "products"
+  add_foreign_key "order_status_histories", "orders"
+  add_foreign_key "order_status_histories", "users", column: "admin_user_id"
   add_foreign_key "orders", "users"
   add_foreign_key "product_categories", "categories"
   add_foreign_key "product_categories", "products"

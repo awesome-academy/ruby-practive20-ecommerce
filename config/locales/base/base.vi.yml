@@ -13,6 +13,7 @@ vi:
     signup: "Đăng ký ngay!"
     account: "Tài khoản"
     profile: "Hồ sơ"
+    order_history: "Lịch sử đơn hàng"
     settings: "Cài đặt"
     logout: "Đăng xuất"
     cart: "Giỏ hàng"
@@ -78,3 +79,7 @@ vi:
       no: "Không nổi bật"
     categories:
       direct_products: "Trực tiếp:"
+  javascript:
+    image_upload:
+      file_size_error: "Kích thước file phải nhỏ hơn %{size} MB"
+      invalid_format: "Định dạng file không hợp lệ. Vui lòng sử dụng JPG, PNG, GIF hoặc WebP"

@@ -22,17 +22,22 @@
     </span>
   </div>
   
-  <% if current_cart.has_out_of_stock_items? %>
+  <% if current_cart.has_invalid_items? %>
     <div class="alert alert-warning mb-3">
       <i class="fas fa-exclamation-triangle me-2"></i>
-      <%= t("cart.out_of_stock_warning") %>
+      <%= t("cart.cart_validation_warning") %>
+    </div>
+  <% elsif current_cart.has_updated_items? %>
+    <div class="alert alert-info mb-3">
+      <i class="fas fa-info-circle me-2"></i>
+      <%= t("cart.cart_updated_warning") %>
     </div>
   <% end %>
   
   <div class="checkout-actions">
     <%= link_to checkout_path, 
-               class: "checkout-btn #{'disabled' if current_cart.has_out_of_stock_items?}",
-               data: { confirm: current_cart.has_out_of_stock_items? ? t("cart.cannot_checkout_out_of_stock") : nil } do %>
+               class: "checkout-btn #{'disabled' if current_cart.has_invalid_items? || current_cart.has_updated_items?}",
+               data: { confirm: (current_cart.has_invalid_items? || current_cart.has_updated_items?) ? t("cart.cannot_checkout_invalid_items") : nil } do %>
       <%= t("cart.proceed_to_checkout") %>
     <% end %>
     

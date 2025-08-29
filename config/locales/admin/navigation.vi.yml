@@ -5,6 +5,8 @@ vi:
       category_management: "Quản lý danh mục"
       product_management: "Quản lý sản phẩm"
       user_management: "Quản lý người dùng"
+      order_management: "Quản lý đơn hàng"
+      users: "Người dùng (Sắp có)"
       reports: "Báo cáo (Sắp có)"
       view_site: "Xem trang web"
       logout: "Đăng xuất"

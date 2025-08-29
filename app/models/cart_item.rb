@@ -20,6 +20,8 @@ class CartItem < ApplicationRecord
 
   # Callbacks
   before_save :validate_stock_availability
+  before_create :set_cart_snapshot_at
+  before_update :set_cart_snapshot_at
 
   # Instance methods
   def current_price
@@ -58,7 +60,18 @@ class CartItem < ApplicationRecord
     available_stock >= requested_quantity
   end
 
+  def product_updated_since_cart?
+    return false unless cart_snapshot_at
+    return false unless product&.updated_at
+
+    product.updated_at > cart_snapshot_at
+  end
+
   private
+
+  def set_cart_snapshot_at
+    self.cart_snapshot_at = Time.current
+  end
 
   def product_must_be_active
     return if product&.is_active?

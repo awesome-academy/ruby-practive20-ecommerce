@@ -28,6 +28,12 @@ vi:
       one: "%{count} available"
       other: "Còn %{count} sản phẩm"
   carts:
+    show:
+      items_removed_notice: "Một số sản phẩm đã được xóa khỏi giỏ hàng:"
+      items_updated_notice: "Một số sản phẩm trong giỏ hàng vừa được cập nhật. Vui lòng kiểm tra trước khi thanh toán."
+      removed_item_product_deactivated: "%{name} (sản phẩm đã bị vô hiệu hóa)"
+      removed_item_product_out_of_stock: "%{name} (hết hàng)"
+      removed_item_product_unavailable: "%{name} (không còn khả dụng)"
     add_item:
       product_not_found: "Không tìm thấy sản phẩm"
       item_added_success: "Thêm sản phẩm vào giỏ hàng thành công"

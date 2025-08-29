@@ -1,5 +1,29 @@
 en:
   orders:
+    status:
+      pending_confirmation: "Pending Confirmation"
+      pending: "Pending"
+      confirmed: "Confirmed"
+      processing: "Processing"
+      shipping: "Shipping"
+      delivered: "Delivered"
+      completed: "Completed"
+      cancelled: "Cancelled"
+    payment_method:
+      cod: "Cash on Delivery"
+      bank_transfer: "Bank Transfer"
+      ewallet: "E-Wallet"
+    payment_status:
+      unpaid: "Unpaid"
+      paid: "Paid"
+      failed: "Failed"
+      refunded: "Refunded"
+    shipping_method:
+      standard: "Standard"
+      express: "Express"
+      same_day: "Same Day"
+    system: "System"
+
     index:
       title: "My Orders"
       view_details: "View Details"
@@ -11,11 +35,17 @@ en:
       start_shopping: "Start Shopping"
       login_required: "Please login to view orders"
       access_denied: "You don't have permission to access this order"
+
     cancel:
       user_cancellation: "Customer cancelled the order"
       cancel_success: "Order %{order_number} cancelled successfully"
       cancel_failed: "Cannot cancel this order"
+      cannot_cancel: "This order cannot be cancelled"
+      cancel_reason_required: "Cancellation reason is required"
+      cancel_error: "An error occurred while cancelling the order"
+      unexpected_error: "An unexpected error occurred"
       access_denied: "You don't have permission to access this order"
+
     show:
       title: "Order %{order_number}"
       order_items: "Order Items"
@@ -27,10 +57,9 @@ en:
       order_timeline: "Order Timeline"
       timeline:
         order_placed: "Order Placed"
-        order_confirmed: "Confirmed"
         order_processing: "Processing"
-        order_shipping: "Shipping"
-        order_completed: "Completed"
+        order_confirmed: "Confirmed"
+        order_delivered: "Delivered"
         order_cancelled: "Cancelled"
       order_summary: "Order Summary"
       payment_info: "Payment Information"
@@ -43,6 +72,12 @@ en:
       total: "Total"
       cancel_order: "Cancel Order"
       cancel_confirm: "Are you sure you want to cancel this order?"
+      cancel_reason: "Cancellation Reason"
+      cancel_reason_placeholder: "Please provide a reason for cancelling this order..."
+      confirm_cancel: "Yes, Cancel Order"
       back_to_orders: "Back to Orders"
       continue_shopping: "Continue Shopping"
+      cancelled_reason: "Cancellation Reason"
+      created_at: "Ordered on %{date}"
+      order_not_found: "Order not found"
       access_denied: "You don't have permission to access this order"

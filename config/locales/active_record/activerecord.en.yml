@@ -8,6 +8,8 @@ en:
         gender: "Gender"
         password: "Password"
         password_confirmation: "Password confirmation"
+      product:
+        images: "Images"
     errors:
       models:
         user:
@@ -27,3 +29,8 @@ en:
               blank: "can't be blank"
             password:
               too_short: "is too short (minimum is %{count} characters)"
+        product:
+          attributes:
+            images:
+              invalid_format: "must be JPG, PNG, GIF, or WebP format"
+              too_large: "must be less than %{size} MB"

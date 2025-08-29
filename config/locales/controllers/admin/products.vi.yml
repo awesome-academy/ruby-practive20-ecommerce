@@ -95,9 +95,10 @@ vi:
         success: "Trạng thái nổi bật đã được thay đổi thành %{featured}"
         error: "Không thể thay đổi trạng thái nổi bật"
       not_found: "Không tìm thấy sản phẩm"
+      image_not_found: "Không tìm thấy hình ảnh"
       remove_image:
-        image_removed: "Xóa hình ảnh thành công"
-        image_remove_error: "Xóa hình ảnh thất bại"
+        image_removed: "Đã xóa hình ảnh thành công"
+        image_remove_error: "Không thể xóa hình ảnh"
     status:
       active: "Hoạt động"
       inactive: "Không hoạt động"

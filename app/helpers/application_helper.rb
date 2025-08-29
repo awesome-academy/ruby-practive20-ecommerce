@@ -1,4 +1,4 @@
-module ApplicationHelper
+module ApplicationHelper # rubocop:disable Metrics/ModuleLength
   include Pagy::Frontend
 
   def full_title page_title = ""
@@ -90,6 +90,65 @@ module ApplicationHelper
       precision: Settings.currency.format.precision,
       format: Settings.currency.format.format
     )
+  end
+
+  # Order status badge class
+  def order_status_badge_class status
+    case status.to_s
+    when "pending_confirmation"
+      "bg-warning text-dark"
+    when "confirmed"
+      "bg-info"
+    when "processing"
+      "bg-primary"
+    when "shipping"
+      "bg-secondary"
+    when "completed"
+      "bg-success"
+    when "cancelled"
+      "bg-danger"
+    else
+      "bg-light text-dark"
+    end
+  end
+
+  # History status helpers for timeline
+  def history_status_color status
+    case status.to_s
+    when "pending_confirmation"
+      "bg-warning"
+    when "confirmed"
+      "bg-info"
+    when "processing"
+      "bg-primary"
+    when "shipping"
+      "bg-secondary"
+    when "completed"
+      "bg-success"
+    when "cancelled"
+      "bg-danger"
+    else
+      "bg-light"
+    end
+  end
+
+  def history_status_icon status
+    case status.to_s
+    when "pending_confirmation"
+      "fa-clock"
+    when "confirmed"
+      "fa-check"
+    when "processing"
+      "fa-cog"
+    when "shipping"
+      "fa-truck"
+    when "completed"
+      "fa-check-circle"
+    when "cancelled"
+      "fa-times"
+    else
+      "fa-question"
+    end
   end
 
   private

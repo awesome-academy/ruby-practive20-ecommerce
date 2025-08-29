@@ -1,0 +1,18 @@
+en:
+  shared:
+    all_statuses: "All Statuses"
+    all_methods: "All Methods"
+    cancel: "Cancel"
+    confirm: "Confirm"
+    save: "Save"
+    update: "Update"
+    delete: "Delete"
+    edit: "Edit"
+    view: "View"
+    back: "Back"
+    actions: "Actions"
+    loading: "Loading..."
+    search: "Search"
+    filter: "Filter"
+    clear: "Clear"
+    apply: "Apply"

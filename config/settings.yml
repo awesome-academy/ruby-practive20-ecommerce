@@ -98,6 +98,16 @@ images:
     card_height: "200px"
     detail_height: "400px"
 
+# Cấu hình product images
+product:
+  max_image_size: 5 # MB
+  allowed_mime_types:
+    - "image/jpeg"
+    - "image/jpg"
+    - "image/png"
+    - "image/gif"
+    - "image/webp"
+
 # Cấu hình admin UI
 admin:
   categories_display_limit: 2

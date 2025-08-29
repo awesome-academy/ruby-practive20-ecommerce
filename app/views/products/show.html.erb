@@ -136,7 +136,7 @@
         <h3><%= t(".description") %></h3>
         <% if @product.description.present? %>
           <div class="description-content">
-            <%= simple_format(@product.description) %>
+            <%= simple_format(@product.description, {}, wrapper_tag: "div") %>
           </div>
         <% else %>
           <p class="text-muted"><%= t(".no_description") %></p>

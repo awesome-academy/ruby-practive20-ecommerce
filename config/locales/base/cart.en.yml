@@ -24,6 +24,9 @@ en:
     out_of_stock: "Out of Stock"
     out_of_stock_warning: "Some items in your cart are out of stock"
     cannot_checkout_out_of_stock: "Cannot checkout with out of stock items"
+    cart_validation_warning: "Some items in your cart are no longer available or have been updated"
+    cart_updated_warning: "Some products in your cart have been updated. Please review before checkout."
+    cannot_checkout_invalid_items: "Cannot checkout. Please review your cart items."
     you_might_also_like: "You might also like"
     view_all_products: "View All Products"
     available:

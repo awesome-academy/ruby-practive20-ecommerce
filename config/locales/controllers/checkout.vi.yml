@@ -2,6 +2,7 @@ vi:
   checkout:
     new:
       title: "Thanh toán"
+      login_required: "Vui lòng đăng nhập để tiếp tục. Bạn sẽ được chuyển đến giỏ hàng sau khi đăng nhập."
       delivery_info: "Thông tin giao hàng"
       recipient_name: "Họ và tên người nhận"
       recipient_phone: "Số điện thoại"
@@ -34,10 +35,14 @@ vi:
       total: "Tổng cộng"
       place_order: "Đặt hàng"
       cart_empty: "Giỏ hàng của bạn đang trống"
+      cart_items_changed: "Thông tin sản phẩm có thay đổi, vui lòng cập nhật lại thông tin giỏ hàng"
+      cart_items_invalid: "Một số sản phẩm trong giỏ hàng không còn khả dụng. Vui lòng kiểm tra lại giỏ hàng."
       order_success: "Đặt hàng thành công! Mã đơn hàng: %{order_number}"
       order_failed: "Đặt hàng thất bại. Vui lòng thử lại."
       form_invalid: "Vui lòng kiểm tra lại thông tin"
     create:
+      cart_items_changed: "Thông tin sản phẩm có thay đổi, vui lòng cập nhật lại thông tin giỏ hàng"
+      cart_items_invalid: "Một số sản phẩm trong giỏ hàng không còn khả dụng. Vui lòng kiểm tra lại giỏ hàng."
       order_success: "Đặt hàng thành công! Mã đơn hàng: %{order_number}"
       order_failed: "Đặt hàng thất bại. Vui lòng thử lại."
       form_invalid: "Vui lòng kiểm tra lại thông tin"

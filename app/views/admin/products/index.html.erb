@@ -105,7 +105,14 @@
               <tr>
                 <td>
                   <div class="product-image-thumb bg-light d-flex align-items-center justify-content-center">
-                    <i class="fas fa-image text-muted"></i>
+                    <% if product.images.attached? %>
+                      <%= image_tag product.images.first.variant(resize_to_limit: [60, 60]), 
+                                    alt: product.name, 
+                                    class: "img-fluid rounded",
+                                    style: "max-width: 60px; max-height: 60px; object-fit: cover;" %>
+                    <% else %>
+                      <i class="fas fa-image text-muted"></i>
+                    <% end %>
                   </div>
                 </td>
                 <td>

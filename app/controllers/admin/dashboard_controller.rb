@@ -11,7 +11,11 @@ class Admin::DashboardController < Admin::BaseController
       total_categories: Category.count,
       active_categories: Category.active.count,
       total_users: User.count,
-      admin_users: User.admin.count
+      admin_users: User.admin.count,
+      total_orders: Order.count,
+      pending_orders: Order.status_pending.count,
+      confirmed_orders: Order.status_confirmed.count,
+      completed_orders: Order.status_delivered.count
     }
 
     @recent_products = Product.includes(RECENT_PRODUCTS_PRELOAD)

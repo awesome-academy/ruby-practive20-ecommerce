@@ -1,0 +1,18 @@
+vi:
+  shared:
+    all_statuses: "Tất cả trạng thái"
+    all_methods: "Tất cả phương thức"
+    cancel: "Hủy"
+    confirm: "Xác nhận"
+    save: "Lưu"
+    update: "Cập nhật"
+    delete: "Xóa"
+    edit: "Sửa"
+    view: "Xem"
+    back: "Quay lại"
+    actions: "Hành động"
+    loading: "Đang tải..."
+    search: "Tìm kiếm"
+    filter: "Lọc"
+    clear: "Xóa"
+    apply: "Áp dụng"

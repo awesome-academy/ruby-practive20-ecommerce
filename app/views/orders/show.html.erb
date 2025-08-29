@@ -95,16 +95,6 @@
             </div>
           </div>
           
-          <div class="timeline-item <%= 'active' if @order.confirmed_at %>">
-            <div class="timeline-marker"></div>
-            <div class="timeline-content">
-              <h5><%= t(".timeline.order_confirmed") %></h5>
-              <% if @order.confirmed_at %>
-                <p><%= l(@order.confirmed_at, format: :long) %></p>
-              <% end %>
-            </div>
-          </div>
-          
           <div class="timeline-item <%= 'active' if @order.processing_at %>">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
@@ -115,22 +105,22 @@
             </div>
           </div>
           
-          <div class="timeline-item <%= 'active' if @order.shipping_at %>">
+          <div class="timeline-item <%= 'active' if @order.confirmed_at %>">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
-              <h5><%= t(".timeline.order_shipping") %></h5>
-              <% if @order.shipping_at %>
-                <p><%= l(@order.shipping_at, format: :long) %></p>
+              <h5><%= t(".timeline.order_confirmed") %></h5>
+              <% if @order.confirmed_at %>
+                <p><%= l(@order.confirmed_at, format: :long) %></p>
               <% end %>
             </div>
           </div>
           
-          <div class="timeline-item <%= 'active' if @order.completed_at %>">
+          <div class="timeline-item <%= 'active' if @order.delivered_at %>">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
-              <h5><%= t(".timeline.order_completed") %></h5>
-              <% if @order.completed_at %>
-                <p><%= l(@order.completed_at, format: :long) %></p>
+              <h5><%= t(".timeline.order_delivered") %></h5>
+              <% if @order.delivered_at %>
+                <p><%= l(@order.delivered_at, format: :long) %></p>
               <% end %>
             </div>
           </div>
@@ -201,10 +191,11 @@
         <!-- Actions -->
         <div class="order-actions">
           <% if @order.can_be_cancelled? %>
-            <%= link_to t(".cancel_order"), order_path(@order), 
-                method: :patch,
-                data: { confirm: t(".cancel_confirm") },
-                class: "btn btn-danger btn-block" %>
+            <button type="button" class="btn btn-danger btn-block"
+                   data-toggle="modal" 
+                   data-target="#cancelOrderModal">
+              <%= t(".cancel_order") %>
+            </button>
           <% end %>
           
           <%= link_to t(".back_to_orders"), orders_path, class: "btn btn-outline-secondary btn-block" %>
@@ -214,3 +205,41 @@
     </div>
   </div>
 </div>
+
+<!-- Cancel Order Modal -->
+<% if @order.can_be_cancelled? %>
+  <div class="modal fade" id="cancelOrderModal" tabindex="-1" role="dialog" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <%= form_with url: cancel_order_path(@order), method: :patch, local: true do |f| %>
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="cancelOrderModalLabel"><%= t(".cancel_order") %></h4>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning">
+              <i class="glyphicon glyphicon-exclamation-sign"></i>
+              <%= t(".cancel_confirm") %>
+            </div>
+            <div class="form-group">
+              <%= f.label :cancelled_reason, t(".cancel_reason"), class: "control-label" %>
+              <%= f.text_area :cancelled_reason, class: "form-control", rows: 4, required: true,
+                             placeholder: t(".cancel_reason_placeholder") %>
+              <span class="help-block">
+                <%= t("Please provide a reason for cancelling this order") %>
+              </span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              <%= t("shared.cancel") %>
+            </button>
+            <%= f.submit t(".confirm_cancel"), class: "btn btn-danger" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
