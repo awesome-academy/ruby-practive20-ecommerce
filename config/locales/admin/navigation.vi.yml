@@ -4,7 +4,7 @@ vi:
       dashboard: "Bảng điều khiển"
       category_management: "Quản lý danh mục"
       product_management: "Quản lý sản phẩm"
-      users: "Người dùng (Sắp có)"
+      user_management: "Quản lý người dùng"
       reports: "Báo cáo (Sắp có)"
       view_site: "Xem trang web"
       logout: "Đăng xuất"

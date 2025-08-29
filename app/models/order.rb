@@ -63,6 +63,7 @@ class Order < ApplicationRecord
   scope :created_between, ->(start_date, end_date) { # rubocop:disable Layout/SpaceInsideBlockBraces
     where(created_at: start_date..end_date)
   }
+  scope :completed, -> {where(status: :completed)}
 
   # Instance methods
   def can_be_cancelled?

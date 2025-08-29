@@ -2,6 +2,7 @@ module SessionsHelper
   # Logs in the given user
   def log_in user
     user.generate_session_token
+    user.update_last_login!
     session[:user_id] = user.id
     session[:session_token] = user.session_token
   end

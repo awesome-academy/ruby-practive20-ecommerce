@@ -4,7 +4,7 @@ en:
       dashboard: "Dashboard"
       category_management: "Category Management"
       product_management: "Product Management"
-      users: "Users (Coming Soon)"
+      user_management: "User Management"
       reports: "Reports (Coming Soon)"
       view_site: "View Site"
       logout: "Logout"

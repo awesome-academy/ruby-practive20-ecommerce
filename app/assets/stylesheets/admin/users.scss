@@ -1,0 +1,164 @@
+// Admin Users Styling
+
+.avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #337ab7;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.avatar-placeholder-large {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #337ab7;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 48px;
+  margin: 0 auto 20px;
+}
+
+.user-checkbox {
+  margin: 0;
+}
+
+#bulk-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.table-responsive {
+  border: none;
+}
+
+.panel-body .table {
+  margin-bottom: 0;
+}
+
+// Stats panels
+.panel-primary .panel-body,
+.panel-success .panel-body,
+.panel-warning .panel-body,
+.panel-info .panel-body {
+  text-align: center;
+  
+  h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 2.5em;
+    font-weight: bold;
+  }
+  
+  p {
+    margin-bottom: 0;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}
+
+// User status labels
+.label {
+  font-size: 0.85em;
+  padding: 0.3em 0.6em;
+}
+
+// Search form improvements
+.form-horizontal .form-control {
+  margin-bottom: 10px;
+}
+
+// Modal improvements
+.modal-body .form-group {
+  margin-bottom: 20px;
+}
+
+// Activity list
+.list-unstyled li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  i {
+    margin-right: 10px;
+    width: 16px;
+    color: #666;
+  }
+  
+  .text-muted {
+    float: right;
+    font-size: 0.9em;
+  }
+}
+
+// Responsive improvements
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.9em;
+  }
+  
+  .btn-sm {
+    padding: 4px 8px;
+    font-size: 0.8em;
+  }
+  
+  .avatar-placeholder {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+  
+  .panel-body h3 {
+    font-size: 2em;
+  }
+}
+
+// Bulk actions styling
+#bulk-form {
+  .panel-body {
+    padding: 15px;
+  }
+  
+  #reason-field {
+    transition: all 0.3s ease;
+  }
+}
+
+// User detail page improvements
+.dl-horizontal {
+  dt {
+    width: 120px;
+    text-align: left;
+  }
+  
+  dd {
+    margin-left: 140px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dl-horizontal {
+    dt {
+      width: auto;
+      text-align: left;
+      float: none;
+    }
+    
+    dd {
+      margin-left: 0;
+      margin-bottom: 10px;
+    }
+  }
+}

@@ -1,0 +1,249 @@
+<% content_for :title, t("admin.users.show.title", name: @user.display_name) %>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h1>
+        <%= t("admin.users.show.title", name: @user.display_name) %>
+        <% if @user.activated? %>
+          <span class="label label-success"><%= t("admin.status.active") %></span>
+        <% else %>
+          <span class="label label-danger"><%= t("admin.status.inactive") %></span>
+        <% end %>
+      </h1>
+      <p class="text-muted">
+        <%= link_to t("admin.users.show.back_to_list"), admin_users_path, 
+                    class: "btn btn-default" %>
+        <% if @user.can_be_deactivated_by?(current_user) %>
+          <% if @user.activated? %>
+            <%= link_to t("admin.users.actions.deactivate"), 
+                        toggle_status_admin_user_path(@user), 
+                        method: :patch,
+                        class: "btn btn-warning",
+                        data: { 
+                          toggle: "modal",
+                          target: "#deactivateModal"
+                        } %>
+          <% else %>
+            <%= link_to t("admin.users.actions.activate"), 
+                        toggle_status_admin_user_path(@user), 
+                        method: :patch,
+                        class: "btn btn-success",
+                        data: { 
+                          confirm: t("admin.users.actions.activate_confirm", name: @user.display_name)
+                        } %>
+          <% end %>
+        <% end %>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- User Information -->
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4><%= t("admin.users.show.personal_info") %></h4>
+      </div>
+      <div class="panel-body">
+        <div class="text-center">
+          <% if @user.avatar.attached? %>
+            <%= image_tag @user.avatar, class: "img-circle", size: "120x120" %>
+          <% else %>
+            <div class="avatar-placeholder-large">
+              <%= @user.display_name.first.upcase %>
+            </div>
+          <% end %>
+          <h4><%= @user.display_name %></h4>
+          <p class="text-muted"><%= @user.role_text %></p>
+        </div>
+        
+        <hr>
+        
+        <dl class="dl-horizontal">
+          <dt><%= t("admin.users.show.email") %></dt>
+          <dd><%= @user.email %></dd>
+          
+          <dt><%= t("admin.users.show.phone") %></dt>
+          <dd><%= @user.phone_number || t("admin.users.show.not_provided") %></dd>
+          
+          <dt><%= t("admin.users.show.birthday") %></dt>
+          <dd><%= l(@user.birthday, format: :long) if @user.birthday %></dd>
+          
+          <dt><%= t("admin.users.show.gender") %></dt>
+          <dd><%= @user.gender.humanize if @user.gender %></dd>
+          
+          <dt><%= t("admin.users.show.registered") %></dt>
+          <dd><%= l(@user.created_at, format: :long) %></dd>
+          
+          <dt><%= t("admin.users.show.last_login") %></dt>
+          <dd>
+            <% if @user.last_login_at %>
+              <%= time_ago_in_words(@user.last_login_at) %> <%= t("admin.users.show.ago") %>
+            <% else %>
+              <%= t("admin.users.show.never") %>
+            <% end %>
+          </dd>
+          
+          <% if @user.default_address.present? %>
+            <dt><%= t("admin.users.show.address") %></dt>
+            <dd><%= simple_format(@user.default_address) %></dd>
+          <% end %>
+          
+          <% unless @user.activated? && @user.inactive_reason.present? %>
+            <dt><%= t("admin.users.show.inactive_reason") %></dt>
+            <dd class="text-danger"><%= simple_format(@user.inactive_reason) %></dd>
+          <% end %>
+        </dl>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Order Statistics -->
+  <div class="col-md-8">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="panel panel-primary">
+          <div class="panel-body text-center">
+            <h3><%= @orders_count %></h3>
+            <p><%= t("admin.users.show.total_orders") %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="panel panel-success">
+          <div class="panel-body text-center">
+            <h3><%= number_to_currency(@total_spent) %></h3>
+            <p><%= t("admin.users.show.total_spent") %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="panel panel-info">
+          <div class="panel-body text-center">
+            <h3>
+              <% if @last_order %>
+                <%= time_ago_in_words(@last_order.created_at) %> <%= t("admin.users.show.ago") %>
+              <% else %>
+                <%= t("admin.users.show.never") %>
+              <% end %>
+            </h3>
+            <p><%= t("admin.users.show.last_order") %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Recent Orders -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4><%= t("admin.users.show.recent_orders") %></h4>
+      </div>
+      <div class="panel-body">
+        <% if @recent_orders.any? %>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th><%= t("admin.users.show.order_number") %></th>
+                  <th><%= t("admin.users.show.order_date") %></th>
+                  <th><%= t("admin.users.show.order_amount") %></th>
+                  <th><%= t("admin.users.show.order_status") %></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @recent_orders.each do |order| %>
+                  <tr>
+                    <td>
+                      <strong><%= order.order_number %></strong>
+                    </td>
+                    <td><%= l(order.created_at, format: :short) %></td>
+                    <td><%= number_to_currency(order.total_amount) %></td>
+                    <td>
+                      <span class="label label-<%= order_status_class(order.status) %>">
+                        <%= order.status.humanize %>
+                      </span>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <div class="text-center">
+            <p class="text-muted"><%= t("admin.users.show.no_orders") %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <!-- Recent Activity -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4><%= t("admin.users.show.recent_activity") %></h4>
+      </div>
+      <div class="panel-body">
+        <ul class="list-unstyled">
+          <li>
+            <i class="fa fa-user"></i>
+            <%= t("admin.users.show.account_created") %>
+            <span class="text-muted"><%= l(@user.created_at, format: :long) %></span>
+          </li>
+          <% if @user.activated_at %>
+            <li>
+              <i class="fa fa-check"></i>
+              <%= t("admin.users.show.account_activated") %>
+              <span class="text-muted"><%= l(@user.activated_at, format: :long) %></span>
+            </li>
+          <% end %>
+          <% if @user.last_login_at %>
+            <li>
+              <i class="fa fa-sign-in"></i>
+              <%= t("admin.users.show.last_login") %>
+              <span class="text-muted"><%= l(@user.last_login_at, format: :long) %></span>
+            </li>
+          <% end %>
+          <% if @last_order %>
+            <li>
+              <i class="fa fa-shopping-cart"></i>
+              <%= t("admin.users.show.last_order_placed") %>
+              <span class="text-muted"><%= l(@last_order.created_at, format: :long) %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Deactivate Modal -->
+<div class="modal fade" id="deactivateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <%= form_with url: toggle_status_admin_user_path(@user), method: :patch, local: true do |f| %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+          <h4 class="modal-title"><%= t("admin.users.deactivate_modal.title") %></h4>
+        </div>
+        <div class="modal-body">
+          <p><%= t("admin.users.deactivate_modal.message") %> <strong><%= @user.display_name %></strong>?</p>
+          <div class="form-group">
+            <%= f.label :reason, t("admin.users.deactivate_modal.reason_label") %>
+            <%= f.text_area :reason, class: "form-control", rows: 3, 
+                           placeholder: t("admin.users.deactivate_modal.reason_placeholder") %>
+          </div>
+          <%= f.hidden_field :action_type, value: "deactivate" %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            <%= t("admin.users.deactivate_modal.cancel") %>
+          </button>
+          <%= f.submit t("admin.users.deactivate_modal.confirm"), class: "btn btn-warning" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
